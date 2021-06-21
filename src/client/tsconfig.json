@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "target": "ES2019",
+    "module": "ESNext",
+    "baseUrl": ".",
+    "outDir": "../../dist/client",
+    "jsx": "react"
+  }
+}
