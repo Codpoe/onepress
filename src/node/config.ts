@@ -61,15 +61,16 @@ export function loadUserConfig(root: string): {
 export async function resolveConfig(root: string): Promise<SiteConfig> {
   const { configPath, userConfig } = loadUserConfig(root);
   const { reactPages } = userConfig;
+  const outDir = path.resolve(root, userConfig.outDir || 'dist');
 
   return {
     ...userConfig,
     root,
     configPath,
     base: userConfig.base ? userConfig.base.replace(/([^/])$/, '$1/') : '/',
-    outDir: path.resolve(root, userConfig.outDir || 'dist'),
+    outDir,
     themePath: resolveThemePath(root),
-    tempDir: resolveInOnePress(root, '.temp'),
+    tempDir: path.resolve(outDir, '.temp'),
     reactPages: {
       pageStrategy: new PressPageStrategy(),
       ...reactPages,
@@ -78,7 +79,14 @@ export async function resolveConfig(root: string): Promise<SiteConfig> {
   };
 }
 
-const compareFields = ['vite', 'mdx', 'reactRefresh', 'reactPages'];
+const compareFields = [
+  'base',
+  'srcDir',
+  'vite',
+  'mdx',
+  'reactRefresh',
+  'reactPages',
+];
 const ignoreFields = ['pageStrategy'];
 
 export function isConfigChanged(
