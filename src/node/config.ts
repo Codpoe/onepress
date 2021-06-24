@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs-extra';
 import jiti from 'jiti';
 import pick from 'lodash/pick';
-import { PressPageStrategy } from 'vite-pages-theme-press/dist/pageStrategy';
+import { PressPageStrategy } from './pageStrategy';
 import { UserConfig, SiteConfig } from './types';
 import {
   DEFAULT_THEME_PATH,

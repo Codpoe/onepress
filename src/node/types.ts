@@ -27,3 +27,9 @@ export interface SiteConfig extends UserConfig {
   tempDir: string;
   reactPages: ReactPagesOptions;
 }
+
+export interface GitContributor {
+  name: string;
+  email: string;
+  commits: number;
+}
