@@ -3,6 +3,7 @@ import fs from 'fs-extra';
 import ora from 'ora';
 import { build as viteBuild, BuildOptions, InlineConfig } from 'vite';
 import { RollupOutput, OutputChunk, OutputAsset } from 'rollup';
+import type { HelmetData } from 'react-helmet';
 import { resolveConfig } from './config';
 import { createOnePressPlugin } from './plugin';
 
@@ -30,6 +31,7 @@ export async function build(
           'react-router-dom',
           'react-dom',
           'react-dom/server',
+          'react-helmet',
         ],
         noExternal: [
           'vite-plugin-react-pages',
@@ -104,14 +106,17 @@ export async function build(
         }
 
         const content = renderToString(pagePath);
+        const helmetData: HelmetData = require('react-helmet').Helmet.renderStatic();
 
         // TODO: inject preload
 
         const html = `
-<html>
+<html ${helmetData.htmlAttributes.toString()}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    ${helmetData.title.toString()}
+    ${helmetData.meta.toString()}
     ${cssChunks.map(
       cssChunk =>
         `<link rel="stylesheet" href="${siteConfig.base}${cssChunk.fileName}" />`

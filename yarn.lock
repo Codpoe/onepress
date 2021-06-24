@@ -729,6 +729,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-helmet@^6.1.1":
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/@types/react-helmet/-/react-helmet-6.1.1.tgz#4fde22cbcaa1b461642e1d719cc6162d95acb110"
+  integrity sha512-VmSCMz6jp/06DABoY60vQa++h1YFt0PfAI23llxBJHbowqFgLUL0dhS1AQeVPNqYfRp9LAfokrfWACTNeobOrg==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-router-dom@^5.1.7":
   version "5.1.7"
   resolved "https://registry.yarnpkg.com/@types/react-router-dom/-/react-router-dom-5.1.7.tgz#a126d9ea76079ffbbdb0d9225073eb5797ab7271"
@@ -4065,10 +4072,10 @@ vfile@^4.0.0:
     unist-util-stringify-position "^2.0.0"
     vfile-message "^2.0.0"
 
-vite-pages-theme-press@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/vite-pages-theme-press/-/vite-pages-theme-press-0.0.3.tgz#5f7b4d3961f0769987e367fe7e46ab02f2eb6eaf"
-  integrity sha512-WzAjWym9ddYfvDwJ51mdQmejCJiTsK2Z6J1vMiGZC+2yM4AifVsKdTc4kykeEVuUW4nSCMrQnqRZztwEVpJ9lw==
+vite-pages-theme-press@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/vite-pages-theme-press/-/vite-pages-theme-press-0.0.4.tgz#15142aa3f3c33cced6eeaee9fcbaf43ee9f457c1"
+  integrity sha512-QqXu+T7fAmAcn/hx96f9qmYB2bIz/2Xg6Afq/o5DVftkIngCBZCy3UtiLAYGiJInbQOlgR7pa/Gq44v0DUisZw==
   dependencies:
     "@docsearch/css" "^3.0.0-alpha.36"
     "@docsearch/react" "^3.0.0-alpha.36"
