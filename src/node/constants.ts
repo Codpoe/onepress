@@ -8,6 +8,9 @@ export const REACT_PAGES_APP_ENTRY = '/@pages-infra/main.js';
 // we will proxy it
 export const REACT_PAGES_THEME_ENTRY = '/@react-pages/theme';
 
+// This is the pages module used in vite-plugin-react-pages
+export const REACT_PAGES_MODULE_ID = '/@react-pages/pages';
+
 export const DEFAULT_THEME_PATH = path.resolve(__dirname, '../client/app');
 
 // special virtual file

@@ -6,6 +6,7 @@ import { RollupOutput, OutputChunk, OutputAsset } from 'rollup';
 import type { HelmetData } from 'react-helmet';
 import { resolveConfig } from './config';
 import { createOnePressPlugin } from './plugin';
+import { REACT_PAGES_MODULE_ID } from './constants';
 
 const okMark = '\x1b[32m✓\x1b[0m';
 const failMark = '\x1b[31m✖\x1b[0m';
@@ -47,6 +48,7 @@ export async function build(
         outDir: ssr ? siteConfig.tempDir : siteConfig.outDir,
         cssCodeSplit: false,
         minify: !ssr,
+        ssrManifest: !ssr,
         rollupOptions: {
           ...buildOptions.rollupOptions,
           input: require.resolve(
@@ -88,6 +90,11 @@ export async function build(
     chunk => chunk.type === 'asset' && chunk.fileName.endsWith('.css')
   ) as OutputAsset[];
 
+  const manifest = require(path.resolve(
+    siteConfig.outDir,
+    'ssr-manifest.json'
+  ));
+
   const { renderToString, ssrData } = require(path.resolve(
     siteConfig.tempDir,
     'serverRender.js'
@@ -106,9 +113,25 @@ export async function build(
         }
 
         const content = renderToString(pagePath);
-        const helmetData: HelmetData = require('react-helmet').Helmet.renderStatic();
 
-        // TODO: inject preload
+        const helmetData: HelmetData =
+          require('react-helmet').Helmet.renderStatic();
+
+        const preloadFiles: string[] =
+          manifest[
+            `${REACT_PAGES_MODULE_ID}${
+              pagePath === '/' ? '/index__' : pagePath
+            }`
+          ] || [];
+        const preloadLinks = preloadFiles
+          .map(
+            file =>
+              `<link rel="modulepreload" href="${siteConfig.base}${file.replace(
+                /^\//,
+                ''
+              )}">`
+          )
+          .join('\n    ');
 
         const html = `
 <html ${helmetData.htmlAttributes.toString()}>
@@ -121,6 +144,7 @@ export async function build(
       cssChunk =>
         `<link rel="stylesheet" href="${siteConfig.base}${cssChunk.fileName}" />`
     )}
+    ${preloadLinks}
   </head>
   <body>
     <script>
