@@ -82,8 +82,6 @@ export async function getGitContributors(
       }
     );
 
-    console.log(stdout);
-
     return stdout
       .split('\n')
       .map(item => item.trim().match(/^(\d+)\t(.*) <(.*)>$/))
@@ -112,7 +110,6 @@ export const defaultFileHandler: FileHandler = async (file, api) => {
       staticData.updatedTime || (await getGitUpdatedTime(file));
     staticData.contributors =
       staticData.contributors || (await getGitContributors(file));
-    console.log(staticData);
   }
 
   // if blog, add additional page
