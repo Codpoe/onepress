@@ -1,16 +1,18 @@
 {
   "name": "onepress",
   "version": "0.1.0",
-  "description": "Doc site generator based on Vite & vite-plugin-react-pages",
+  "description": "Static site generator based on Vite & vite-plugin-react-pages",
   "main": "index.js",
   "repository": "git@github.com:Codpoe/onepress.git",
   "author": "codpoe <codpoe.me@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "run-p --print-name dev:*",
+    "dev": "run-p --print-label dev:*",
     "dev:node": "tsc -w -p src/node",
     "dev:client": "tsc -w -p src/client",
-    "build": "tsc -p src/node"
+    "build": "run-p --print-label build:*",
+    "build:node": "tsc -p src/node",
+    "build:client": "tsc -p src/client"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"

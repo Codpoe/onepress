@@ -184,7 +184,7 @@ export async function build(
     const clientResult = await bundle(siteConfig, buildOptions);
     await renderPages(siteConfig, clientResult);
   } finally {
-    await fs.remove(siteConfig.tempDir);
+    await fs.remove(siteConfig.tempDir)
   }
 
   console.log(
