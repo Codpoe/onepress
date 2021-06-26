@@ -7,21 +7,13 @@ import type { HelmetData } from 'react-helmet';
 import { resolveConfig } from './config';
 import { createOnePressPlugin } from './plugin';
 import { REACT_PAGES_MODULE_ID } from './constants';
+import { SiteConfig } from './types';
 
-const okMark = '\x1b[32m✓\x1b[0m';
-const failMark = '\x1b[31m✖\x1b[0m';
-
-export async function build(
-  root = process.cwd(),
-  buildOptions: BuildOptions = {}
-) {
-  const start = Date.now();
-  const siteConfig = await resolveConfig(root);
-
+async function bundle(siteConfig: SiteConfig, buildOptions: BuildOptions) {
   const resolveViteConfig = (ssr: boolean): InlineConfig => {
     return {
       configFile: false,
-      root,
+      root: siteConfig.root,
       base: siteConfig.base,
       plugins: createOnePressPlugin(siteConfig, ssr),
       logLevel: 'warn',
@@ -65,23 +57,25 @@ export async function build(
     };
   };
 
+  const spinner = ora('build client + server bundles...').start();
   let clientResult: RollupOutput;
-  const bundleSpinner = ora();
-
-  bundleSpinner.start('building client + server bundles...');
 
   try {
     [clientResult] = (await Promise.all([
       viteBuild(resolveViteConfig(false)),
       viteBuild(resolveViteConfig(true)),
     ])) as [RollupOutput, RollupOutput];
-  } catch (e) {
-    bundleSpinner.stopAndPersist({ symbol: failMark });
-    throw e;
+
+    spinner.succeed();
+  } catch (err) {
+    spinner.fail();
+    throw err;
   }
 
-  bundleSpinner.stopAndPersist({ symbol: okMark });
+  return clientResult;
+}
 
+async function renderPages(siteConfig: SiteConfig, clientResult: RollupOutput) {
   const entryChunk = clientResult.output.find(
     chunk => chunk.type === 'chunk' && chunk.isEntry
   ) as OutputChunk;
@@ -90,19 +84,20 @@ export async function build(
     chunk => chunk.type === 'asset' && chunk.fileName.endsWith('.css')
   ) as OutputAsset[];
 
+  // it is generated in building client bundle
   const manifest = require(path.resolve(
     siteConfig.outDir,
     'ssr-manifest.json'
   ));
 
+  // it is generated in building server bundle
   const { renderToString, ssrData } = require(path.resolve(
     siteConfig.tempDir,
     'serverRender.js'
   ));
   const pagePaths = Object.keys(ssrData);
 
-  const renderSpinner = ora();
-  renderSpinner.start('rendering pages...');
+  const spinner = ora('render pages...').start();
 
   try {
     await Promise.all(
@@ -117,21 +112,7 @@ export async function build(
         const helmetData: HelmetData =
           require('react-helmet').Helmet.renderStatic();
 
-        const preloadFiles: string[] =
-          manifest[
-            `${REACT_PAGES_MODULE_ID}${
-              pagePath === '/' ? '/index__' : pagePath
-            }`
-          ] || [];
-        const preloadLinks = preloadFiles
-          .map(
-            file =>
-              `<link rel="modulepreload" href="${siteConfig.base}${file.replace(
-                /^\//,
-                ''
-              )}">`
-          )
-          .join('\n    ');
+        const preloadLinks = getPreloadLinks(siteConfig, manifest, pagePath);
 
         const html = `
 <html ${helmetData.htmlAttributes.toString()}>
@@ -166,14 +147,45 @@ export async function build(
         await fs.outputFile(targetPath, html);
       })
     );
-  } catch (e) {
-    renderSpinner.stopAndPersist({ symbol: failMark });
-    throw e;
+
+    spinner.succeed();
+  } catch (err) {
+    spinner.fail();
+    throw err;
   }
+}
 
-  renderSpinner.stopAndPersist({ symbol: okMark });
+function getPreloadLinks(
+  siteConfig: SiteConfig,
+  manifest: any,
+  pagePath: string
+) {
+  const preloadFiles: string[] =
+    manifest[
+      `${REACT_PAGES_MODULE_ID}${pagePath === '/' ? '/index__' : pagePath}`
+    ] || [];
 
-  await fs.remove(siteConfig.tempDir);
+  return preloadFiles
+    .map(file => {
+      const href = `${siteConfig.base}${file.replace(/^\//, '')}`;
+      return `<link rel="modulepreload" href="${href}">`;
+    })
+    .join('\n    ');
+}
+
+export async function build(
+  root = process.cwd(),
+  buildOptions: BuildOptions = {}
+) {
+  const start = Date.now();
+  const siteConfig = await resolveConfig(root);
+
+  try {
+    const clientResult = await bundle(siteConfig, buildOptions);
+    await renderPages(siteConfig, clientResult);
+  } finally {
+    await fs.remove(siteConfig.tempDir);
+  }
 
   console.log(
     `build complete in ${((Date.now() - start) / 1000).toFixed(2)}s.`
