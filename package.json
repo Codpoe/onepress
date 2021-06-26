@@ -6,6 +6,9 @@
   "repository": "git@github.com:Codpoe/onepress.git",
   "author": "codpoe <codpoe.me@gmail.com>",
   "license": "MIT",
+  "bin": {
+    "onepress": "bin/onepress.js"
+  },
   "scripts": {
     "dev": "run-p --print-label dev:*",
     "dev:node": "tsc -w -p src/node",
