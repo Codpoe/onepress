@@ -18,7 +18,7 @@ export function createOnePressPlugin(
   config: SiteConfig,
   ssr: boolean
 ): Plugin[] {
-  let { theme: themeConfig } = config;
+  let { theme: themeConfig = {} } = config;
 
   const onepressPlugin: Plugin = {
     name: 'onepress',
@@ -48,6 +48,7 @@ export function createOnePressPlugin(
           ],
         },
         optimizeDeps: {
+          include: ['react-helmet'],
           exclude: ['onepress'],
         },
       };
@@ -108,7 +109,7 @@ export function createOnePressPlugin(
 
       if (config.configPath && file === normalizePath(config.configPath)) {
         const newConfig = await resolveConfig(config.root);
-        themeConfig = newConfig.theme;
+        themeConfig = newConfig.theme || {};
 
         if (isConfigChanged(config, newConfig)) {
           console.warn(
