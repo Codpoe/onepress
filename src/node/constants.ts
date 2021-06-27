@@ -11,7 +11,7 @@ export const REACT_PAGES_THEME_ENTRY = '/@react-pages/theme';
 // This is the pages module used in vite-plugin-react-pages
 export const REACT_PAGES_MODULE_ID = '/@react-pages/pages';
 
-export const DEFAULT_THEME_PATH = path.resolve(__dirname, '../client/app');
+export const DEFAULT_THEME_PATH = path.resolve(__dirname, '../client/theme');
 
 // special virtual file
 // we can't directly import '@onepress/themeConfig' because

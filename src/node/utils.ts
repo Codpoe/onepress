@@ -14,3 +14,12 @@ export function normalizePath(id: string): string {
 export function cleanPath(id: string): string {
   return id.replace(/(\?|#).*/, '');
 }
+
+export function trapConsole() {
+  const consoleLog = global.console.log;
+  global.console.log = (() => {}) as any;
+
+  return () => {
+    global.console.log = consoleLog;
+  };
+}

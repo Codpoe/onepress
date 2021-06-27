@@ -6,6 +6,7 @@ import { RollupOutput, OutputChunk, OutputAsset } from 'rollup';
 import type { HelmetData } from 'react-helmet';
 import { resolveConfig } from './config';
 import { createOnePressPlugin } from './plugin';
+import { trapConsole } from './utils';
 import { REACT_PAGES_MODULE_ID } from './constants';
 import { SiteConfig } from './types';
 
@@ -107,7 +108,10 @@ async function renderPages(siteConfig: SiteConfig, clientResult: RollupOutput) {
           return;
         }
 
+        // disable log while rendering
+        const recoverConsole = trapConsole();
         const content = renderToString(pagePath);
+        recoverConsole();
 
         const helmetData: HelmetData =
           require('react-helmet').Helmet.renderStatic();
@@ -184,7 +188,7 @@ export async function build(
     const clientResult = await bundle(siteConfig, buildOptions);
     await renderPages(siteConfig, clientResult);
   } finally {
-    await fs.remove(siteConfig.tempDir)
+    await fs.remove(siteConfig.tempDir);
   }
 
   console.log(
