@@ -1,6 +1,6 @@
 {
   "name": "onepress",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Static site generator based on Vite & vite-plugin-react-pages",
   "main": "index.js",
   "repository": "git@github.com:Codpoe/onepress.git",
