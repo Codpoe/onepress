@@ -1,0 +1,14 @@
+# 项目介绍
+
+## 项目初衷
+
+当我在 vitejs 里发现插件 [vite-plugin-react-pages](https://github.com/vitejs/vite-plugin-react-pages) 时，
+我参考 VuePress 的默认主题样式，给这个插件写了个主题 [vite-pages-theme-press](https://github.com/Codpoe/vite-pages-theme-press)，
+后来我在搭建文档站时想使用这个插件和主题，发现搭建项目的这个过程还是非常繁琐的，需要引入一系列的依赖：`react`, `react-dom`, `vite`, `mdx`...
+这对于搭建一个文档站来说是不是有点麻烦呢？这时我想到了 VuePress，它的易于上手令人印象深刻，于是我参考 VuePress / VitePress 写了这个项目：OnePress。
+把需要的东西都集成封装起来，用户只需要安装一个依赖即可开始写作，这就是项目名称叫 `OnePress` 的原因。
+
+## 实质
+
+OnePress 实质只是 vite-plugin-react-pages 的一层简单封装，内部还集成了 react refresh 和 mdx，提供了类似 VuePress 那样的上手体验。
+理论上 OnePress 支持 react-pages 的所有主题。

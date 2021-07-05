@@ -1,0 +1,36 @@
+---
+home: true
+title: 首页
+heroImage: 👽
+heroText: OnePress
+tagline: Vite & React 驱动的静态网站生成器
+actions:
+  - text: 快速上手
+    link: /zh/guide/getting-started
+  - text: 项目介绍
+    link: /zh/guide
+features:
+  - title: ⚡️ Vite 驱动
+    details: Vite 是基于 ES Module 的前端开发构建工具，以快著称。
+  - title: 📘 基于 vite-plugin-react-pages
+    details: OnePress 实质是 vite-plugin-react-pages 的一层封装，但更简洁易用。
+  - title: ✨ 主题
+    details: 内置 vite-pages-theme-press，并兼容 react-pages 的其他主题。
+footer: Copyright © 2021-present Codpoe. Built with Vite & React.
+---
+
+### 类似 VuePress，容易上手
+
+```shell
+# 在你的项目中安装
+yarn add -D onepress
+
+# 新建一个 markdown 文件
+echo '# Hello OnePress' > README.md
+
+# 开始写作
+yarn onepress dev
+
+# 构建静态文件
+yarn onepress build
+```

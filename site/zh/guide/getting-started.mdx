@@ -1,0 +1,45 @@
+# 快速上手
+
+1. 新建目录
+
+```shell
+mkdir onepress-app
+cd onepress-app
+```
+
+2. 初始化项目
+
+```shell
+yarn init
+```
+
+3. 安装依赖
+
+```shell
+yarn add -D onepress
+```
+
+4. 在 `package.json` 中添加 scripts
+
+```json
+{
+  "scripts": {
+    "dev": "onepress dev",
+    "build": "onepress build"
+  }
+}
+```
+
+5. 开始写文档
+
+```shell
+echo '# Hello OnePress' > README.md
+```
+
+6. 启动开发服务器
+
+```shell
+yarn dev
+```
+
+这会在 `http://localhost:3000` 启动一个开发服务器，打开这个地址应该就能看到你的文档站了。

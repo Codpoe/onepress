@@ -1,0 +1,13 @@
+{
+  "name": "site",
+  "version": "1.0.0",
+  "description": "onepress doc site",
+  "scripts": {
+    "dev": "onepress dev",
+    "build": "onepress build",
+    "serve": "onepress serve"
+  },
+  "dependencies": {
+    "onepress": "workspace:*"
+  }
+}

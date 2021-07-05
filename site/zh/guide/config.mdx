@@ -1,0 +1,68 @@
+# 配置
+
+类似 VuePress，我们可以在项目的根目录创建 `.onepress` 目录，在这里面可以新建 `config.js` 或 `config.ts` 文件作为配置文件：
+
+```js title=<root>/.onepress/config.js
+export default {
+  // ...
+};
+```
+
+## base
+
+页面基础路径，默认为 `/`。具体可以看 [Vite 的文档](https://vitejs.dev/config/#root)。
+
+## srcDir
+
+如果我们的文档目录不在项目的根目录，可以通过 `srcDir` 来指定文档目录：
+
+```js title=<root>/.onepress/config.js hl=2
+export default {
+  srcDir: 'docs', // 指定 docs 为文档目录
+};
+```
+
+> Note: 其实 `srcDir` 最终会设置给 vite-plugin-react-pages 的 `pagesDir`。
+
+## outDir
+
+执行 `build` 命令时默认会在 `<root>/dist` 生成资源代码文件。可以通过 `outDir` 来指定输出的目录：
+
+```js title=<root>/.onepress/config.js hl=3
+export default {
+  srcDir: 'docs', // 指定 docs 为文档目录
+  outDir: 'out', // 指定 out 为输出的目录
+};
+```
+
+## theme
+
+通过 `theme` 修改 vite-pages-theme-press 的主题配置。具体可以看[这里](https://github.com/codpoe/vite-pages-theme-press)。
+
+## vite
+
+通过 `vite` 修改 Vite 的配置：
+
+```js title=<root>/.onepress/config.js hl=4-6
+export default {
+  srcDir: 'docs', // 指定 docs 为文档目录
+  outDir: 'out', // 指定 out 为输出的目录
+  vite: {
+    publicDir: 'assets',
+  },
+};
+```
+
+## reactPages
+
+[vite-plugin-react-pages](https://github.com/vitejs/vite-plugin-react-pages) 的配置。
+
+> 需要注意的是，不要在这里配置 `pagesDir`，即使配置了也不会生效，请改为使用上面提到的 `srcDir`。
+
+## reactRefresh
+
+[@vitejs/plugin-react-refresh](https://github.com/vitejs/vite/tree/main/packages/plugin-react-refresh) 的配置。
+
+## mdx
+
+[vite-plugin-mdx](https://github.com/brillout/vite-plugin-mdx) 的配置。
