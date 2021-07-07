@@ -12,7 +12,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install",
-    "release": "pnpm -r exec npm version"
+    "ver": "pnpm -r --filter vite-pages-theme-press --filter onepress exec npm version",
+    "pub": "pnpm -r --filter vite-pages-theme-press --filter onepress publish",
+    "release": "pnpm -r build && pnpm ver && git commit -am \"chore: release\" && pnpm pub"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": ["eslint --fix", "prettier --write"]
