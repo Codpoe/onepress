@@ -77,6 +77,10 @@ export function createOnePressPlugin(
               replacement: require.resolve('@mdx-js/react/dist/esm.js'),
             },
             {
+              find: 'react-helmet',
+              replacement: require.resolve('react-helmet'),
+            },
+            {
               find: 'vite-plugin-react-pages',
               replacement: (() => {
                 // FIXME: simplify it using regexp
@@ -91,6 +95,7 @@ export function createOnePressPlugin(
           ],
         },
         optimizeDeps: {
+          include: ['react-helmet'],
           exclude: ['onepress'],
         },
       };
