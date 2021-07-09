@@ -1,5 +1,11 @@
 import path from 'path';
-import { mergeConfig, send, Plugin, UserConfig as ViteConfig } from 'vite';
+import {
+  mergeConfig,
+  send,
+  Plugin,
+  PluginOption,
+  UserConfig as ViteConfig,
+} from 'vite';
 import reactRefresh from '@vitejs/plugin-react-refresh';
 import reactPages from 'vite-plugin-react-pages';
 import mdx from 'vite-plugin-mdx';
@@ -182,7 +188,15 @@ export function createOnePressPlugin(
     },
   };
 
+  // Injecting other plugins inside the config hook will have no effect,
+  // so we inject the user plugins here.
+  // (we need to flat them)
+  const userVitePlugins = config.vite?.plugins
+    ?.flatMap(item => item)
+    .filter<Plugin>((item: PluginOption): item is Plugin => Boolean(item));
+
   return [
+    ...(userVitePlugins || []),
     reactRefresh(config.reactRefresh),
     reactPages(config.reactPages),
     // vite-plugin-mdx looks for dependencies such as react from the vite root, which may cause errors,
