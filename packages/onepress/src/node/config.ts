@@ -62,6 +62,7 @@ export async function resolveConfig(root: string): Promise<SiteConfig> {
   const { configPath, userConfig } = loadUserConfig(root);
   const { reactPages } = userConfig;
   const outDir = path.resolve(root, userConfig.outDir || 'dist');
+  const pagesDir = path.resolve(root, userConfig.srcDir || '.');
 
   return {
     ...userConfig,
@@ -79,13 +80,22 @@ export async function resolveConfig(root: string): Promise<SiteConfig> {
     reactPages: {
       pageStrategy: new PressPageStrategy(),
       ...reactPages,
-      pagesDir: path.resolve(root, userConfig.srcDir || '.'),
+      pagesDir,
     },
     mdx: {
       ...userConfig.mdx,
       remarkPlugins: (userConfig.mdx?.remarkPlugins || []).concat(
         require('remark-slug')
       ),
+    },
+    windicss: {
+      ...userConfig.windicss,
+      scan: {
+        include: ['**/*.{md,mdx,js,jsx,ts,tsx}'],
+        ...(typeof userConfig.windicss?.scan === 'boolean'
+          ? {}
+          : userConfig.windicss?.scan),
+      },
     },
   };
 }
@@ -95,6 +105,7 @@ const compareFields = [
   'srcDir',
   'vite',
   'mdx',
+  'windicss',
   'reactRefresh',
   'reactPages',
 ];

@@ -3,6 +3,7 @@ import { Options as ReactRefreshOptions } from '@vitejs/plugin-react-refresh';
 import { MdxOptions } from 'vite-plugin-mdx';
 import createReactPagesPlugin from 'vite-plugin-react-pages';
 import { ThemeOptions } from 'vite-pages-theme-press';
+import { UserOptions as WindiCssUserOptions } from 'vite-plugin-windicss';
 
 type ReactPagesOptions = Parameters<typeof createReactPagesPlugin>[0];
 
@@ -13,6 +14,7 @@ export interface UserConfig {
   theme?: ThemeOptions;
   vite?: ViteConfig;
   mdx?: MdxOptions;
+  windicss?: WindiCssUserOptions;
   reactRefresh?: ReactRefreshOptions;
   reactPages?: ReactPagesOptions;
 }
@@ -25,6 +27,7 @@ export interface SiteConfig extends UserConfig {
   theme: ThemeOptions;
   outDir: string;
   tempDir: string;
+  windicss: WindiCssUserOptions;
   reactPages: ReactPagesOptions;
 }
 

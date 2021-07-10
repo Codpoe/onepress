@@ -1,3 +1,4 @@
+import 'virtual:windi.css';
 import { createTheme } from 'vite-pages-theme-press';
 import themeConfigStr from '@onepress/themeConfig';
 

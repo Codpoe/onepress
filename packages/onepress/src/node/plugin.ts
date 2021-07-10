@@ -9,6 +9,7 @@ import {
 import reactRefresh from '@vitejs/plugin-react-refresh';
 import reactPages from 'vite-plugin-react-pages';
 import mdx from 'vite-plugin-mdx';
+import windicss from 'vite-plugin-windicss';
 import chalk from 'chalk';
 import grayMatter from 'gray-matter';
 import { resolveConfig, isConfigChanged } from './config';
@@ -221,6 +222,7 @@ ${content}`;
     // at the same time, I use `withImport({})` here to avoid MDX errors.
     ...mdx.withImports({})(config.mdx),
     // ...mdx(config.mdx),
+    ...windicss(config.windicss),
     onepressPlugin,
   ];
 }
