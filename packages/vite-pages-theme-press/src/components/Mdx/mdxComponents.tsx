@@ -292,10 +292,12 @@ export const Code: React.FC<{
   live?: boolean;
   title?: string;
   hl?: string;
-}> = ({ className, children, title, hl }) => {
-  const language = className
-    ? (className.replace(/language-/, '') as Language)
-    : 'javascript';
+  language?: Language;
+}> = ({ className, children, title, hl, language }) => {
+  const finalLanguage =
+    language ||
+    (className?.match(/language-(\S+)/)?.[1] as Language) ||
+    'javascript';
 
   const highlightLines = useMemo(() => {
     if (!hl) {
@@ -321,11 +323,11 @@ export const Code: React.FC<{
     <Highlight
       {...defaultProps}
       code={(children as string).trim()}
-      language={language}
+      language={finalLanguage}
     >
-      {({ className, tokens, getLineProps, getTokenProps }) => (
+      {({ className: preClassName, tokens, getLineProps, getTokenProps }) => (
         <pre
-          className={`${className} relative my-4 rounded-md bg-code-bg text-[0.9rem] leading-relaxed`}
+          className={`${className} ${preClassName} relative my-4 rounded-md bg-code-bg text-[0.9rem] leading-relaxed`}
         >
           <span className="absolute top-0 right-0 px-2 py-1 text-xs text-code-line-number select-none">
             {language}

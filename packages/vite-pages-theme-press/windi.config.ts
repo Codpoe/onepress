@@ -34,7 +34,7 @@ export default defineConfig({
   },
   shortcuts: {
     'btn-base':
-      'focus:outline-none inline-flex justify-center items-center rounded-md transition-colors',
+      'focus:outline-none inline-flex justify-center items-center rounded-md transition-colors cursor-pointer',
     btn: 'btn-base text-c-text bg-c-bg-light hover:bg-c-bg-lighter',
     'btn-primary': 'btn-base bg-c-brand text-white hover:bg-c-brand-light',
     'btn-hollow':

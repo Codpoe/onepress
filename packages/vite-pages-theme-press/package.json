@@ -21,9 +21,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "dev": "run-p --print-label dev:*",
-    "dev:vite": "vite build -w",
-    "dev:types": "tsc -w",
+    "dev": "vite build -w",
     "build": "vite build && node scripts/addCssImport.js && yarn build:types",
     "build:types": "tsc && node scripts/removeCssImport.js && rollup -i dist/dts/index.d.ts -o dist/index.d.ts -f es -p rollup-plugin-dts && rimraf dist/dts"
   },
@@ -52,7 +50,7 @@
     "react-router-dom": "^5.2.0",
     "rollup": "^2.38.5",
     "rollup-plugin-dts": "^3.0.2",
-    "vite": "^2.3.7",
+    "vite": "^2.4.1",
     "vite-plugin-react-pages": "^3.0.14",
     "vite-plugin-windicss": "1.0.2",
     "windicss": "^3.1.3"

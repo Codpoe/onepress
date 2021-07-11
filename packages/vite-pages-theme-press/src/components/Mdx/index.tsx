@@ -1,13 +1,17 @@
 import React from 'react';
 import { MDXProvider, MDXProviderProps } from '@mdx-js/react';
+import { Demo } from '../Demo';
 import * as mdxComponents from './mdxComponents';
 import './style.less';
 
-const _mdxComponents = Object.keys(mdxComponents).reduce((res, name) => {
-  // @ts-ignore
-  res[`${name[0].toLowerCase()}${name.slice(1)}`] = mdxComponents[name];
-  return res;
-}, {} as MDXProviderProps['components']);
+const _mdxComponents = Object.keys(mdxComponents).reduce(
+  (res, name) => {
+    // @ts-ignore
+    res[`${name[0].toLowerCase()}${name.slice(1)}`] = mdxComponents[name];
+    return res;
+  },
+  { Demo } as MDXProviderProps['components']
+);
 
 export interface MdxProps {
   className?: string;
