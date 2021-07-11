@@ -9,6 +9,6 @@
     "serve": "onepress serve"
   },
   "dependencies": {
-    "onepress": "workspace:*"
+    "onepress": "*"
   }
 }
