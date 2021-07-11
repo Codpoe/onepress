@@ -14,6 +14,7 @@ const colorVars = [
   'c-text-lightest',
   'c-text-accent',
   'c-divider',
+  'c-divider-light',
   'code-bg',
   'code-highlight-bg',
   'code-line-number',

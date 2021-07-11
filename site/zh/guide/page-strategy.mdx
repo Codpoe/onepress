@@ -1,0 +1,24 @@
+# 页面策略
+
+页面策略，是来自 vite-plugin-react-pages 的一个概念，用于实现页面数据的收集和路由映射，具体可以看下 react-pages 的文档。
+
+OnePress 的默认页面策略是，收集 `srcDir` 下的以 `.md` `.mdx` `$.js` `$.jsx` `$.ts` `$.tsx` 结尾的文件作为页面，文件路径一般就是路由路径。
+假设你的项目结构如下：
+
+```tree
+└─ <root>
+   ├─ guide
+   │  ├─ getting-started.md
+   │  └─ index.md
+   ├─ contributing.md
+   └─ README.md
+```
+
+实际得到的路由映射规则是：
+
+| 文件路径                    | 路由路径                 |
+| --------------------------- | ------------------------ |
+| `/README.md`                | `/`                      |
+| `/contributing.md`          | `/contributing`          |
+| `/guide/getting-started.md` | `/guide/getting-started` |
+| `/guide/index.md`           | `/guide`                 |

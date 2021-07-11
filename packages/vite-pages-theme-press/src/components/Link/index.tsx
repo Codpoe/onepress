@@ -31,7 +31,7 @@ export const Link: React.FC<LinkProps> = props => {
     <>
       {children}
       {icon && !isSameOrigin && !isHash && (
-        <ExternalLink className="mx-1 text-c-text-lighter" />
+        <ExternalLink className="text-c-text-lightest" />
       )}
     </>
   );

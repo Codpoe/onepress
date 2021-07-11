@@ -333,7 +333,7 @@ export const Code: React.FC<{
             {finalLanguage}
           </span>
           {title && (
-            <div className="px-5 py-3 border-b border-code-highlight-bg font-medium text-code-line-number">
+            <div className="px-5 py-2 border-b border-c-divider-light text-c-text-light">
               {title}
             </div>
           )}

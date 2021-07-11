@@ -9,6 +9,7 @@
     "serve": "onepress serve"
   },
   "dependencies": {
-    "onepress": "*"
+    "onepress": "*",
+    "vite-pages-theme-press": "*"
   }
 }

@@ -8,6 +8,16 @@ export default {
 };
 ```
 
+如果要获得类型提示，可以从 `onepress` 中导入 `defineConfig` 方法：
+
+```js
+import { defineConfig } from 'onepress';
+
+export default defineConfig({
+  // ...
+});
+```
+
 ## base
 
 页面基础路径，默认为 `/`。具体可以看 [Vite 的文档](https://vitejs.dev/config/#root)。
@@ -55,14 +65,18 @@ export default {
 
 ## reactPages
 
-[vite-plugin-react-pages](https://github.com/vitejs/vite-plugin-react-pages) 的配置。
+[vite-plugin-react-pages](https://github.com/vitejs/vite-plugin-react-pages)的配置。
 
 > 需要注意的是，不要在这里配置 `pagesDir`，即使配置了也不会生效，请改为使用上面提到的 `srcDir`。
 
 ## reactRefresh
 
-[@vitejs/plugin-react-refresh](https://github.com/vitejs/vite/tree/main/packages/plugin-react-refresh) 的配置。
+[@vitejs/plugin-react-refresh](https://github.com/vitejs/vite/tree/main/packages/plugin-react-refresh)的配置。
 
 ## mdx
 
-[vite-plugin-mdx](https://github.com/brillout/vite-plugin-mdx) 的配置。
+[vite-plugin-mdx](https://github.com/brillout/vite-plugin-mdx)的配置。
+
+## windicss
+
+[vite-plugin-windicss](https://github.com/windicss/vite-plugin-windicss)的配置。

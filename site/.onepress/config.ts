@@ -29,6 +29,10 @@ export default defineConfig({
             text: '配置',
             link: '/zh/guide/config',
           },
+          {
+            text: '页面策略',
+            link: '/zh/guide/page-strategy',
+          },
         ],
       },
     },
