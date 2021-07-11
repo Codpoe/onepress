@@ -330,7 +330,7 @@ export const Code: React.FC<{
           className={`${className} ${preClassName} relative my-4 rounded-md bg-code-bg text-[0.9rem] leading-relaxed`}
         >
           <span className="absolute top-0 right-0 px-2 py-1 text-xs text-code-line-number select-none">
-            {language}
+            {finalLanguage}
           </span>
           {title && (
             <div className="px-5 py-3 border-b border-code-highlight-bg font-medium text-code-line-number">
