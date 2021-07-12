@@ -1,0 +1,31 @@
+# 使用主题
+
+OnePress 本质是 vite-plugin-react-pages 的一层封装，理论上应该能兼容该插件的所有主题。
+要使用其他主题，可以在 `.onepress` 下新建文件 `theme.{js,jsx,ts,tsx}`，然后导出自己的主题组件。
+
+## 使用已有的主题
+
+假设现在想使用 `vite-pages-theme-doc` 这个主题，需要先安装它：
+
+```shell
+yarn add vite-pages-theme-doc
+```
+
+然后在 `.onepress/theme.ts` 中使用这个主题：
+
+```ts
+import { createTheme } from 'vite-pages-theme-doc';
+
+export default createTheme({
+  topNavs: [
+    { label: 'index', path: '/' },
+    { label: 'Vite', href: 'https://github.com/vitejs/vite' },
+  ],
+  logo: 'Vite Pages',
+  // other configs of theme-doc...
+});
+```
+
+## 自定义主题
+
+如果已有的主题不能满足你的需求，可以考虑自定义主题，具体可以参考 [vite-plugin-react-pages 的官方文档](https://vitejs.github.io/vite-plugin-react-pages/#/theme-customization)。

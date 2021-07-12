@@ -33,6 +33,14 @@ export default defineConfig({
             text: '页面策略',
             link: '/zh/guide/page-strategy',
           },
+          {
+            text: '默认主题',
+            link: '/zh/guide/default-theme',
+          },
+          {
+            text: '使用主题',
+            link: '/zh/guide/use-theme',
+          },
         ],
       },
     },
