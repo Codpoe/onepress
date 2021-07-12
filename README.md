@@ -4,7 +4,7 @@
 
 > 🚧 WIP
 
-[OnePress](https://onepress.vercel.app/) is a static site generator based on [vite]([![npm](https://img.shields.io/npm/v/vitepress)](https://www.npmjs.com/package/vitepress)) and [vite-plugin-react-pages](https://github.com/vitejs/vite-plugin-react-pages).
+[OnePress](https://onepress.vercel.app/) is a static site generator based on [vite](https://github.com/vitejs/vite) and [vite-plugin-react-pages](https://github.com/vitejs/vite-plugin-react-pages).
 
 ---
 
