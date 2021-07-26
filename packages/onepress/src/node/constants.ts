@@ -18,7 +18,9 @@ export const DEFAULT_THEME_PATH = path.resolve(__dirname, '../client/theme');
 // - it's not an actual file so we can't use tsconfig paths to redirect it
 // - TS doesn't allow shimming a module that starts with '/'
 export const THEME_CONFIG_ID = '@onepress/themeConfig';
-export const THEME_CONFIG_REQUEST_PATH = `/${THEME_CONFIG_ID}`;
+export const THEME_CONFIG_MODULE_ID = `/${THEME_CONFIG_ID}`;
+
+export const SLIDE_MODULE_ID_PREFIX = '/@onepress/slide/';
 
 export const POSSIBLE_CONFIG_FILES = ['config.js', 'config.ts'];
 

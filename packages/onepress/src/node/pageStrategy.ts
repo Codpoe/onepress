@@ -1,7 +1,7 @@
 import execa from 'execa';
 import { PageStrategy, FileHandler, File } from 'vite-plugin-react-pages';
 import { FindPages } from 'vite-plugin-react-pages/dist/node/dynamic-modules/PageStrategy';
-import { extractStaticData } from './utils';
+import { extractStaticData, normalizePath } from './utils';
 import { GitContributor } from './types';
 
 export function getPagePublicPath(relativePageFilePath: string) {
@@ -109,9 +109,21 @@ export const defaultFileHandler: FileHandler = async (file, api) => {
   // if blog, add additional page
   if (staticData.blog) {
     api.addPageData({
-      pageId: (pageId === '/' ? pageId : pageId + '/') + ':page',
+      pageId: normalizePath(`${pageId}/:page`),
       staticData,
       dataPath: file.path,
+    });
+  }
+
+  // if slide, add additional page
+  if (staticData.slide) {
+    // why `slideCount + 1`? for the END page
+    Array.from({ length: staticData.slideCount + 1 }, (_, index) => {
+      api.addPageData({
+        pageId: normalizePath(`${pageId}/${index + 1}`),
+        staticData,
+        dataPath: file.path,
+      });
     });
   }
 

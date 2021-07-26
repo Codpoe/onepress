@@ -1,6 +1,14 @@
 import { defineConfig } from 'onepress';
 
 export default defineConfig({
+  vite: {
+    server: {
+      fs: {
+        strict: false,
+        allow: ['..'],
+      },
+    },
+  },
   theme: {
     locale: 'en',
     localeText: 'English',

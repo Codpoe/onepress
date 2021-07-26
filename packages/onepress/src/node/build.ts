@@ -5,7 +5,7 @@ import { build as viteBuild, BuildOptions, InlineConfig } from 'vite';
 import { RollupOutput, OutputChunk, OutputAsset } from 'rollup';
 import type { HelmetData } from 'react-helmet';
 import { resolveConfig } from './config';
-import { createOnePressPlugin } from './plugin';
+import { createOnePressPlugin } from './plugins';
 import { trapConsole } from './utils';
 import { REACT_PAGES_MODULE_ID } from './constants';
 import { SiteConfig } from './types';
