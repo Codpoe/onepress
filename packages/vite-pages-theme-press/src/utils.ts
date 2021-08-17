@@ -4,11 +4,12 @@ import { BaseLayout } from './components/BaseLayout';
 import { HomeLayout } from './components/HomeLayout';
 import { DocLayout } from './components/DocLayout';
 import { BlogLayout } from './components/BlogLayout';
+import { SlideLayout } from './components/SlideLayout';
 import { ThemeOptions, LocaleOption } from './types';
 import { IN_BROWSER } from './constants';
 
 export function getLayout(staticDataPart: Record<string, any> = {}) {
-  const { layout, home, blog, sourceType } = staticDataPart;
+  const { layout, home, blog, slide, sourceType } = staticDataPart;
 
   if (home) {
     return HomeLayout;
@@ -16,6 +17,10 @@ export function getLayout(staticDataPart: Record<string, any> = {}) {
 
   if (blog) {
     return BlogLayout;
+  }
+
+  if (slide) {
+    return SlideLayout;
   }
 
   if (layout === false || layout === 'false') {

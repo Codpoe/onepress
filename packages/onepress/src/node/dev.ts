@@ -1,6 +1,6 @@
 import { createServer as createViteServer, ServerOptions } from 'vite';
 import { resolveConfig } from './config';
-import { createOnePressPlugin } from './plugin';
+import { createOnePressPlugin } from './plugins';
 
 export async function createServer(
   root = process.cwd(),

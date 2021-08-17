@@ -8,19 +8,19 @@ import {
 } from 'vite';
 import reactRefresh from '@vitejs/plugin-react-refresh';
 import reactPages from 'vite-plugin-react-pages';
-import mdx from 'vite-plugin-mdx';
+import reactIcons from 'vite-plugin-react-icons';
 import windicss from 'vite-plugin-windicss';
 import chalk from 'chalk';
-import grayMatter from 'gray-matter';
-import { resolveConfig, isConfigChanged } from './config';
+import { resolveConfig, isConfigChanged } from '../config';
 import {
   REACT_PAGES_APP_ENTRY,
   REACT_PAGES_THEME_ENTRY,
   THEME_CONFIG_ID,
-  THEME_CONFIG_REQUEST_PATH,
-} from './constants';
-import { cleanPath, normalizePath } from './utils';
-import { SiteConfig } from './types';
+  THEME_CONFIG_MODULE_ID,
+} from '../constants';
+import { cleanPath, normalizePath } from '../utils';
+import { SiteConfig } from '../types';
+import { createMdxPlugin } from './mdx';
 
 export function createOnePressPlugin(
   config: SiteConfig,
@@ -57,7 +57,7 @@ export function createOnePressPlugin(
             },
             {
               find: THEME_CONFIG_ID,
-              replacement: THEME_CONFIG_REQUEST_PATH,
+              replacement: THEME_CONFIG_MODULE_ID,
             },
             {
               find: /^onepress$/,
@@ -146,13 +146,13 @@ export function createOnePressPlugin(
     },
 
     resolveId(id) {
-      if (id === THEME_CONFIG_REQUEST_PATH) {
-        return THEME_CONFIG_REQUEST_PATH;
+      if (id === THEME_CONFIG_MODULE_ID) {
+        return THEME_CONFIG_MODULE_ID;
       }
     },
 
     load(id) {
-      if (id === THEME_CONFIG_REQUEST_PATH) {
+      if (id === THEME_CONFIG_MODULE_ID) {
         return `export default ${JSON.stringify(JSON.stringify(themeConfig))}`;
       }
     },
@@ -173,7 +173,7 @@ export function createOnePressPlugin(
           );
         }
 
-        return [server.moduleGraph.getModuleById(THEME_CONFIG_REQUEST_PATH)!];
+        return [server.moduleGraph.getModuleById(THEME_CONFIG_MODULE_ID)!];
       }
     },
 
@@ -200,28 +200,8 @@ export function createOnePressPlugin(
     ...(userVitePlugins || []),
     reactRefresh(config.reactRefresh),
     reactPages(config.reactPages),
-    // vite-plugin-mdx looks for dependencies such as react from the vite root, which may cause errors,
-    // so I inject the dependency myself here.
-    //
-    // I also inject frontMater here.
-    {
-      name: 'onepress:preMdx',
-      transform(code, id) {
-        if (/\.mdx?$/.test(id)) {
-          const { data: frontMatter, content } = grayMatter(code);
-          return `
-import React from 'react';
-import { mdx } from '@mdx-js/react';
-
-export const frontMatter = ${JSON.stringify(frontMatter)};
-
-${content}`;
-        }
-      },
-    },
-    // at the same time, I use `withImport({})` here to avoid MDX errors.
-    ...mdx.withImports({})(config.mdx),
-    // ...mdx(config.mdx),
+    reactIcons(config.reactIcons),
+    ...createMdxPlugin(config),
     ...windicss(config.windicss),
     onepressPlugin,
   ];

@@ -5,9 +5,14 @@ import {
   File,
 } from 'vite-plugin-react-pages';
 import grayMatter from 'gray-matter';
+import { parseSlides } from './parseSlides';
 
 export function slash(p: string): string {
   return p.replace(/\\/g, '/');
+}
+
+export function removeLeadingSlash(p: string) {
+  return p.replace(/^\//, '');
 }
 
 export const isWindows = os.platform() === 'win32';
@@ -32,7 +37,7 @@ export function trapConsole() {
 }
 
 export async function extractStaticData(file: File) {
-  if (/\.mdx?/.test(file.extname)) {
+  if (/mdx$/.test(file.extname)) {
     const { data: frontMatter, content } = grayMatter(await file.read());
     const staticData: any = {
       ...frontMatter,
@@ -42,6 +47,10 @@ export async function extractStaticData(file: File) {
 
     if (staticData.title === undefined) {
       staticData.title = extractMarkdownTitle(content);
+    }
+
+    if (staticData.slide) {
+      staticData.slideCount = parseSlides(content).length;
     }
 
     return staticData;
