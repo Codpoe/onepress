@@ -50,7 +50,7 @@
     "react-router-dom": "^5.2.0",
     "rollup": "^2.38.5",
     "rollup-plugin-dts": "^3.0.2",
-    "vite": "^2.4.1",
+    "vite": "^2.6.13",
     "vite-plugin-react-pages": "^3.0.14",
     "vite-plugin-windicss": "1.0.2",
     "windicss": "^3.1.3"
