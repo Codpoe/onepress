@@ -7,7 +7,6 @@ import type { HelmetData } from 'react-helmet';
 import { resolveConfig } from './config';
 import { createOnePressPlugin } from './plugins';
 import { trapConsole } from './utils';
-import { REACT_PAGES_MODULE_ID } from './constants';
 import { SiteConfig } from './types';
 
 async function bundle(siteConfig: SiteConfig, buildOptions: BuildOptions) {
@@ -165,9 +164,7 @@ function getPreloadLinks(
   pagePath: string
 ) {
   const preloadFiles: string[] =
-    manifest[
-      `${REACT_PAGES_MODULE_ID}${pagePath === '/' ? '/index__' : pagePath}`
-    ] || [];
+    manifest[`${pagePath === '/' ? '/index__' : pagePath}`] || [];
 
   return preloadFiles
     .map(file => {

@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "lib": ["ESNext", "DOM"],
+    "jsx": "react",
+    "types": ["vite/client", "onepress/shim"],
+    "emitDeclarationOnly": true,
+    "outDir": "dist/dts"
+  },
+  "include": ["src"]
+}

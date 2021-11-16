@@ -1,6 +1,7 @@
 import { defineConfig } from 'onepress';
+import { ThemeConfig } from 'onepress/theme';
 
-export default defineConfig({
+export default defineConfig<ThemeConfig>({
   vite: {
     server: {
       fs: {
@@ -9,12 +10,13 @@ export default defineConfig({
       },
     },
   },
-  theme: {
+  themeConfig: {
     locale: 'en',
     localeText: 'English',
     description: 'OnePress App',
     repo: 'codpoe/onepress',
-    themeOptionsByPaths: {
+    editLink: true,
+    themeConfigByPaths: {
       '/zh': {
         locale: 'zh',
         localeText: '中文',

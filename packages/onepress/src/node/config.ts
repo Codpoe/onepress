@@ -2,30 +2,29 @@ import path from 'path';
 import fs from 'fs-extra';
 import jiti from 'jiti';
 import pick from 'lodash/pick';
-import { PressPageStrategy } from './pageStrategy';
 import { UserConfig, SiteConfig } from './types';
-import {
-  DEFAULT_THEME_PATH,
-  POSSIBLE_THEME_FILES,
-  POSSIBLE_CONFIG_FILES,
-} from './constants';
+import { DEFAULT_THEME_PATH, POSSIBLE_CONFIG_FILES } from './constants';
+import { ResolvedSrcConfig, SrcConfig, SrcObject } from '.';
+import { ensureLeadingSlash, removeTrailingSlash, slash } from './utils';
 
 const _require = jiti(__filename, { requireCache: false, cache: false });
+
+/**
+ * Type helper to make it easier to create onepress config
+ */
+export function defineConfig<ThemeConfig = any>(
+  config: UserConfig<ThemeConfig>
+) {
+  return config;
+}
 
 function resolveInOnePress(root: string, targetPath: string) {
   return path.resolve(root, '.onepress', targetPath);
 }
 
 export function resolveThemePath(root: string) {
-  for (const item of POSSIBLE_THEME_FILES) {
-    const themePath = resolveInOnePress(root, item);
-
-    if (fs.pathExistsSync(themePath)) {
-      return themePath;
-    }
-  }
-
-  return DEFAULT_THEME_PATH;
+  const userThemePath = resolveInOnePress(root, 'theme');
+  return fs.pathExistsSync(userThemePath) ? userThemePath : DEFAULT_THEME_PATH;
 }
 
 export function loadUserConfig(root: string): {
@@ -58,35 +57,77 @@ export function loadUserConfig(root: string): {
   };
 }
 
-export async function resolveConfig(root: string): Promise<SiteConfig> {
+function checkIsPagesObject(src: SrcConfig): src is SrcObject {
+  return typeof src === 'object' && 'dir' in src;
+}
+
+export function resolveSrcConfig(
+  src: SrcConfig = 'docs',
+  defaultIgnored: any = [],
+  root = slash(process.cwd()),
+  base = '/'
+): ResolvedSrcConfig {
+  if (typeof src === 'string' || checkIsPagesObject(src)) {
+    src = {
+      [base]: src,
+    };
+  }
+
+  return Object.entries(src).reduce<ResolvedSrcConfig>(
+    (res, [baseRoutePath, config]) => {
+      baseRoutePath = removeTrailingSlash(ensureLeadingSlash(baseRoutePath));
+
+      if (typeof config === 'string') {
+        config = {
+          dir: config,
+        };
+      }
+
+      const ignored = config.ignored || defaultIgnored || [];
+
+      res[baseRoutePath] = {
+        dir: path.resolve(root, config.dir),
+        glob:
+          config.glob || '**/*{.md,.mdx,.page.js,.page.jsx,.page.ts,.page.tsx}',
+        ignored: [
+          '**/node_modules/**',
+          '**/.git/**',
+          ...(Array.isArray(ignored) ? ignored : [ignored]),
+        ],
+      };
+
+      return res;
+    },
+    {}
+  );
+}
+
+export function resolveConfig(root: string): SiteConfig {
   const { configPath, userConfig } = loadUserConfig(root);
-  const { reactPages } = userConfig;
-  const outDir = path.resolve(root, userConfig.outDir || 'dist');
-  const pagesDir = path.resolve(root, userConfig.srcDir || '.');
+
+  const base = userConfig.vite?.base || '/';
+  const outDir = path.resolve(root, userConfig.vite?.build?.outDir || 'dist');
 
   return {
     ...userConfig,
-    root,
     configPath,
-    base: userConfig.base ? userConfig.base.replace(/([^/])$/, '$1/') : '/',
+    root,
+    base,
     outDir,
     tempDir: path.resolve(outDir, '.temp'),
     themePath: resolveThemePath(root),
-    theme: {
+    themeConfig: {
       title: 'OnePress',
       description: 'An OnePress site',
-      ...userConfig.theme,
+      ...userConfig.themeConfig,
     },
-    reactPages: {
-      pageStrategy: new PressPageStrategy(),
-      ...reactPages,
-      pagesDir,
-    },
+    src: resolveSrcConfig(userConfig.src, userConfig.ignored, root),
     mdx: {
       ...userConfig.mdx,
-      remarkPlugins: (userConfig.mdx?.remarkPlugins || []).concat(
-        require('remark-slug')
-      ),
+      remarkPlugins: [
+        ...(userConfig.mdx?.remarkPlugins || []),
+        require('remark-slug'),
+      ],
     },
     windicss: {
       ...userConfig.windicss,
@@ -97,19 +138,26 @@ export async function resolveConfig(root: string): Promise<SiteConfig> {
           : userConfig.windicss?.scan),
       },
     },
+    icons: {
+      compiler: 'jsx',
+      autoInstall: true,
+      scale: 1,
+      ...userConfig.icons,
+    },
   };
 }
 
-const compareFields = [
+const compareFields: string[] = [
   'base',
-  'srcDir',
+  'src',
+  'ignored',
   'vite',
+  'react',
   'mdx',
   'windicss',
-  'reactRefresh',
-  'reactPages',
+  'icons',
 ];
-const ignoreFields = ['pageStrategy'];
+const ignoreFields: string[] = [];
 
 export function isConfigChanged(
   oldConfig: SiteConfig,

@@ -190,7 +190,7 @@ export function createTheme(options: ThemeOptions = {}) {
             ...finalOptions,
             nav: finalNav,
             base: import.meta.env.BASE_URL,
-            // vite-plugin-react-pages will inject `__HASH_ROUTER__: boolean`
+            // onepress will inject `__HASH_ROUTER__: boolean`
             // @ts-ignore
             useHashRouter: __HASH_ROUTER__,
             staticData,

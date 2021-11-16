@@ -1,7 +1,4 @@
-import 'virtual:windi.css';
-import { createTheme } from 'vite-pages-theme-press';
-import themeConfigStr from '@onepress/themeConfig';
+import theme from 'onepress-theme-default';
 
-const themeConfig = JSON.parse(themeConfigStr);
-
-export default createTheme(themeConfig);
+export * from 'onepress-theme-default';
+export default theme;

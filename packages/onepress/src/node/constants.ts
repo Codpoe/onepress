@@ -1,24 +1,28 @@
 import path from 'path';
 
-// This is the app entry used in vite-plugin-react-pages,
-// we will use it as an entry for our custom html
-export const REACT_PAGES_APP_ENTRY = '/@pages-infra/main.js';
+export const DIST_CLIENT_PATH = path.join(__dirname, '../client');
+export const CSR_ENTRY_PATH = path.join(DIST_CLIENT_PATH, 'entry.client.js');
+export const SSR_ENTRY_PATH = path.join(DIST_CLIENT_PATH, 'entry.server.js');
 
-// This is the theme entry used in vite-plugin-react-pages,
-// we will proxy it
-export const REACT_PAGES_THEME_ENTRY = '/@react-pages/theme';
+// routes
+export const ROUTES_MODULE_ID = '/@onepress/routes';
 
-// This is the pages module used in vite-plugin-react-pages
-export const REACT_PAGES_MODULE_ID = '/@react-pages/pages';
+// pages data
+export const PAGES_DATA_MODULE_ID = '/@onepress/pages-data';
 
-export const DEFAULT_THEME_PATH = path.resolve(__dirname, '../client/theme');
+// mdx demo
+export const MDX_DEMO_RE = /<Demo\s+src=["'](.*?)["']/;
+export const DEMO_MODULE_ID_PREFIX = '/@onepress/demo/';
 
-// special virtual file
-// we can't directly import '@onepress/themeConfig' because
-// - it's not an actual file so we can't use tsconfig paths to redirect it
-// - TS doesn't allow shimming a module that starts with '/'
-export const THEME_CONFIG_ID = '@onepress/themeConfig';
-export const THEME_CONFIG_MODULE_ID = `/${THEME_CONFIG_ID}`;
+// mdx tsInfo
+export const MDX_TS_INFO_RE =
+  /<TsInfo\s+src=["'](.*?)["']\s+name=["'](.*?)["']/;
+export const TS_INFO_MODULE_ID_PREFIX = '/@onepress/ts-info/';
+
+// theme
+export const THEME_MODULE_ID = '/@onepress/theme';
+export const THEME_CONFIG_MODULE_ID = '/@onepress/theme-config';
+export const DEFAULT_THEME_PATH = path.join(DIST_CLIENT_PATH, 'theme.js');
 
 export const SLIDE_MODULE_ID_PREFIX = '/@onepress/slide/';
 

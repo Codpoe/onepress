@@ -1,7 +1,2 @@
-import { UserConfig } from './types';
-
+export { defineConfig } from './config';
 export * from './types';
-
-export function defineConfig(config: UserConfig) {
-  return config;
-}
