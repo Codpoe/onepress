@@ -59,7 +59,7 @@ export function extractDocBlock(fileContent: string) {
   return parse(extract(fileContent));
 }
 
-export async function extractFrontMatter(fileContent: string) {
+export function extractFrontMatter(fileContent: string) {
   const { data: frontMatter, content } = grayMatter(fileContent);
 
   if (frontMatter.title === undefined) {

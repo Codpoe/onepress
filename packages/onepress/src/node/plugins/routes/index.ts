@@ -13,12 +13,16 @@ export function createRoutesPlugin(options: {
   src: ResolvedSrcConfig;
 }): Plugin {
   const { src } = options;
+  let viteRoot: string;
   let viteServer: ViteDevServer;
   let pagesService: PagesService;
   let generatedRoutes: Route[] | null = null;
 
   return {
     name: `onepress:routes`,
+    configResolved(config) {
+      viteRoot = config.root;
+    },
     configureServer(server) {
       viteServer = server;
     },
@@ -76,7 +80,7 @@ export function createRoutesPlugin(options: {
 
       if (id === PAGES_DATA_MODULE_ID) {
         const pages = await pagesService.getPages();
-        return generatePagesData(pages);
+        return generatePagesData(pages, viteRoot);
       }
     },
     async handleHotUpdate(ctx) {
@@ -89,7 +93,7 @@ export function createRoutesPlugin(options: {
 
         // If meta changed, add pagesDataModule for hot update
         if (page) {
-          const newMeta = await resolvePageMeta(ctx.file, await ctx.read());
+          const newMeta = resolvePageMeta(ctx.file, await ctx.read());
 
           if (!isEqual(page.meta, newMeta)) {
             page.meta = newMeta;

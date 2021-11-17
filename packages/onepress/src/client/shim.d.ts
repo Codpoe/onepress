@@ -18,6 +18,7 @@ declare module '/@onepress/pages-data*' {
     basePath: string;
     routePath: string;
     filePath: string;
+    filePathFromGitRoot: string;
     meta: Record<string, any>;
     isLayout: boolean;
     is404: boolean;

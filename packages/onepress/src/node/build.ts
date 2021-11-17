@@ -7,7 +7,7 @@ import type { HelmetData } from 'react-helmet';
 import { resolveConfig } from './config';
 import { createOnePressPlugin } from './plugins';
 import { trapConsole } from './utils';
-import { SiteConfig } from './types';
+import { Page, SiteConfig } from './types';
 
 async function bundle(siteConfig: SiteConfig, buildOptions: BuildOptions) {
   const resolveViteConfig = (ssr: boolean): InlineConfig => {
@@ -19,19 +19,10 @@ async function bundle(siteConfig: SiteConfig, buildOptions: BuildOptions) {
       logLevel: 'warn',
       // @ts-ignore
       ssr: {
-        external: [
-          'react',
-          'react-dom',
-          'react-dom/server',
-          'react-router-dom',
-          'react-helmet',
-        ],
-        noExternal: [
-          'vite-plugin-react-pages',
-          'vite-plugin-react-pages/client',
-          'vite-pages-theme-press',
-          'onepress',
-        ],
+        // set react-helmet to external so that we can use the same instance of react-helmet.
+        // see: https://github.com/nfl/react-helmet#note-use-the-same-instance
+        external: ['react-helmet'],
+        noExternal: ['onepress'],
       },
       build: {
         ...buildOptions,
@@ -45,13 +36,9 @@ async function bundle(siteConfig: SiteConfig, buildOptions: BuildOptions) {
           ...buildOptions.rollupOptions,
           input: require.resolve(
             ssr
-              ? 'vite-plugin-react-pages/dist/client/ssr/serverRender'
-              : 'vite-plugin-react-pages/dist/client/ssr/clientRender'
+              ? path.resolve(__dirname, '../client/entry.server.js')
+              : path.resolve(__dirname, '../client/entry.client.js')
           ),
-          preserveEntrySignatures: 'allow-extension',
-          output: {
-            ...buildOptions.rollupOptions?.output,
-          },
         },
       },
     };
@@ -91,11 +78,13 @@ async function renderPages(siteConfig: SiteConfig, clientResult: RollupOutput) {
   ));
 
   // it is generated in building server bundle
-  const { renderToString, ssrData } = require(path.resolve(
+  const { render, pagesData } = require(path.resolve(
     siteConfig.tempDir,
-    'serverRender.js'
+    'entry.server.js'
   ));
-  const pagePaths = Object.keys(ssrData);
+  const pagePaths = Object.keys(pagesData);
+
+  console.log('pagePaths', pagePaths);
 
   const spinner = ora('render pages...').start();
 
@@ -107,39 +96,44 @@ async function renderPages(siteConfig: SiteConfig, clientResult: RollupOutput) {
           return;
         }
 
-        // disable log while rendering
+        // disable console while rendering
         const recoverConsole = trapConsole();
-        const content = renderToString(pagePath);
+        const appHtml = render(pagePath);
         recoverConsole();
 
+        // get helmet data after render
         const helmetData: HelmetData =
           require('react-helmet').Helmet.renderStatic();
 
-        const preloadLinks = getPreloadLinks(siteConfig, manifest, pagePath);
+        const preloadLinks = getPreloadLinks(
+          siteConfig,
+          manifest,
+          pagesData[pagePath]
+        );
 
-        const html = `
+        const html = `<!DOCTYPE html>
 <html ${helmetData.htmlAttributes.toString()}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     ${helmetData.title.toString()}
     ${helmetData.meta.toString()}
+    ${helmetData.link.toString()}
+    ${helmetData.style.toString()}
     ${cssChunks.map(
       cssChunk =>
         `<link rel="stylesheet" href="${siteConfig.base}${cssChunk.fileName}" />`
     )}
     ${preloadLinks}
   </head>
-  <body>
-    <script>
-      window._vitePagesSSR = ${JSON.stringify({ routePath: pagePath })};
-    </script>
-    <div id="root">${content}</div>
+  <body ${helmetData.bodyAttributes.toString()}>
+    <div id="app">${appHtml}</div>
     <script type="module" src="${siteConfig.base}${
           entryChunk.fileName
         }"></script>
   </body>
-</html>`;
+</html>
+`;
 
         const targetPath = path.join(
           siteConfig.outDir,
@@ -161,10 +155,9 @@ async function renderPages(siteConfig: SiteConfig, clientResult: RollupOutput) {
 function getPreloadLinks(
   siteConfig: SiteConfig,
   manifest: any,
-  pagePath: string
+  pageData: Page
 ) {
-  const preloadFiles: string[] =
-    manifest[`${pagePath === '/' ? '/index__' : pagePath}`] || [];
+  const preloadFiles: string[] = manifest[pageData.filePath] || [];
 
   return preloadFiles
     .map(file => {
@@ -179,7 +172,7 @@ export async function build(
   buildOptions: BuildOptions = {}
 ) {
   const start = Date.now();
-  const siteConfig = await resolveConfig(root);
+  const siteConfig = resolveConfig(root);
 
   try {
     const clientResult = await bundle(siteConfig, buildOptions);

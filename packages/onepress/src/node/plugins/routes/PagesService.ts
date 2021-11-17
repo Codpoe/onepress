@@ -1,7 +1,7 @@
 import path from 'path';
 import EventEmitter from 'events';
 import chokidar, { FSWatcher } from 'chokidar';
-import { readFile } from 'fs-extra';
+import { readFileSync } from 'fs-extra';
 import { normalizePath } from 'vite';
 import { extractDocBlock, extractFrontMatter, slash } from '../../utils';
 import { Page, ResolvedSrcConfig } from '../../types';
@@ -10,11 +10,11 @@ import { Page, ResolvedSrcConfig } from '../../types';
  * - parse doc block for normal page
  * - parse front matter for markdown page
  */
-export async function resolvePageMeta(
+export function resolvePageMeta(
   filePath: string,
   fileContent?: string
-): Promise<Record<string, any>> {
-  fileContent ??= await readFile(filePath, 'utf-8');
+): Record<string, any> {
+  fileContent ??= readFileSync(filePath, 'utf-8');
 
   // parse doc block for js file
   if (/\.(js|ts)x?$/.test(filePath)) {
@@ -81,8 +81,8 @@ export class PagesService extends EventEmitter {
                 cwd: dir,
                 ignored,
               })
-              .on('add', async filePath => {
-                await this.addPage(baseRoutePath, dir, filePath, !isReady);
+              .on('add', filePath => {
+                this.addPage(baseRoutePath, dir, filePath, !isReady);
               })
               .on('unlink', filePath => {
                 this.removePage(path.resolve(dir, filePath), !isReady);
@@ -119,7 +119,7 @@ export class PagesService extends EventEmitter {
     return this.pages;
   }
 
-  async addPage(
+  addPage(
     baseRoutePath: string,
     dir: string,
     filePath: string,
@@ -127,7 +127,7 @@ export class PagesService extends EventEmitter {
   ) {
     const routePath = resolveRoutePath(baseRoutePath, filePath);
     const absFilePath = path.resolve(dir, filePath);
-    const meta = await resolvePageMeta(absFilePath);
+    const meta = resolvePageMeta(absFilePath);
 
     const page: Page = {
       basePath: baseRoutePath,

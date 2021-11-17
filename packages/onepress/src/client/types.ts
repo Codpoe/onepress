@@ -8,6 +8,7 @@ export interface PageData {
   basePath: string;
   routePath: string;
   filePath: string;
+  filePathFromGitRoot: string;
   meta: Record<string, any>;
 }
 

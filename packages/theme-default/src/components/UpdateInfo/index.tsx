@@ -67,7 +67,12 @@ export const UpdateInfo: React.FC = () => {
 
   const finalEditLink =
     editLink && docsRepo
-      ? createEditLink(docsRepo, docsBranch, docsDir, currentPageData?.filePath)
+      ? createEditLink(
+          docsRepo,
+          docsBranch,
+          docsDir,
+          currentPageData?.filePathFromGitRoot
+        )
       : '';
 
   const finalLastUpdated =

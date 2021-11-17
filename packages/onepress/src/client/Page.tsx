@@ -82,6 +82,10 @@ const Suspense: React.FC<PageProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  if (import.meta.env.SSR) {
+    return <>{children}</>;
+  }
+
   return (
     <ActivePageContext.Provider value={{ setActivePage }}>
       <ReactSuspense

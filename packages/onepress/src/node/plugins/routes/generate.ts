@@ -1,3 +1,4 @@
+import path from 'path';
 import { Page, Route } from '../../types';
 import { getGitRoot, slash } from '../../utils';
 
@@ -89,7 +90,7 @@ export default routes;
 `;
 }
 
-export function generatePagesData(pages: Record<string, Page>) {
+export function generatePagesData(pages: Record<string, Page>, root: string) {
   const pagesData = Object.values(pages).reduce<Record<string, Page>>(
     (acc, cur) => {
       // skip layout file and 404 file
@@ -97,16 +98,20 @@ export function generatePagesData(pages: Record<string, Page>) {
         return acc;
       }
 
-      // pass relative path to client. It will be used to create git edit link
+      // get relative path from vite root
+      const filePath = slash(path.relative(root, cur.filePath));
+
+      // get relative path from git root. It will be used to create git edit link
       // e.g. https://github.com/codpoe/onepress/edit/master/package.json
-      const relativePath = slash(cur.filePath).replace(
-        slash(getGitRoot(cur.filePath)) + '/',
-        ''
-      );
+      const gitRoot = getGitRoot(cur.filePath);
+      const filePathFromGitRoot = gitRoot
+        ? slash(path.relative(gitRoot, cur.filePath))
+        : '';
 
       acc[cur.routePath] = {
         ...cur,
-        filePath: relativePath,
+        filePath,
+        filePathFromGitRoot,
       };
       return acc;
     },
