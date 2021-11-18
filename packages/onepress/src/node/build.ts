@@ -22,12 +22,12 @@ async function bundle(siteConfig: SiteConfig, buildOptions: BuildOptions) {
         // set react-helmet to external so that we can use the same instance of react-helmet.
         // see: https://github.com/nfl/react-helmet#note-use-the-same-instance
         external: ['react-helmet'],
-        noExternal: ['onepress', 'onepress/theme'],
       },
       build: {
         ...buildOptions,
         ssr,
-        emptyOutDir: true,
+        // avoid empty outDir while building because we will build client and server in parallel
+        emptyOutDir: false,
         outDir: ssr ? siteConfig.tempDir : siteConfig.outDir,
         cssCodeSplit: false,
         minify: !ssr,
@@ -46,6 +46,11 @@ async function bundle(siteConfig: SiteConfig, buildOptions: BuildOptions) {
 
   const spinner = ora('build client + server bundles...').start();
   let clientResult: RollupOutput;
+
+  // empty outDir before build
+  if (buildOptions.emptyOutDir !== false) {
+    await fs.emptyDir(siteConfig.outDir);
+  }
 
   try {
     [clientResult] = (await Promise.all([
