@@ -22,7 +22,12 @@ async function bundle(siteConfig: SiteConfig, buildOptions: BuildOptions) {
         // set react-helmet to external so that we can use the same instance of react-helmet.
         // see: https://github.com/nfl/react-helmet#note-use-the-same-instance
         external: ['react-helmet'],
-        noExternal: ['onepress/theme', 'onepress/client'],
+        noExternal: [
+          'onepress',
+          'onepress/theme',
+          'onepress/client',
+          'onepress-theme-default',
+        ],
       },
       build: {
         ...buildOptions,
