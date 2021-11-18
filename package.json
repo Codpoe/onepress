@@ -12,8 +12,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install",
-    "ver": "pnpm -r --filter vite-pages-theme-press --filter onepress exec npm version",
-    "pub": "pnpm -r --filter vite-pages-theme-press --filter onepress publish"
+    "ver": "pnpm -r --filter onepress-theme-default --filter onepress exec npm version",
+    "pub": "pnpm -r --filter onepress-theme-default --filter onepress publish"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
