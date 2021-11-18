@@ -380,7 +380,3 @@ export const Code: React.FC<{
     </Highlight>
   );
 };
-
-export const Pre: React.FC = props => {
-  return <React.Fragment {...props} />;
-};

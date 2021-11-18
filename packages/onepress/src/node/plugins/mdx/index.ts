@@ -1,5 +1,6 @@
 import { Plugin } from 'vite';
-import reactMdx, { ReactMdxOptions } from 'vite-plugin-react-mdx';
+import { createCompiler } from '@mdx-js/mdx';
+import grayMatter from 'gray-matter';
 import {
   DEMO_MODULE_ID_PREFIX,
   TS_INFO_MODULE_ID_PREFIX,
@@ -16,24 +17,63 @@ import {
   extractTsInfoPathAndName,
   getTsInfoModuleId,
 } from './tsInfo';
+import { MdxOptions } from '../../types';
 
-export function createMdxPlugin(options?: ReactMdxOptions): Plugin[] {
-  const resolvedOptions: ReactMdxOptions = {
+export function createMdxPlugin(options?: MdxOptions): Plugin[] {
+  const mdxCompiler = createCompiler({
     ...options,
     remarkPlugins: [
       ...(options?.remarkPlugins || []),
       demoMdxPlugin,
       tsInfoMdxPlugin,
     ],
+  });
+
+  const compileMdx = async (code: string, id: string) => {
+    const { contents } = await mdxCompiler.process({
+      contents: code,
+      path: id,
+    });
+
+    return `/* @jsxRuntime classic */
+/* @jsx mdx */
+import * as React from 'react';
+import { mdx } from '@mdx-js/react';
+${contents}`;
   };
+
+  let viteReactPlugin: Plugin | undefined;
 
   const demoFiles = new Set<string>();
   const tsInfoFileToModuleIdMap = new Map<string, string>();
 
   return [
-    reactMdx(resolvedOptions),
     {
-      name: `onepress:mdx`,
+      name: 'onepress:mdx',
+      enforce: 'pre',
+      configResolved(config) {
+        viteReactPlugin = config.plugins.find(
+          item => item.name === 'vite:react-babel'
+        );
+      },
+      async transform(code, id, ssr) {
+        if (/\.mdx?/.test(id)) {
+          const { data: meta, content } = grayMatter(code);
+          // TODO: parse slides
+
+          code = `
+export const meta = ${JSON.stringify(meta, null, 2)}
+${await compileMdx(content, id)}`;
+
+          return (
+            viteReactPlugin?.transform?.call(this, code, id + '.jsx', ssr) ||
+            code
+          );
+        }
+      },
+    },
+    {
+      name: `onepress:mdx-extends`,
       enforce: 'pre',
       async resolveId(source, importer) {
         // resolve demo. fulfill demo file path

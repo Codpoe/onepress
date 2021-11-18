@@ -1,6 +1,5 @@
 import { UserConfig as ViteConfig } from 'vite';
 import { Options as ReactOptions } from '@vitejs/plugin-react';
-import { ReactMdxOptions } from 'vite-plugin-react-mdx';
 import { UserOptions as WindiCssOptions } from 'vite-plugin-windicss';
 import { Options as IconsOptions } from 'unplugin-icons';
 
@@ -37,6 +36,11 @@ export type SrcConfig = string | SrcObject | Record<string, string | SrcObject>;
 
 export type ResolvedSrcConfig = Record<string, Required<SrcObject>>;
 
+export interface MdxOptions {
+  remarkPlugins?: any[];
+  rehypePlugins?: any[];
+}
+
 export interface UserConfig<ThemeConfig = any> {
   /**
    * Theme config
@@ -61,9 +65,9 @@ export interface UserConfig<ThemeConfig = any> {
    */
   react?: ReactOptions;
   /**
-   * Options to pass on to `vite-plugin-react-mdx`
+   * Options to pass on to mdx compiler
    */
-  mdx?: ReactMdxOptions;
+  mdx?: MdxOptions;
   /**
    * Options to pass on to `vite-plugin-windicss`
    */
