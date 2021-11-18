@@ -6,70 +6,52 @@ import {
   PluginOption,
   UserConfig as ViteConfig,
 } from 'vite';
-import reactRefresh from '@vitejs/plugin-react-refresh';
-import reactPages from 'vite-plugin-react-pages';
-import reactIcons from 'vite-plugin-react-icons';
+import react from '@vitejs/plugin-react';
+import icons from 'unplugin-icons/vite';
 import windicss from 'vite-plugin-windicss';
-import chalk from 'chalk';
-import { resolveConfig, isConfigChanged } from '../config';
 import {
-  REACT_PAGES_APP_ENTRY,
-  REACT_PAGES_THEME_ENTRY,
-  THEME_CONFIG_ID,
-  THEME_CONFIG_MODULE_ID,
+  CSR_ENTRY_PATH,
+  DEFAULT_THEME_PATH,
+  DIST_CLIENT_PATH,
+  THEME_MODULE_ID,
 } from '../constants';
-import { cleanPath, normalizePath } from '../utils';
+import { cleanPath } from '../utils';
 import { SiteConfig } from '../types';
+import { createRoutesPlugin } from './routes';
 import { createMdxPlugin } from './mdx';
+import { createThemePlugin } from './theme';
 
 export function createOnePressPlugin(
-  config: SiteConfig,
+  siteConfig: SiteConfig,
   ssr: boolean
-): Plugin[] {
-  let { theme: themeConfig = {} } = config;
+): (PluginOption | PluginOption[])[] {
+  const mainPlugin: Plugin = {
+    name: 'onepress:main',
 
-  const onepressPlugin: Plugin = {
-    name: 'onepress',
-
-    config: originalConfig => {
-      // override optimizeDeps.include of vite-plugin-react-pages
-      if (originalConfig.optimizeDeps) {
-        originalConfig.optimizeDeps.include = [
-          'react',
-          'react-dom',
-          'react-router-dom',
-        ];
-      }
-
+    config: () => {
       const viteConfig: ViteConfig = {
         resolve: {
           alias: [
-            // We alias the app entry and theme entry, and it will skip the vite-plugin-react-pages
             {
-              find: REACT_PAGES_APP_ENTRY,
-              replacement: require.resolve(
-                'vite-plugin-react-pages/dist/client/main.js'
-              ),
+              find: /^onepress\/client$/,
+              replacement: path.join(DIST_CLIENT_PATH, 'index'),
             },
             {
-              find: REACT_PAGES_THEME_ENTRY,
-              replacement: config.themePath,
+              find: /^onepress\/theme$/,
+              replacement: DEFAULT_THEME_PATH,
             },
-            {
-              find: THEME_CONFIG_ID,
-              replacement: THEME_CONFIG_MODULE_ID,
-            },
-            {
-              find: /^onepress$/,
-              replacement: path.resolve(__dirname, '../client/index'),
-            },
-            {
-              find: /^onepress\//,
-              replacement: path.resolve(__dirname, '../../') + '/',
-            },
+            // make sure it always use the same react dependency that comes with onepress itself
             {
               find: /^react$/,
               replacement: require.resolve('react'),
+            },
+            {
+              find: /^react\/jsx-dev-runtime$/,
+              replacement: require.resolve('react/jsx-dev-runtime'),
+            },
+            {
+              find: /^react\/jsx-runtime$/,
+              replacement: require.resolve('react/jsx-runtime'),
             },
             {
               find: /^react-dom$/,
@@ -88,31 +70,28 @@ export function createOnePressPlugin(
               replacement: require.resolve('react-helmet'),
             },
             {
-              find: 'vite-plugin-react-pages',
-              replacement: (() => {
-                // FIXME: simplify it using regexp
-                const reactPagesRoot =
-                  require
-                    .resolve('vite-plugin-react-pages')
-                    .split('vite-plugin-react-pages')
-                    .slice(0, -1) + 'vite-plugin-react-pages';
-                return reactPagesRoot;
-              })(),
+              find: THEME_MODULE_ID,
+              replacement: siteConfig.themePath,
             },
           ],
         },
+        define: {
+          __HASH_ROUTER__: Boolean(siteConfig.useHashRouter),
+        },
         optimizeDeps: {
-          include: ['react-helmet'],
+          include: ['react', 'react-dom', 'react-router-dom', 'react-helmet'],
           exclude: ['onepress'],
         },
       };
 
-      return config.vite ? mergeConfig(config.vite, viteConfig) : viteConfig;
+      return siteConfig.vite
+        ? mergeConfig(siteConfig.vite, viteConfig)
+        : viteConfig;
     },
 
     configureServer(server) {
-      if (config.configPath) {
-        server.watcher.add(config.configPath);
+      if (siteConfig.configPath) {
+        server.watcher.add(siteConfig.configPath);
       }
 
       // serve custom html
@@ -127,8 +106,8 @@ export function createOnePressPlugin(
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="${REACT_PAGES_APP_ENTRY}"></script>
+    <div id="app"></div>
+    <script type="module" src="/@fs/${CSR_ENTRY_PATH}"></script>
   </body>
 </html>
 `;
@@ -145,35 +124,9 @@ export function createOnePressPlugin(
       };
     },
 
-    resolveId(id) {
-      if (id === THEME_CONFIG_MODULE_ID) {
-        return THEME_CONFIG_MODULE_ID;
-      }
-    },
-
-    load(id) {
-      if (id === THEME_CONFIG_MODULE_ID) {
-        return `export default ${JSON.stringify(JSON.stringify(themeConfig))}`;
-      }
-    },
-
-    async handleHotUpdate(ctx) {
-      // handle config hmr
-      const { file, server } = ctx;
-
-      if (config.configPath && file === normalizePath(config.configPath)) {
-        const newConfig = await resolveConfig(config.root);
-        themeConfig = newConfig.theme || {};
-
-        if (isConfigChanged(config, newConfig)) {
-          console.warn(
-            chalk.yellow(
-              `[onepress] config has changed. Please restart the dev server.`
-            )
-          );
-        }
-
-        return [server.moduleGraph.getModuleById(THEME_CONFIG_MODULE_ID)!];
+    resolveId(source) {
+      if (source === 'react') {
+        return require.resolve('react');
       }
     },
 
@@ -192,17 +145,17 @@ export function createOnePressPlugin(
   // Injecting other plugins inside the config hook will have no effect,
   // so we inject the user plugins here.
   // (we need to flat them)
-  const userVitePlugins = config.vite?.plugins
-    ?.flatMap(item => item)
-    .filter<Plugin>((item: PluginOption): item is Plugin => Boolean(item));
+  const userVitePlugins = siteConfig.vite?.plugins?.flatMap(item => item);
 
   return [
-    ...(userVitePlugins || []),
-    reactRefresh(config.reactRefresh),
-    reactPages(config.reactPages),
-    reactIcons(config.reactIcons),
-    ...createMdxPlugin(config),
-    ...windicss(config.windicss),
-    onepressPlugin,
+    userVitePlugins,
+    react(siteConfig.react),
+    icons(siteConfig.icons),
+    windicss(siteConfig.windicss),
+    // internal plugins
+    mainPlugin,
+    createRoutesPlugin({ src: siteConfig.src }),
+    createMdxPlugin(siteConfig.mdx),
+    createThemePlugin(siteConfig),
   ];
 }

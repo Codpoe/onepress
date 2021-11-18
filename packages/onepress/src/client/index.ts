@@ -1,6 +1,2 @@
-export {
-  Theme,
-  LoadState,
-  PagesLoaded,
-} from 'vite-plugin-react-pages/clientTypes';
-export { useStaticData } from 'vite-plugin-react-pages/client';
+export * from './Page';
+export * from './types';

@@ -14,7 +14,13 @@ cli
   .action(async (root?: string, args?: any) => {
     try {
       const server = await createServer(root, args);
+
+      if (!server.httpServer) {
+        throw new Error('HTTP server not available');
+      }
+
       await server.listen();
+      server.printUrls();
     } catch (err) {
       console.error(chalk.red(`failed to start server. error:\n`), err);
       process.exit(1);

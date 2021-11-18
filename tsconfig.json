@@ -5,7 +5,6 @@
     "lib": ["ESNext", "DOM"],
     "declaration": true,
     "strict": true,
-    "noUnusedLocals": true,
     "moduleResolution": "node",
     "types": ["node"],
     "esModuleInterop": true,
