@@ -1,5 +1,3 @@
-import React from 'react';
-
 export interface NavItem {
   [key: string]: any;
   text: string;
@@ -20,6 +18,10 @@ export interface LocaleConfig {
   localePath: string;
 }
 
+export type HeadConfig =
+  | [string, Record<string, string>]
+  | [string, Record<string, string>, string];
+
 export interface ThemeConfig {
   [key: string]: any;
   locale?: string;
@@ -27,10 +29,9 @@ export interface ThemeConfig {
   logo?: string;
   title?: string;
   description?: string;
-  head?: React.ReactNode;
+  head?: HeadConfig[];
   nav?: NavItem[];
   sidebar?: SidebarItem[] | Record<string, SidebarItem[]>;
-  banner?: React.ReactNode;
   repo?: string;
   repoText?: string;
   docsRepo?: string;

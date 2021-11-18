@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { matchPath } from 'react-router-dom';
-import { PageData } from 'onepress/client';
+import { PageData, Helmet } from 'onepress/client';
 import { ThemeContext, useThemeContext } from '../../context';
 import { ThemeConfig } from '../../types';
 import { getLocales, mergeThemeConfig, replaceLocaleInPath } from '../../utils';
@@ -96,27 +96,51 @@ export const Layout: React.FC<{
     return res;
   }, [finalThemeConfig, locales, currentLocale, pagePath]);
 
+  const siteTitle = useMemo(() => {
+    const pageTitle = currentPageData?.meta?.title;
+
+    if (pageTitle && finalThemeConfig.title) {
+      return `${pageTitle} | ${finalThemeConfig.title}`;
+    }
+    return pageTitle || finalThemeConfig.title;
+  }, [finalThemeConfig, currentPageData]);
+
   // scroll to top while page change
   useScrollToTop(pagePath);
 
   return (
-    <ThemeContext.Provider
-      value={{
-        ...finalThemeConfig,
-        nav: finalNav,
-        pagesData,
-        currentPageData,
-        pagePath,
-        locales,
-        currentLocale,
-        homePath,
-        hasSidebar,
-        setHasSidebar,
-        sidebarOpen,
-        setSidebarOpen,
-      }}
-    >
-      <InternalLayout />
-    </ThemeContext.Provider>
+    <>
+      <Helmet
+        {...(currentLocale?.locale && {
+          htmlAttributes: { lang: currentLocale.locale },
+        })}
+      >
+        {siteTitle && <title>{siteTitle}</title>}
+        {finalThemeConfig.description && (
+          <meta name="description" content={finalThemeConfig.description} />
+        )}
+        {finalThemeConfig.head?.map(([tagName, tagProps, tagChildren], index) =>
+          React.createElement(tagName, { ...tagProps, key: index }, tagChildren)
+        )}
+      </Helmet>
+      <ThemeContext.Provider
+        value={{
+          ...finalThemeConfig,
+          nav: finalNav,
+          pagesData,
+          currentPageData,
+          pagePath,
+          locales,
+          currentLocale,
+          homePath,
+          hasSidebar,
+          setHasSidebar,
+          sidebarOpen,
+          setSidebarOpen,
+        }}
+      >
+        <InternalLayout />
+      </ThemeContext.Provider>
+    </>
   );
 };
