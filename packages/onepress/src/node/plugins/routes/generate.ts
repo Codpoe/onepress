@@ -53,7 +53,7 @@ export function generateRoutes(pages: Record<string, Page>): Route[] {
 
 export function generateRoutesCode(routes: Route[], ssr?: boolean) {
   const imports: string[] = [`import * as React from 'react';`];
-  const lazyImports: string[] = [];
+  const dynamicImports: string[] = [];
   let index = 0;
 
   const routesStr = JSON.stringify(routes, null, 2).replace(
@@ -71,19 +71,23 @@ export function generateRoutesCode(routes: Route[], ssr?: boolean) {
       }
 
       const name = `__route_${index++}`;
-      const lazyImportStr = `const ${name} = React.lazy(() => import('${component}'));`;
-
-      if (!lazyImports.includes(lazyImportStr)) {
-        lazyImports.push(lazyImportStr);
-      }
-
+      dynamicImports.push(`const ${name} = () => import('${component}');`);
       return str.replace(replaceStr, name);
+
+      // const name = `__route_${index++}`;
+      // const lazyImportStr = `const ${name} = React.lazy(() => import('${component}'));`;
+
+      // if (!dynamicImports.includes(lazyImportStr)) {
+      //   dynamicImports.push(lazyImportStr);
+      // }
+
+      // return str.replace(replaceStr, name);
     }
   );
 
   return `${imports.join('\n')}
 
-${lazyImports.join('\n')}
+${dynamicImports.join('\n')}
 
 export const routes = ${routesStr};
 export default routes;

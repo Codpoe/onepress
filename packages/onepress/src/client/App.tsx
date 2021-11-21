@@ -1,55 +1,85 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useEffect, useState, useMemo } from 'react';
+import { Router, ReactLocation, RouteMatch, Route } from 'react-location';
+import { rankRoutes } from 'react-location-rank-routes';
 import { MDXProvider } from '@mdx-js/react';
 import theme from '/@onepress/theme';
-import importedThemeConfig from '/@onepress/theme-config';
-import importedPagesData from '/@onepress/pages-data';
-import { AppContext } from './context';
-import { PageStatus } from './types';
+import importedRoutes from '/@onepress/routes';
+import { ServerRoute } from './types';
 
-const { Layout, NotFound, mdxComponents } = theme;
+export interface AppProps {
+  location: ReactLocation;
+  initialMatches?: RouteMatch[];
+}
 
-export const App: React.FC = () => {
-  const [themeConfig, setThemeConfig] = useState(importedThemeConfig);
-  const [pagesData, setPagesData] = useState(importedPagesData);
+export const App: React.FC<AppProps> = ({ location, initialMatches }) => {
+  const [routes, setRoutes] = useState(importedRoutes);
 
-  const { pathname } = useLocation();
-  const [pagePath, setPagePath] = useState<string>(pathname);
+  const {
+    layoutElement,
+    pendingElement,
+    errorElement,
+    notFoundElement = '404 Not Found',
+    mdxComponents,
+  } = theme;
 
-  const pathnameRef = useRef(pathname);
-  pathnameRef.current = pathname;
+  const parsedRoutes = useMemo(() => {
+    function parse(routes: ServerRoute[]): Route[] {
+      return routes.map(item => {
+        const result: Route = { path: item.path };
 
-  const onStatusChange = useCallback((status: PageStatus) => {
-    if (status === 'resolve') {
-      setPagePath(pathnameRef.current);
-    }
-  }, []);
+        // if ssr, `item.component` is just a react component,
+        // else it is a dynamic import, eg. `() => import('./Home.tsx')`
+        if (import.meta.env.SSR) {
+          result.element = <item.component />;
+        } else {
+          result.import = () =>
+            item.component().then(
+              (mod: any): Route => ({
+                element: mod?.default && <mod.default />,
+                ...mod,
+              })
+            );
+        }
 
-  useEffect(() => {
-    if (import.meta.hot) {
-      import.meta.hot.accept('/@onepress/theme-config', mod => {
-        setThemeConfig(mod.default);
+        if (item.children?.length) {
+          result.children = parse(item.children);
+        }
+
+        return result;
       });
     }
-  }, []);
+
+    const _parsedRoutes = parse(routes);
+
+    _parsedRoutes.push({
+      path: '*',
+      element: notFoundElement,
+    });
+
+    return _parsedRoutes;
+  }, [routes, notFoundElement]);
 
   useEffect(() => {
     if (import.meta.hot) {
-      import.meta.hot.accept('/@onepress/pages-data', mod => {
-        setPagesData(mod.default);
+      import.meta.hot.accept('/@onepress/routes', mod => {
+        setRoutes(mod.default);
       });
     }
   }, []);
 
   return (
-    <AppContext.Provider value={{ NotFound, onStatusChange }}>
+    <Router
+      location={location}
+      basepath={import.meta.env.BASE_URL}
+      initialMatches={initialMatches}
+      defaultPendingElement={pendingElement}
+      defaultErrorElement={errorElement}
+      routes={parsedRoutes}
+      filterRoutes={rankRoutes}
+    >
       <MDXProvider components={mdxComponents || {}}>
-        <Layout
-          themeConfig={themeConfig}
-          pagesData={pagesData}
-          pagePath={pagePath}
-        />
+        {layoutElement}
       </MDXProvider>
-    </AppContext.Provider>
+    </Router>
   );
 };

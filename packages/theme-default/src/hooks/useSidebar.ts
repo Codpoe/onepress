@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
-import { matchPath, useLocation } from 'react-router-dom';
 import { useThemeContext } from '../context';
 import { SidebarItem } from '../types';
+import { usePageMatchRoute } from './usePageMatchRoute';
 
 export function useSidebar() {
   const { sidebar } = useThemeContext();
-  const { pathname } = useLocation();
+  const matchRoute = usePageMatchRoute();
 
   return useMemo<SidebarItem[] | undefined>(() => {
     if (!sidebar) {
@@ -18,8 +18,8 @@ export function useSidebar() {
 
     const found = Object.keys(sidebar)
       .sort((a, b) => b.length - a.length)
-      .find(path => matchPath(path, pathname));
+      .find(path => matchRoute({ to: path }));
 
     return found ? sidebar[found] : undefined;
-  }, [sidebar, pathname]);
+  }, [sidebar, matchRoute]);
 }

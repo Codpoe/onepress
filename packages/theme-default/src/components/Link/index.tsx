@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Link as RouterLink,
   LinkProps as RouterLinkProps,
-} from 'react-router-dom';
+} from 'onepress/client';
 import { ExternalLink } from '../Icons';
 
 export interface LinkProps extends Omit<RouterLinkProps, 'to' | 'color'> {

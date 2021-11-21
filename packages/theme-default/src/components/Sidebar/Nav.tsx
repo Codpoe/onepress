@@ -1,12 +1,10 @@
 import React, { useCallback, useState } from 'react';
-import { useLocation, matchPath } from 'react-router-dom';
-import { Link } from '../Link';
-import { ChevronRight } from '../Icons';
 import { NavItem } from '../../types';
 import { useThemeContext } from '../../context';
+import { Link } from '../Link';
+import { ChevronRight } from '../Icons';
 
 export const Nav: React.FC = () => {
-  const { pathname } = useLocation();
   const { nav } = useThemeContext();
 
   const [open, setOpen] = useState<NavItem[]>([]);
@@ -75,11 +73,10 @@ export const Nav: React.FC = () => {
               {...item}
               to={item.link}
               color={false}
-              className={`w-full font-semibold ${
-                item.link && matchPath(item.link, pathname)
-                  ? 'text-c-brand'
-                  : ''
-              }`}
+              className="w-full font-semibold"
+              getActiveProps={() => ({
+                className: 'text-c-brand',
+              })}
             >
               {item.text}
             </Link>

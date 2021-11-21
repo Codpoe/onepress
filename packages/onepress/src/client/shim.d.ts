@@ -1,10 +1,7 @@
 declare module '/@onepress/routes*' {
-  import * as React from 'react';
-
   interface Route {
     path: string;
-    component: React.ComponentType<any>;
-    exact: boolean;
+    component: any;
     children?: Route[];
   }
 
@@ -30,28 +27,15 @@ declare module '/@onepress/pages-data*' {
 }
 
 declare module '/@onepress/theme*' {
-  import { ComponentType } from 'react';
-
-  interface PageData {
-    basePath: string;
-    routePath: string;
-    filePath: string;
-    meta: Record<string, any>;
-    isLayout: boolean;
-    is404: boolean;
+  interface Theme {
+    layoutElement?: React.ReactNode;
+    notFoundElement?: React.ReactNode;
+    pendingElement?: React.ReactNode;
+    errorElement?: React.ReactNode;
+    mdxComponents?: Record<string, React.ComponentType<any>>;
   }
 
-  type PageStatus = 'pending' | 'fallback' | 'resolve';
-
-  const theme: {
-    Layout: ComponentType<{
-      themeConfig: any;
-      pagesData: Record<string, PageData>;
-      pagePath: pagePath;
-    }>;
-    NotFound?: ComponentType<any>;
-    mdxComponents?: Record<string, ComponentType<any>>;
-  };
+  const theme: Theme;
 
   export default theme;
 }

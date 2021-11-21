@@ -1,14 +1,16 @@
 import React, { useMemo, useState } from 'react';
-import { matchPath } from 'react-router-dom';
-import { PageData, Helmet } from 'onepress/client';
+import { Helmet, useThemeConfig, usePagesData } from 'onepress/client';
 import { ThemeContext, useThemeContext } from '../../context';
 import { ThemeConfig } from '../../types';
 import { getLocales, mergeThemeConfig, replaceLocaleInPath } from '../../utils';
+import { usePagePath } from '../../hooks/usePagePath';
+import { useLoadProgress } from '../../hooks/useLoadProgress';
+import { useScrollToTop } from '../../hooks/useScrollToTop';
+import { usePageMatchRoute } from '../../hooks/usePageMatchRoute';
 import { Header } from '../Header';
 import { Sidebar } from '../Sidebar';
 import { DocLayout } from '../DocLayout';
 import { HomeLayout } from '../HomeLayout';
-import { useScrollToTop } from '../../hooks/useScrollToTop';
 
 import 'virtual:windi.css';
 import '../../styles/base.less';
@@ -29,13 +31,15 @@ const InternalLayout: React.FC = () => {
   );
 };
 
-export const Layout: React.FC<{
-  themeConfig: ThemeConfig;
-  pagesData: Record<string, PageData>;
-  pagePath: string;
-}> = ({ themeConfig = {}, pagesData = {}, pagePath }) => {
+export const Layout: React.FC = () => {
+  const themeConfig = useThemeConfig<ThemeConfig>();
+  const pagesData = usePagesData();
+
   const [hasSidebar, setHasSidebar] = useState<boolean | undefined>(undefined);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const pagePath = usePagePath();
+  const matchRoute = usePageMatchRoute();
 
   const finalThemeConfig = useMemo(
     () => mergeThemeConfig(themeConfig, pagePath),
@@ -45,9 +49,9 @@ export const Layout: React.FC<{
   const currentPageData = useMemo(() => {
     const found = Object.keys(pagesData)
       .sort((a, b) => b.length - a.length)
-      .find(item => matchPath(item, pagePath));
+      .find(item => matchRoute({ to: item }));
     return (found && pagesData[found]) || null;
-  }, [pagesData, pagePath]);
+  }, [pagesData, matchRoute]);
 
   const locales = useMemo(() => getLocales(themeConfig), [themeConfig]);
 
@@ -56,12 +60,14 @@ export const Layout: React.FC<{
     [locales, finalThemeConfig]
   );
 
+  // find all home pages
   const homePaths = useMemo(() => {
     return Object.keys(pagesData)
       .filter(path => pagesData[path].meta.home)
       .sort((pathA, pathB) => pathA.length - pathB.length);
   }, [pagesData]);
 
+  // get the correct home page based on current locale
   const homePath = currentLocale
     ? homePaths.find(item => item.startsWith(currentLocale.localePath))
     : homePaths[0];
@@ -104,6 +110,8 @@ export const Layout: React.FC<{
     }
     return pageTitle || finalThemeConfig.title;
   }, [finalThemeConfig, currentPageData]);
+
+  useLoadProgress();
 
   // scroll to top while page change
   useScrollToTop(pagePath);

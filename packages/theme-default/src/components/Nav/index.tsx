@@ -1,5 +1,4 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
 import { useThemeContext } from '../../context';
 import { Link } from '../Link';
 import { ChevronDown } from '../Icons';
@@ -10,7 +9,6 @@ export interface NavProps {
 
 export const Nav: React.FC<NavProps> = props => {
   const { className } = props;
-  const { pathname } = useLocation();
   const { nav } = useThemeContext();
 
   if (!nav?.length) {
@@ -55,11 +53,10 @@ export const Nav: React.FC<NavProps> = props => {
               {...item}
               to={item.link}
               color={false}
-              className={`border-b-2 -mb-0.5 transition-colors hover:border-c-brand ${
-                pathname.startsWith(item.link!)
-                  ? 'border-c-brand'
-                  : 'border-transparent'
-              }`}
+              className="border-b-2 -mb-0.5 transition-colors hover:border-c-brand border-transparent"
+              getActiveProps={() => ({
+                className: '!border-c-brand',
+              })}
             >
               {item.text}
             </Link>

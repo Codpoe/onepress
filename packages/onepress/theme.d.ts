@@ -1,5 +1,5 @@
-// so that users can do `import defaultTheme from 'onepress/theme'`
-import theme from './dist/client/theme';
+// so that users can do `import createTheme from 'onepress/theme'`
+import createTheme from './dist/client/theme';
 
-export default theme;
+export default createTheme;
 export * from './dist/client/theme';

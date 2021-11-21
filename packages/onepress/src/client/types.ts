@@ -1,7 +1,9 @@
-export interface Route {
+import React from 'react';
+
+export interface ServerRoute {
   path: string;
   component: any;
-  children?: Route[];
+  children?: ServerRoute[];
 }
 
 export interface PageData {
@@ -12,4 +14,10 @@ export interface PageData {
   meta: Record<string, any>;
 }
 
-export type PageStatus = 'pending' | 'fallback' | 'resolve';
+export interface Theme {
+  layoutElement?: React.ReactNode;
+  notFoundElement?: React.ReactNode;
+  pendingElement?: React.ReactNode;
+  errorElement?: React.ReactNode;
+  mdxComponents?: Record<string, React.ComponentType<any>>;
+}

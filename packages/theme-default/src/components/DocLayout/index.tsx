@@ -1,16 +1,16 @@
 import React from 'react';
+import { Outlet } from 'onepress/client';
 import { Mdx } from '../Mdx';
 import { UpdateInfo } from '../UpdateInfo';
 import { PrevNext } from '../PrevNext';
 import { Toc } from '../Toc';
-import { Page } from '../Page';
 import './style.less';
 
 export const DocLayout: React.FC = () => {
   return (
     <div className="max-w-screen-md mx-auto relative">
       <Mdx className="pb-8">
-        <Page />
+        <Outlet />
       </Mdx>
       <UpdateInfo />
       <PrevNext />

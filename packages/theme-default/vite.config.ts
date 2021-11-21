@@ -5,7 +5,7 @@ export default defineConfig(() => {
   return {
     build: {
       lib: {
-        entry: './src/index.ts',
+        entry: './src/index.tsx',
         formats: ['es'],
         fileName: 'index',
       },

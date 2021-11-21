@@ -1,16 +1,16 @@
 import { useEffect, useRef } from 'react';
-import { useNavigationType } from 'react-router-dom';
+import { useLocation } from 'onepress/client';
 import { useScrollPromise } from './useScrollPromise';
 
 export function useScrollToTop(pagePath: string) {
-  const navigationType = useNavigationType();
-  const navigationTypeRef = useRef(navigationType);
+  const { nextAction } = useLocation();
+  const nextActionRef = useRef(nextAction);
   const scrollPromise = useScrollPromise();
 
-  navigationTypeRef.current = navigationType;
+  nextActionRef.current = nextAction;
 
   useEffect(() => {
-    if (navigationTypeRef.current === 'PUSH' && !window.location.hash) {
+    if (nextActionRef.current === 'push' && !window.location.hash) {
       (async () => {
         await scrollPromise.wait();
         window.scrollTo({

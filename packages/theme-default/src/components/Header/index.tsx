@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'onepress/client';
 import { useThemeContext } from '../../context';
 import { Nav } from '../Nav';
 import { Search } from '../Search';

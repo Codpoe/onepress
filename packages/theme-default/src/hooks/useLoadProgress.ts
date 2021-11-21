@@ -1,17 +1,18 @@
 import { useEffect } from 'react';
 import nProgress from 'nprogress';
+import { useRouter } from 'onepress/client';
 import '../styles/nprogress.less';
-import { useThemeContext } from '../context';
 
-// TODO: load progress
 export function useLoadProgress() {
-  const { pagePath } = useThemeContext();
+  const router = useRouter();
 
   useEffect(() => {
-    nProgress.done();
-
-    return () => {
+    if (router.pending) {
       nProgress.start();
-    };
-  }, [pagePath]);
+
+      return () => {
+        nProgress.done();
+      };
+    }
+  }, [router.pending]);
 }

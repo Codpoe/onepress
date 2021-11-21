@@ -3,8 +3,7 @@
  */
 import React, { useCallback, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Link, useNavigate } from 'react-router-dom';
-import { Helmet } from 'onepress/client';
+import { Link, useNavigate, Helmet } from 'onepress/client';
 import { useDocSearchKeyboardEvents } from '@docsearch/react';
 import { IN_BROWSER } from '../../constants';
 import { Search as IconSearch } from '../Icons';

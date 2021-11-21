@@ -1,5 +1,5 @@
 import React, { useMemo, useRef } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'onepress/client';
 import { useThemeContext } from '../../context';
 import { useElementSize } from '../../hooks/useElementSize';
 import { useKeyDown } from '../../hooks/useKeyDown';
@@ -27,12 +27,12 @@ function useScale() {
 }
 
 function useGenerateSlidePath() {
-  const { pathname } = useLocation();
+  const { pathname } = useLocation().current;
   return (page: number) => `${pathname.replace(/\/\d+$/, '')}/${page}`;
 }
 
 function usePage() {
-  const { pathname } = useLocation();
+  const { pathname } = useLocation().current;
   return useMemo(() => {
     const [, page = 1] = pathname.match(/\/(\d+)$/) || [];
     return Number(page);
@@ -61,14 +61,14 @@ export const SlideLayout: React.FC = () => {
 
   useKeyDown(ev => {
     if ((ev.key === 'ArrowUp' || ev.keyCode === 38) && pageRef.current > 1) {
-      navigate(generateSlidePath(pageRef.current - 1));
+      navigate({ to: generateSlidePath(pageRef.current - 1) });
     }
 
     if (
       (ev.key === 'ArrowDown' || ev.keyCode === 40) &&
       pageRef.current <= slideCount
     ) {
-      navigate(generateSlidePath(pageRef.current + 1));
+      navigate({ to: generateSlidePath(pageRef.current + 1) });
     }
   });
 

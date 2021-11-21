@@ -1,15 +1,16 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { matchPath } from 'react-router-dom';
 import { useSidebar } from '../../hooks/useSidebar';
+import { useThemeContext } from '../../context';
+import { usePageMatchRoute } from '../../hooks/usePageMatchRoute';
 import { Items } from './Items';
 import { Nav } from './Nav';
 import { SidebarItem } from './types';
 import styles from './style.module.less';
-import { useThemeContext } from '../../context';
 
 export const Sidebar: React.FC = () => {
   const { pagePath, nav, sidebarOpen, setSidebarOpen, setHasSidebar } =
     useThemeContext();
+  const matchRoute = usePageMatchRoute();
 
   const sidebar = useSidebar();
 
@@ -24,7 +25,7 @@ export const Sidebar: React.FC = () => {
       for (let i = 0; i < items.length; i++) {
         res.push(items[i]);
 
-        if (matchPath(items[i].link || '', pagePath)) {
+        if (matchRoute({ to: items[i].link })) {
           return true;
         }
 
@@ -39,7 +40,7 @@ export const Sidebar: React.FC = () => {
     find(sidebar);
 
     return res;
-  }, [pagePath, sidebar]);
+  }, [sidebar, matchRoute]);
 
   const [activeItems, setActiveItems] = useState<SidebarItem[]>(hitItems);
 
@@ -66,7 +67,7 @@ export const Sidebar: React.FC = () => {
   return (
     <>
       <aside
-        className={`border-r border-c-divider overflow-y-auto <md:(block w-64 px-4 py-3 fixed top-16 right-full bottom-0 z-20 bg-c-bg transform transition-transform) md:(w-56 mr-9 sticky top-24) ${
+        className={`flex-shrink-0 border-r border-c-divider overflow-y-auto <md:(block w-64 px-4 py-3 fixed top-16 right-full bottom-0 z-20 bg-c-bg transform transition-transform) md:(w-56 mr-9 sticky top-24) ${
           sidebarOpen ? '<md:translate-x-full' : ''
         } ${hasHit ? 'block' : 'hidden'} ${styles.sidebar}`}
       >

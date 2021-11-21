@@ -1,168 +1,175 @@
-import React, {
-  useState,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useCallback,
-  useContext,
-  createContext,
-  Suspense as ReactSuspense,
-} from 'react';
-import { Route, Routes, Outlet } from 'react-router-dom';
-import routes from '/@onepress/routes';
-import { useAppContext } from './context';
-import { Route as IRoute, PageStatus } from './types';
+// import React, {
+//   useState,
+//   useEffect,
+//   useLayoutEffect,
+//   useMemo,
+//   useCallback,
+//   useContext,
+//   createContext,
+//   Suspense as ReactSuspense,
+// } from 'react';
+// import { Route, Routes, Outlet } from 'react-router-dom';
+// import routes from '/@onepress/routes';
+// import { useAppContext } from './context';
 
-const ActivePageContext = createContext<{
-  setActivePage: (component?: React.ReactNode) => void;
-}>({ setActivePage: () => null });
+// interface IRoute {
+//   path: string;
+//   component: any;
+//   children?: IRoute[];
+// }
 
-export interface PageProps {
-  /**
-   * The fallback content to show when a Suspense child (like React.lazy) suspends
-   */
-  fallback?: NonNullable<React.ReactNode> | null;
-  /**
-   * Tells the <Suspense> component how long to wait before showing the fallback.
-   *
-   * By default, it won't update the DOM to show the fallback content.
-   * Instead, it will continue to show the old DOM until the new components are ready.
-   */
-  timeout?: number;
-  /**
-   * The callback for status change
-   */
-  onStatusChange?: (status: PageStatus) => void;
-}
+// type PageStatus = 'pending' | 'fallback' | 'resolve';
 
-const Fallback: React.FC<PageProps> = ({
-  fallback,
-  timeout,
-  onStatusChange,
-  children,
-}) => {
-  // if timeout === 0 or no children, show real fallback immediately
-  const [showRealFallback, setShowRealFallback] = useState(
-    timeout === 0 || !children
-  );
+// const ActivePageContext = createContext<{
+//   setActivePage: (component?: React.ReactNode) => void;
+// }>({ setActivePage: () => null });
 
-  useEffect(() => {
-    onStatusChange?.(showRealFallback ? 'fallback' : 'pending');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showRealFallback]);
+// export interface PageProps {
+//   /**
+//    * The fallback content to show when a Suspense child (like React.lazy) suspends
+//    */
+//   fallback?: NonNullable<React.ReactNode> | null;
+//   /**
+//    * Tells the <Suspense> component how long to wait before showing the fallback.
+//    *
+//    * By default, it won't update the DOM to show the fallback content.
+//    * Instead, it will continue to show the old DOM until the new components are ready.
+//    */
+//   timeout?: number;
+//   /**
+//    * The callback for status change
+//    */
+//   onStatusChange?: (status: PageStatus) => void;
+// }
 
-  useEffect(() => {
-    if (timeout && !showRealFallback) {
-      const timer = setTimeout(() => {
-        setShowRealFallback(true);
-      }, timeout);
+// const Fallback: React.FC<PageProps> = ({
+//   fallback,
+//   timeout,
+//   onStatusChange,
+//   children,
+// }) => {
+//   // if timeout === 0 or no children, show real fallback immediately
+//   const [showRealFallback, setShowRealFallback] = useState(
+//     timeout === 0 || !children
+//   );
 
-      return () => clearTimeout(timer);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+//   useEffect(() => {
+//     onStatusChange?.(showRealFallback ? 'fallback' : 'pending');
+//     // eslint-disable-next-line react-hooks/exhaustive-deps
+//   }, [showRealFallback]);
 
-  return <>{showRealFallback ? fallback : children}</>;
-};
+//   useEffect(() => {
+//     if (timeout && !showRealFallback) {
+//       const timer = setTimeout(() => {
+//         setShowRealFallback(true);
+//       }, timeout);
 
-/**
- * A simple wrapper of React.Suspense
- */
-const Suspense: React.FC<PageProps> = ({
-  fallback,
-  timeout,
-  onStatusChange,
-  children,
-}) => {
-  const [activePage, _setActivePage] = useState<React.ReactNode>();
+//       return () => clearTimeout(timer);
+//     }
+//     // eslint-disable-next-line react-hooks/exhaustive-deps
+//   }, []);
 
-  const setActivePage = useCallback((component?: React.ReactNode) => {
-    _setActivePage(component);
-    onStatusChange?.('resolve');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+//   return <>{showRealFallback ? fallback : children}</>;
+// };
 
-  if (import.meta.env.SSR) {
-    return <>{children}</>;
-  }
+// /**
+//  * A simple wrapper of React.Suspense
+//  */
+// const Suspense: React.FC<PageProps> = ({
+//   fallback,
+//   timeout,
+//   onStatusChange,
+//   children,
+// }) => {
+//   const [activePage, _setActivePage] = useState<React.ReactNode>();
 
-  return (
-    <ActivePageContext.Provider value={{ setActivePage }}>
-      <ReactSuspense
-        fallback={
-          <Fallback
-            fallback={fallback}
-            timeout={timeout}
-            onStatusChange={onStatusChange}
-          >
-            {activePage}
-          </Fallback>
-        }
-      >
-        {children}
-      </ReactSuspense>
-    </ActivePageContext.Provider>
-  );
-};
+//   const setActivePage = useCallback((component?: React.ReactNode) => {
+//     _setActivePage(component);
+//     onStatusChange?.('resolve');
+//     // eslint-disable-next-line react-hooks/exhaustive-deps
+//   }, []);
 
-const PageRenderer: React.FC<{
-  component: React.LazyExoticComponent<any>;
-  isLayout: boolean;
-}> = ({ component, isLayout }) => {
-  const Component = component;
-  const { setActivePage } = useContext(ActivePageContext);
+//   if (import.meta.env.SSR) {
+//     return <>{children}</>;
+//   }
 
-  const rendered = useMemo(
-    () => <Component>{isLayout ? <Outlet /> : undefined}</Component>,
-    [Component, isLayout]
-  );
+//   return (
+//     <ActivePageContext.Provider value={{ setActivePage }}>
+//       <ReactSuspense
+//         fallback={
+//           <Fallback
+//             fallback={fallback}
+//             timeout={timeout}
+//             onStatusChange={onStatusChange}
+//           >
+//             {activePage}
+//           </Fallback>
+//         }
+//       >
+//         {children}
+//       </ReactSuspense>
+//     </ActivePageContext.Provider>
+//   );
+// };
 
-  useLayoutEffect(() => {
-    (async () => {
-      await (component as any)._payload?._result;
-      setActivePage(rendered);
-    })();
-  }, [component, rendered, setActivePage]);
+// const PageRenderer: React.FC<{
+//   component: React.LazyExoticComponent<any>;
+//   isLayout: boolean;
+// }> = ({ component, isLayout }) => {
+//   const Component = component;
+//   const { setActivePage } = useContext(ActivePageContext);
 
-  return rendered;
-};
+//   const rendered = useMemo(
+//     () => <Component>{isLayout ? <Outlet /> : undefined}</Component>,
+//     [Component, isLayout]
+//   );
 
-function renderRoutes(routes: IRoute[]) {
-  return routes.map(item => {
-    const isLayout = Boolean(item.children?.length);
+//   useLayoutEffect(() => {
+//     (async () => {
+//       await (component as any)._payload?._result;
+//       setActivePage(rendered);
+//     })();
+//   }, [component, rendered, setActivePage]);
 
-    return (
-      <Route
-        key={item.path}
-        path={item.path}
-        element={
-          <PageRenderer component={item.component} isLayout></PageRenderer>
-        }
-      >
-        {isLayout ? renderRoutes(item.children!) : undefined}
-      </Route>
-    );
-  });
-}
+//   return rendered;
+// };
 
-/**
- * Render page content
- */
-export const Page: React.FC<PageProps> = props => {
-  const { NotFound, onStatusChange } = useAppContext();
+// function renderRoutes(routes: IRoute[]) {
+//   return routes.map(item => {
+//     const isLayout = Boolean(item.children?.length);
 
-  return (
-    <Suspense
-      {...props}
-      onStatusChange={status => {
-        onStatusChange(status);
-        props.onStatusChange?.(status);
-      }}
-    >
-      <Routes>
-        {renderRoutes(routes)}
-        {NotFound && <Route path="*" element={<NotFound />} />}
-      </Routes>
-    </Suspense>
-  );
-};
+//     return (
+//       <Route
+//         key={item.path}
+//         path={item.path}
+//         element={
+//           <PageRenderer component={item.component} isLayout></PageRenderer>
+//         }
+//       >
+//         {isLayout ? renderRoutes(item.children!) : undefined}
+//       </Route>
+//     );
+//   });
+// }
+
+// /**
+//  * Render page content
+//  */
+// export const Page: React.FC<PageProps> = props => {
+//   const { NotFound, onStatusChange } = useAppContext();
+
+//   return (
+//     <Suspense
+//       {...props}
+//       onStatusChange={status => {
+//         onStatusChange(status);
+//         props.onStatusChange?.(status);
+//       }}
+//     >
+//       <Routes>
+//         {renderRoutes(routes)}
+//         {NotFound && <Route path="*" element={<NotFound />} />}
+//       </Routes>
+//     </Suspense>
+//   );
+// };

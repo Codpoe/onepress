@@ -1,9 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'onepress/client';
 import { Mdx } from '../Mdx';
 import { Footer } from '../Footer';
 import { useThemeContext } from '../../context';
-import { Page } from '../Page';
 
 interface HomePageMeta {
   heroImage?: string;
@@ -80,7 +79,7 @@ export const HomeLayout: React.FC = () => {
           </div>
         )}
         <Mdx>
-          <Page />
+          <Outlet />
         </Mdx>
       </div>
       {footer && <Footer>{footer}</Footer>}

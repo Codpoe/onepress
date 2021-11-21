@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'onepress/client';
 import { IN_BROWSER } from '../constants';
 
 function resolveHash() {
@@ -7,7 +7,7 @@ function resolveHash() {
 }
 
 export function useHash() {
-  const { pathname } = useLocation();
+  const { pathname } = useLocation().current;
   const [hash, setHash] = useState(resolveHash());
 
   useEffect(() => {

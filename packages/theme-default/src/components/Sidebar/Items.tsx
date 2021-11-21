@@ -125,7 +125,11 @@ export const Items: React.FC<ItemsProps> = props => {
                 color={false}
                 className={`w-full py-[7px] transition-all hover:text-c-brand ${
                   inside ? 'pl-3' : ''
-                } ${hit ? 'text-c-brand font-semibold' : ''}`}
+                }`}
+                activeOptions={{ exact: true }}
+                getActiveProps={() => ({
+                  className: 'text-c-brand font-semibold',
+                })}
               >
                 <div className="w-1 h-1 ml-1 mr-[14px] rounded-full bg-c-text-lighter animate-delay-100"></div>
                 {item.text}
