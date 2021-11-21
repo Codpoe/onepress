@@ -18,6 +18,7 @@ export const Link: React.FC<LinkProps> = props => {
     className = '',
     icon = true,
     color = true,
+    getActiveProps,
     ...restProps
   } = props;
   const isSameOrigin = to.startsWith('/');
@@ -37,7 +38,12 @@ export const Link: React.FC<LinkProps> = props => {
   );
 
   return isSameOrigin ? (
-    <RouterLink {...restProps} className={finalClassName} to={to}>
+    <RouterLink
+      {...restProps}
+      className={finalClassName}
+      to={to}
+      getActiveProps={getActiveProps}
+    >
       {finalChildren}
     </RouterLink>
   ) : (

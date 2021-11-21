@@ -19,6 +19,9 @@ export const App: React.FC<AppProps> = ({ location, initialMatches }) => {
     pendingElement,
     errorElement,
     notFoundElement = '404 Not Found',
+    pendingMs,
+    pendingMinMs,
+    linkPreloadMaxAge,
     mdxComponents,
   } = theme;
 
@@ -74,6 +77,9 @@ export const App: React.FC<AppProps> = ({ location, initialMatches }) => {
       initialMatches={initialMatches}
       defaultPendingElement={pendingElement}
       defaultErrorElement={errorElement}
+      defaultPendingMs={pendingMs}
+      defaultPendingMinMs={pendingMinMs}
+      defaultLinkPreloadMaxAge={linkPreloadMaxAge}
       routes={parsedRoutes}
       filterRoutes={rankRoutes}
     >

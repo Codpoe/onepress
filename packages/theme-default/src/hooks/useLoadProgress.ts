@@ -8,9 +8,12 @@ export function useLoadProgress() {
 
   useEffect(() => {
     if (router.pending) {
+      // const timer = setTimeout(() => {
       nProgress.start();
+      // }, 50);
 
       return () => {
+        // clearTimeout(timer);
         nProgress.done();
       };
     }

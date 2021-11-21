@@ -32,6 +32,9 @@ declare module '/@onepress/theme*' {
     notFoundElement?: React.ReactNode;
     pendingElement?: React.ReactNode;
     errorElement?: React.ReactNode;
+    pendingMs?: number;
+    pendingMinMs?: number;
+    linkPreloadMaxAge?: number;
     mdxComponents?: Record<string, React.ComponentType<any>>;
   }
 
