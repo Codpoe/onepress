@@ -10,7 +10,6 @@ export function useScrollToTop(pagePath: string) {
   actionRef.current = action;
 
   useEffect(() => {
-    console.log(actionRef.current, pagePath);
     if (actionRef.current === 'PUSH' && !window.location.hash) {
       (async () => {
         await scrollPromise.wait();
