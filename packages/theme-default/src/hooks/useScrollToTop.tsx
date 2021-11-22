@@ -3,14 +3,15 @@ import { useLocation } from 'onepress/client';
 import { useScrollPromise } from './useScrollPromise';
 
 export function useScrollToTop(pagePath: string) {
-  const { nextAction } = useLocation();
-  const nextActionRef = useRef(nextAction);
+  const { action } = useLocation().history;
+  const actionRef = useRef(action);
   const scrollPromise = useScrollPromise();
 
-  nextActionRef.current = nextAction;
+  actionRef.current = action;
 
   useEffect(() => {
-    if (nextActionRef.current === 'push' && !window.location.hash) {
+    console.log(actionRef.current, pagePath);
+    if (actionRef.current === 'PUSH' && !window.location.hash) {
       (async () => {
         await scrollPromise.wait();
         window.scrollTo({
