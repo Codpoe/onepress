@@ -7,7 +7,7 @@
   "exports": {
     ".": "./dist/node/index.js",
     "./client": "./dist/client/index.js",
-    "./theme": "./dist/client/theme.js",
+    "./theme": "./dist/client/theme-default.js",
     "./*": "./*"
   },
   "repository": {
@@ -29,11 +29,14 @@
     "dev": "run-p -l dev:*",
     "dev:node": "tsc -w -p src/node",
     "dev:client": "tsc -w -p src/client",
-    "build": "rimraf dist && run-p -l build:*",
+    "build": "rimraf dist && npm-run-all -l -p build:node build:client -s build:style",
     "build:node": "tsc -p src/node",
-    "build:client": "tsc -p src/client"
+    "build:client": "tsc -p src/client",
+    "build:style": "node scripts/buildStyle.js"
   },
   "dependencies": {
+    "@docsearch/css": "^3.0.0-alpha.41",
+    "@docsearch/react": "^3.0.0-alpha.41",
     "@iconify/json": "^1.1.379",
     "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
@@ -51,9 +54,10 @@
     "jiti": "^1.10.1",
     "less": "^4.1.1",
     "lodash": "^4.17.21",
-    "onepress-theme-default": "workspace:*",
+    "nprogress": "^0.2.0",
     "ora": "^5.4.1",
     "polka": "^0.5.2",
+    "prism-react-renderer": "^1.2.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-helmet": "^6.1.0",
@@ -62,7 +66,7 @@
     "sirv": "^1.0.12",
     "unplugin-icons": "^0.12.18",
     "valtio": "^1.2.7",
-    "vite": "^2.6.13",
+    "vite": "^2.6.14",
     "vite-plugin-mdx": "^3.5.6",
     "vite-plugin-react-pages": "^3.0.14",
     "vite-plugin-windicss": "^1.2.4",
@@ -78,6 +82,7 @@
     "@types/react-dom": "^17.0.7",
     "@types/react-helmet": "^6.1.1",
     "@types/react-router-dom": "^5.1.7",
+    "fast-glob": "^3.2.7",
     "rollup": "^2.38.5"
   }
 }

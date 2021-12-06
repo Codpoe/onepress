@@ -1,8 +1,14 @@
 import path from 'path';
 
 export const DIST_CLIENT_PATH = path.join(__dirname, '../client');
-export const CSR_ENTRY_PATH = path.join(DIST_CLIENT_PATH, 'entry.client.js');
-export const SSR_ENTRY_PATH = path.join(DIST_CLIENT_PATH, 'entry.server.js');
+export const CSR_ENTRY_PATH = path.join(
+  DIST_CLIENT_PATH,
+  'app/entry.client.js'
+);
+export const SSR_ENTRY_PATH = path.join(
+  DIST_CLIENT_PATH,
+  'app/entry.server.js'
+);
 
 // routes
 export const ROUTES_MODULE_ID = '/@onepress/routes';
@@ -22,7 +28,10 @@ export const TS_INFO_MODULE_ID_PREFIX = '/@onepress/ts-info/';
 // theme
 export const THEME_MODULE_ID = '/@onepress/theme';
 export const THEME_CONFIG_MODULE_ID = '/@onepress/theme-config';
-export const DEFAULT_THEME_PATH = path.join(DIST_CLIENT_PATH, 'theme.js');
+export const DEFAULT_THEME_PATH = path.join(
+  DIST_CLIENT_PATH,
+  'theme-default/index.js'
+);
 
 export const SLIDE_MODULE_ID_PREFIX = '/@onepress/slide/';
 

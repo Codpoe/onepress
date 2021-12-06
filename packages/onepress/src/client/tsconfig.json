@@ -5,6 +5,10 @@
     "lib": ["ESNext", "DOM"],
     "jsx": "react",
     "outDir": "../../dist/client",
-    "types": ["vite/client", "../../shim"]
+    "types": ["vite/client", "../../shim"],
+    "baseUrl": ".",
+    "paths": {
+      "onepress/client": ["index.ts"]
+    }
   }
 }
