@@ -14,12 +14,20 @@ const isDynamicComponent = (component: any): component is ComponentFactory =>
   component._dynamic || false;
 
 const PageLoader: React.FC<{
+  routePath: string;
   component: React.ComponentType<any> | ComponentFactory;
   isLayout: boolean;
   fallback?: React.ReactNode;
   timeout?: number;
   fallbackMinMs?: number;
-}> = ({ component: Component, isLayout, fallback, timeout, fallbackMinMs }) => {
+}> = ({
+  routePath,
+  component: Component,
+  isLayout,
+  fallback,
+  timeout,
+  fallbackMinMs,
+}) => {
   const [
     {
       pageState: { loading },
@@ -27,9 +35,19 @@ const PageLoader: React.FC<{
     appState,
   ] = useAppState();
 
-  const [pageModule, setPageModule] = useState(() =>
-    isDynamicComponent(Component) ? Component._result : { default: Component }
-  );
+  const [pageModule, setPageModule] = useState(() => {
+    if (isDynamicComponent(Component)) {
+      if (
+        typeof window !== 'undefined' &&
+        routePath === window.__OP_SSR_DATA__?.routePath &&
+        window.__OP_SSR_DATA__.pageModule
+      ) {
+        Component._result = window.__OP_SSR_DATA__.pageModule;
+      }
+      return Component._result;
+    }
+    return { default: Component };
+  });
 
   const finalComponentRef = useRef(pageModule?.default);
   if (pageModule?.default && pageModule.default !== finalComponentRef.current) {
@@ -122,11 +140,9 @@ const PageLoader: React.FC<{
     }
   }, [loading, timeout, fallbackMinMs]);
 
-  // if (showFallback) {
-  //   return <>{fallback}</>;
-  // }
-
-  console.log('>>', finalComponentRef.current);
+  if (showFallback) {
+    return <>{fallback}</>;
+  }
 
   return (
     <>
@@ -165,6 +181,7 @@ export const Page: React.FC<PageProps> = ({
           path={item.path}
           element={
             <PageLoader
+              routePath={item.path}
               component={item.component}
               isLayout={isLayout}
               fallback={fallback}

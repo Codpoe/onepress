@@ -16,7 +16,8 @@ export const App: React.FC = () => {
       NotFound: ref(NotFound || (() => <>404 Not Found</>)),
       pageState: {
         loading: false,
-        loadedPathname: import.meta.env.SSR ? pathname : undefined,
+        loadedPathname:
+          import.meta.env.SSR || window.__OP_SSR_DATA__ ? pathname : undefined,
       },
     });
   }

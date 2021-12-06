@@ -58,3 +58,7 @@ declare module '/@onepress/theme-config*' {
 }
 
 declare const __HASH_ROUTER__: boolean;
+
+interface Window {
+  __OP_SSR_DATA__?: { routePath: string; assetPath: string; pageModule?: any };
+}
