@@ -1,6 +1,6 @@
 {
   "name": "onepress-theme-default",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "main": "dist/index.es.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
