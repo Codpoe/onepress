@@ -1,9 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Page, Link } from 'onepress/client';
 import { Mdx } from '../Mdx';
 import { Footer } from '../Footer';
 import { useThemeContext } from '../../context';
-import { Page } from '../Page';
 
 interface HomePageMeta {
   heroImage?: string;

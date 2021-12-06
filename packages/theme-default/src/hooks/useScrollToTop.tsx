@@ -1,8 +1,12 @@
 import { useEffect, useRef } from 'react';
-import { useNavigationType } from 'react-router-dom';
+import { useNavigationType, usePageState } from 'onepress/client';
 import { useScrollPromise } from './useScrollPromise';
 
-export function useScrollToTop(pagePath: string) {
+/**
+ * scroll to top while page change
+ */
+export function useScrollToTop() {
+  const { loadedPathname } = usePageState();
   const navigationType = useNavigationType();
   const navigationTypeRef = useRef(navigationType);
   const scrollPromise = useScrollPromise();
@@ -18,5 +22,5 @@ export function useScrollToTop(pagePath: string) {
         });
       })();
     }
-  }, [pagePath, scrollPromise]);
+  }, [loadedPathname, scrollPromise]);
 }

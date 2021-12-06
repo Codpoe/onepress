@@ -1,3 +1,4 @@
+import { matchPath } from 'onepress/client';
 import { IN_BROWSER } from './constants';
 import { LocaleConfig, ThemeConfig } from './types';
 
@@ -6,11 +7,16 @@ import { LocaleConfig, ThemeConfig } from './types';
  */
 export function mergeThemeConfig(
   config: ThemeConfig,
-  pagePath: string
+  pathname: string | undefined
 ): ThemeConfig {
-  const foundPath = Object.keys(config.themeConfigByPaths || {})
-    .sort((a, b) => b.length - a.length)
-    .find(path => pagePath.startsWith(path));
+  const foundPath =
+    pathname &&
+    Object.keys(config.themeConfigByPaths || {})
+      .sort((a, b) => b.length - a.length)
+      .find(path => {
+        const _path = path.includes(':') ? path : removeTailSlash(path) + '/*';
+        return matchPath(_path, pathname);
+      });
 
   return {
     ...config,
@@ -56,7 +62,7 @@ export function removeTailSlash(path: string) {
  * @example '/zh/a' -> '/en/a'
  */
 export function replaceLocaleInPath(
-  pagePath: string,
+  pathname: string,
   currentLocalePath: string,
   targetLocalePath: string
 ) {
@@ -64,11 +70,11 @@ export function replaceLocaleInPath(
   targetLocalePath = removeTailSlash(targetLocalePath);
 
   if (!currentLocalePath) {
-    return `${targetLocalePath}${pagePath}`;
+    return `${targetLocalePath}${pathname}`;
   }
 
   return (
-    pagePath.replace(new RegExp(`^${currentLocalePath}`), targetLocalePath) ||
+    pathname.replace(new RegExp(`^${currentLocalePath}`), targetLocalePath) ||
     '/'
   );
 }

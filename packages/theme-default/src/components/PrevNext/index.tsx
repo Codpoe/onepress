@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
+import { usePageState } from 'onepress/client';
 import { Link } from '../Link';
 import { ArrowLeft, ArrowRight } from '../Icons';
 import { useSidebar } from '../../hooks/useSidebar';
 import { SidebarItem } from '../../types';
-import { useThemeContext } from '../../context';
 
 const Item: React.FC<{ type: 'prev' | 'next'; item?: SidebarItem }> = ({
   type,
@@ -30,8 +30,8 @@ const Item: React.FC<{ type: 'prev' | 'next'; item?: SidebarItem }> = ({
 };
 
 export const PrevNext: React.FC = () => {
-  const { pagePath } = useThemeContext();
   const sidebar = useSidebar();
+  const { loadedPathname } = usePageState();
 
   const { prev, next } = useMemo<{
     prev?: SidebarItem;
@@ -57,7 +57,7 @@ export const PrevNext: React.FC = () => {
           break;
         }
 
-        if (items[i].link === pagePath) {
+        if (items[i].link === loadedPathname) {
           found = true;
           continue;
         }
@@ -74,7 +74,7 @@ export const PrevNext: React.FC = () => {
     }
 
     return { prev: _prev, next: _next };
-  }, [sidebar, pagePath]);
+  }, [sidebar, loadedPathname]);
 
   if (!prev && !next) {
     return null;

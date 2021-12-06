@@ -1,15 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { matchPath } from 'react-router-dom';
+import { useLocation, matchPath } from 'onepress/client';
 import { useSidebar } from '../../hooks/useSidebar';
+import { useThemeContext } from '../../context';
 import { Items } from './Items';
 import { Nav } from './Nav';
 import { SidebarItem } from './types';
 import styles from './style.module.less';
-import { useThemeContext } from '../../context';
 
 export const Sidebar: React.FC = () => {
-  const { pagePath, nav, sidebarOpen, setSidebarOpen, setHasSidebar } =
-    useThemeContext();
+  const { pathname } = useLocation();
+  const { nav, sidebarOpen, setSidebarOpen, setHasSidebar } = useThemeContext();
 
   const sidebar = useSidebar();
 
@@ -24,7 +24,7 @@ export const Sidebar: React.FC = () => {
       for (let i = 0; i < items.length; i++) {
         res.push(items[i]);
 
-        if (matchPath(items[i].link || '', pagePath)) {
+        if (matchPath(items[i].link || '', pathname)) {
           return true;
         }
 
@@ -39,7 +39,7 @@ export const Sidebar: React.FC = () => {
     find(sidebar);
 
     return res;
-  }, [pagePath, sidebar]);
+  }, [pathname, sidebar]);
 
   const [activeItems, setActiveItems] = useState<SidebarItem[]>(hitItems);
 
@@ -53,7 +53,7 @@ export const Sidebar: React.FC = () => {
   // close sidebar when path is changed
   useEffect(() => {
     setSidebarOpen(false);
-  }, [pagePath, setSidebarOpen]);
+  }, [pathname, setSidebarOpen]);
 
   useEffect(() => {
     setHasSidebar(Boolean(hasHit || nav?.length));

@@ -73,9 +73,16 @@ async function renderPages(siteConfig: SiteConfig, clientResult: RollupOutput) {
     chunk => chunk.type === 'chunk' && chunk.isEntry
   ) as OutputChunk;
 
-  const cssChunks = clientResult.output.filter(
-    chunk => chunk.type === 'asset' && chunk.fileName.endsWith('.css')
-  ) as OutputAsset[];
+  const cssChunks = (
+    clientResult.output.filter(
+      chunk => chunk.type === 'asset' && chunk.fileName.endsWith('.css')
+    ) as OutputAsset[]
+  )
+    .map(
+      cssChunk =>
+        `<link rel="stylesheet" href="${siteConfig.base}${cssChunk.fileName}" />`
+    )
+    .join('\n    ');
 
   // it is generated in building client bundle
   const manifest = require(path.resolve(
@@ -87,7 +94,10 @@ async function renderPages(siteConfig: SiteConfig, clientResult: RollupOutput) {
   const { render, pagesData } = require(path.resolve(
     siteConfig.tempDir,
     'entry.server.js'
-  ));
+  )) as {
+    render: (pagePath: string) => string;
+    pagesData: Record<string, Page>;
+  };
   const pagePaths = Object.keys(pagesData);
 
   console.log('pagePaths', pagePaths);
@@ -96,7 +106,7 @@ async function renderPages(siteConfig: SiteConfig, clientResult: RollupOutput) {
 
   try {
     await Promise.all(
-      pagePaths.map(async pagePath => {
+      Object.entries(pagesData).map(async ([pagePath, pageData]) => {
         // not support page with path param
         if (/\/:\w/.test(pagePath)) {
           return;
@@ -111,11 +121,19 @@ async function renderPages(siteConfig: SiteConfig, clientResult: RollupOutput) {
         const helmetData: HelmetData =
           require('react-helmet').Helmet.renderStatic();
 
-        const preloadLinks = getPreloadLinks(
-          siteConfig,
-          manifest,
-          pagesData[pagePath]
-        );
+        const pageChunk = clientResult.output.find(
+          chunk =>
+            chunk.type === 'chunk' &&
+            chunk.facadeModuleId?.endsWith(pageData.filePath)
+        ) as OutputChunk;
+
+        const preloadLinks = getPreloadLinks(siteConfig, entryChunk, pageChunk);
+
+        // for client hydrate
+        const ssrData = {
+          routePath: pagePath,
+          assetPath: `${siteConfig.base}${pageChunk.fileName}`,
+        };
 
         const html = `<!DOCTYPE html>
 <html ${helmetData.htmlAttributes.toString()}>
@@ -126,14 +144,12 @@ async function renderPages(siteConfig: SiteConfig, clientResult: RollupOutput) {
     ${helmetData.meta.toString()}
     ${helmetData.link.toString()}
     ${helmetData.style.toString()}
-    ${cssChunks.map(
-      cssChunk =>
-        `<link rel="stylesheet" href="${siteConfig.base}${cssChunk.fileName}" />`
-    )}
+    ${cssChunks}
     ${preloadLinks}
   </head>
   <body ${helmetData.bodyAttributes.toString()}>
     <div id="app">${appHtml}</div>
+    <script>window.__OP_SSR_DATA__ = ${JSON.stringify(ssrData)};</script>
     <script type="module" src="${siteConfig.base}${
           entryChunk.fileName
         }"></script>
@@ -160,14 +176,21 @@ async function renderPages(siteConfig: SiteConfig, clientResult: RollupOutput) {
 
 function getPreloadLinks(
   siteConfig: SiteConfig,
-  manifest: any,
-  pageData: Page
+  entryChunk: OutputChunk,
+  pageChunk: OutputChunk
 ) {
-  const preloadFiles: string[] = manifest[pageData.filePath] || [];
-
-  return preloadFiles
+  return Array.from(
+    new Set([
+      entryChunk.fileName,
+      ...entryChunk.imports,
+      ...entryChunk.dynamicImports,
+      pageChunk.fileName,
+      ...pageChunk.imports,
+      ...pageChunk.dynamicImports,
+    ])
+  )
     .map(file => {
-      const href = `${siteConfig.base}${file.replace(/^\//, '')}`;
+      const href = `${siteConfig.base}${file}`;
       return `<link rel="modulepreload" href="${href}">`;
     })
     .join('\n    ');

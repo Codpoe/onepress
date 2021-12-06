@@ -1,4 +1,5 @@
 import React from 'react';
+import { usePageState } from 'onepress/client';
 import { useThemeContext } from '../../context';
 import { Link } from '../Link';
 
@@ -50,6 +51,7 @@ function createEditLink(
 }
 
 export const UpdateInfo: React.FC = () => {
+  const { loadedPathname } = usePageState();
   const {
     currentPageData,
     repo,
@@ -80,7 +82,7 @@ export const UpdateInfo: React.FC = () => {
       ? new Date(currentPageData.meta.updatedTime).toLocaleString()
       : '';
 
-  if (!finalEditLink && !finalLastUpdated) {
+  if (!loadedPathname || (!finalEditLink && !finalLastUpdated)) {
     return null;
   }
 

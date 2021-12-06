@@ -59,15 +59,11 @@ export function createOnePressPlugin(
             },
             {
               find: /^react-router-dom$/,
-              replacement: require.resolve('react-router-dom'),
+              replacement: require.resolve('react-router-dom/index.js'),
             },
             {
               find: /^@mdx-js\/react$/,
               replacement: require.resolve('@mdx-js/react/dist/esm.js'),
-            },
-            {
-              find: 'react-helmet',
-              replacement: require.resolve('react-helmet'),
             },
             {
               find: THEME_MODULE_ID,
@@ -79,7 +75,7 @@ export function createOnePressPlugin(
           __HASH_ROUTER__: Boolean(siteConfig.useHashRouter),
         },
         optimizeDeps: {
-          include: ['react', 'react-dom', 'react-router-dom', 'react-helmet'],
+          include: ['react', 'react-dom'],
           exclude: ['onepress'],
         },
       };

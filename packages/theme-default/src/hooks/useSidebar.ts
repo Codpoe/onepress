@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
-import { matchPath, useLocation } from 'react-router-dom';
+import { useLocation, matchPath } from 'onepress/client';
 import { useThemeContext } from '../context';
 import { SidebarItem } from '../types';
 
 export function useSidebar() {
-  const { sidebar } = useThemeContext();
   const { pathname } = useLocation();
+  const { sidebar } = useThemeContext();
 
   return useMemo<SidebarItem[] | undefined>(() => {
     if (!sidebar) {
