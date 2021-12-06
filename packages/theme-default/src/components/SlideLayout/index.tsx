@@ -1,5 +1,5 @@
 import React, { useMemo, useRef } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'onepress/client';
 import { useThemeContext } from '../../context';
 import { useElementSize } from '../../hooks/useElementSize';
 import { useKeyDown } from '../../hooks/useKeyDown';

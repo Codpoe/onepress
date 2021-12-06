@@ -4,8 +4,7 @@ import { LocaleConfig, ThemeConfig } from './types';
 
 export interface ThemeContextValue extends ThemeConfig {
   pagesData: Record<string, PageData>;
-  currentPageData: PageData | null;
-  pagePath: string;
+  currentPageData: PageData | undefined;
   locales: LocaleConfig[];
   currentLocale?: LocaleConfig;
   homePath?: string;

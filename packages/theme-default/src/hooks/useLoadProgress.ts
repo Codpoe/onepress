@@ -1,17 +1,20 @@
 import { useEffect } from 'react';
+import { usePageState } from 'onepress/client';
 import nProgress from 'nprogress';
 import '../styles/nprogress.less';
-import { useThemeContext } from '../context';
 
-// TODO: load progress
+/**
+ * show nprogress while page loading
+ */
 export function useLoadProgress() {
-  const { pagePath } = useThemeContext();
+  const { loading } = usePageState();
 
   useEffect(() => {
-    nProgress.done();
-
-    return () => {
+    if (loading) {
       nProgress.start();
-    };
-  }, [pagePath]);
+      return () => {
+        nProgress.done();
+      };
+    }
+  }, [loading]);
 }

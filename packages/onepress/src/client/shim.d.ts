@@ -1,14 +1,13 @@
 declare module '/@onepress/routes*' {
   import * as React from 'react';
 
-  interface Route {
+  interface PageRoute {
     path: string;
     component: React.ComponentType<any>;
-    exact: boolean;
     children?: Route[];
   }
 
-  const routes: Route[];
+  const routes: PageRoute[];
 
   export default routes;
 }
@@ -44,11 +43,7 @@ declare module '/@onepress/theme*' {
   type PageStatus = 'pending' | 'fallback' | 'resolve';
 
   const theme: {
-    Layout: ComponentType<{
-      themeConfig: any;
-      pagesData: Record<string, PageData>;
-      pagePath: pagePath;
-    }>;
+    Layout: ComponentType<any>;
     NotFound?: ComponentType<any>;
     mdxComponents?: Record<string, ComponentType<any>>;
   };

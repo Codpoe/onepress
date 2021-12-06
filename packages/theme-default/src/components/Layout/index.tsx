@@ -1,14 +1,20 @@
 import React, { useMemo, useState } from 'react';
-import { matchPath } from 'react-router-dom';
-import { PageData, Helmet } from 'onepress/client';
+import {
+  useThemeConfig,
+  usePagesData,
+  useLocation,
+  Helmet,
+  matchPath,
+} from 'onepress/client';
 import { ThemeContext, useThemeContext } from '../../context';
 import { ThemeConfig } from '../../types';
 import { getLocales, mergeThemeConfig, replaceLocaleInPath } from '../../utils';
+import { useLoadProgress } from '../../hooks/useLoadProgress';
+import { useScrollToTop } from '../../hooks/useScrollToTop';
 import { Header } from '../Header';
 import { Sidebar } from '../Sidebar';
 import { DocLayout } from '../DocLayout';
 import { HomeLayout } from '../HomeLayout';
-import { useScrollToTop } from '../../hooks/useScrollToTop';
 
 import 'virtual:windi.css';
 import '../../styles/base.less';
@@ -29,25 +35,25 @@ const InternalLayout: React.FC = () => {
   );
 };
 
-export const Layout: React.FC<{
-  themeConfig: ThemeConfig;
-  pagesData: Record<string, PageData>;
-  pagePath: string;
-}> = ({ themeConfig = {}, pagesData = {}, pagePath }) => {
+export const Layout: React.FC = () => {
+  const themeConfig = useThemeConfig<ThemeConfig>();
+  const pagesData = usePagesData();
+  const { pathname } = useLocation();
+
   const [hasSidebar, setHasSidebar] = useState<boolean | undefined>(undefined);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const finalThemeConfig = useMemo(
-    () => mergeThemeConfig(themeConfig, pagePath),
-    [themeConfig, pagePath]
+    () => mergeThemeConfig(themeConfig, pathname),
+    [themeConfig, pathname]
   );
 
   const currentPageData = useMemo(() => {
     const found = Object.keys(pagesData)
       .sort((a, b) => b.length - a.length)
-      .find(item => matchPath(item, pagePath));
-    return (found && pagesData[found]) || null;
-  }, [pagesData, pagePath]);
+      .find(item => matchPath(item, pathname));
+    return found ? pagesData[found] : undefined;
+  }, [pagesData, pathname]);
 
   const locales = useMemo(() => getLocales(themeConfig), [themeConfig]);
 
@@ -77,7 +83,7 @@ export const Layout: React.FC<{
         items: locales.map(item => ({
           text: item.localeText,
           link: replaceLocaleInPath(
-            pagePath,
+            pathname,
             currentLocale.localePath,
             item.localePath
           ),
@@ -94,7 +100,7 @@ export const Layout: React.FC<{
     }
 
     return res;
-  }, [finalThemeConfig, locales, currentLocale, pagePath]);
+  }, [finalThemeConfig, locales, currentLocale, pathname]);
 
   const siteTitle = useMemo(() => {
     const pageTitle = currentPageData?.meta?.title;
@@ -105,8 +111,9 @@ export const Layout: React.FC<{
     return pageTitle || finalThemeConfig.title;
   }, [finalThemeConfig, currentPageData]);
 
-  // scroll to top while page change
-  useScrollToTop(pagePath);
+  useLoadProgress();
+
+  useScrollToTop();
 
   return (
     <>
@@ -129,7 +136,6 @@ export const Layout: React.FC<{
           nav: finalNav,
           pagesData,
           currentPageData,
-          pagePath,
           locales,
           currentLocale,
           homePath,

@@ -1,7 +1,7 @@
-export interface Route {
+export interface PageRoute {
   path: string;
   component: any;
-  children?: Route[];
+  children?: PageRoute[];
 }
 
 export interface PageData {
@@ -12,4 +12,8 @@ export interface PageData {
   meta: Record<string, any>;
 }
 
-export type PageStatus = 'pending' | 'fallback' | 'resolve';
+export interface PageState {
+  loading: boolean;
+  error?: Error;
+  loadedPathname?: string;
+}

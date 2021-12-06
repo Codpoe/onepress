@@ -12,6 +12,7 @@ import { Page, SiteConfig } from './types';
 async function bundle(siteConfig: SiteConfig, buildOptions: BuildOptions) {
   const resolveViteConfig = (ssr: boolean): InlineConfig => {
     return {
+      mode: 'development',
       configFile: false,
       root: siteConfig.root,
       base: siteConfig.base,
@@ -103,9 +104,9 @@ async function renderPages(siteConfig: SiteConfig, clientResult: RollupOutput) {
         }
 
         // disable console while rendering
-        const recoverConsole = trapConsole();
+        // const recoverConsole = trapConsole();
         const appHtml = render(pagePath);
-        recoverConsole();
+        // recoverConsole();
 
         // get helmet data after render
         const helmetData: HelmetData =

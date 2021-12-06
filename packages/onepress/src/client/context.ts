@@ -1,15 +1,19 @@
 import { createContext, useContext, ComponentType } from 'react';
-import { PageStatus } from './types';
+import { useSnapshot } from 'valtio';
+import { PageState } from './types';
 
-export interface AppContextValue {
+export interface AppState {
   NotFound?: ComponentType<any>;
-  onStatusChange: (status: PageStatus) => void;
+  pageState: PageState;
 }
 
-export const AppContext = createContext<AppContextValue>({
-  onStatusChange: () => null,
+export const AppStateContext = createContext<AppState>({
+  pageState: {
+    loading: false,
+  },
 });
 
-export function useAppContext() {
-  return useContext(AppContext);
-}
+export const useAppState = (): [snap: AppState, appState: AppState] => {
+  const appState = useContext(AppStateContext);
+  return [useSnapshot(appState) as AppState, appState];
+};
