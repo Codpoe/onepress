@@ -13,7 +13,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install",
     "ver": "pnpm -r --filter onepress-theme-default --filter onepress exec npm version",
-    "pub": "pnpm -r --filter onepress-theme-default --filter onepress publish"
+    "pub": "pnpm -r --filter onepress-theme-default --filter onepress publish",
+    "ci-site": "npx pnpm --filter onepress run build && npx pnpm --filter site run build"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
