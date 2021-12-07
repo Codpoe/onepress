@@ -12,7 +12,7 @@ const themeIndexFilePath = path.resolve(
 
 // compile windicss, generate `windi.css` file
 execa.commandSync(
-  'windicss src/client/theme-default/**/*.{ts,tsx} -t -b -f src/client/theme-default/windi.config.js -o dist/client/theme-default/windi.css',
+  'windicss "src/client/theme-default/**/*.tsx" -i -t -b -z -f windi.config.js -o dist/client/theme-default/windi.css',
   { cwd: path.resolve(__dirname, '..') }
 );
 

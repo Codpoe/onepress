@@ -80,7 +80,7 @@ export function createOnePressPlugin(
         },
         optimizeDeps: {
           include: ['react', 'react-dom', 'react-router-dom', 'valtio'],
-          exclude: ['onepress', 'onepress/client'],
+          exclude: ['onepress'],
         },
       };
 

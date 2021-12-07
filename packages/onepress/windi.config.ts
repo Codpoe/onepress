@@ -1,4 +1,4 @@
-const { defineConfig } = require('windicss/helpers');
+import { defineConfig } from 'windicss/helpers';
 
 const colorVars = [
   'c-brand',
@@ -20,9 +20,9 @@ const colorVars = [
   'code-line-number',
 ];
 
-module.exports = defineConfig({
+const config = defineConfig({
   extract: {
-    include: ['src/**/*.{js,ts,jsx,tsx}'],
+    include: ['src/theme/**/*.{js,ts,jsx,tsx}'],
   },
   darkMode: 'class',
   theme: {
@@ -30,7 +30,7 @@ module.exports = defineConfig({
       colors: colorVars.reduce((acc, cur) => {
         acc[cur] = `var(--${cur})`;
         return acc;
-      }, {}),
+      }, {} as Record<string, string>),
     },
   },
   shortcuts: {
@@ -43,3 +43,5 @@ module.exports = defineConfig({
     'btn-text': 'btn-base text-c-text hover:text-c-brand',
   },
 });
+
+export default config;

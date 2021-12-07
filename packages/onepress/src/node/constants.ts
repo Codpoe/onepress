@@ -28,10 +28,7 @@ export const TS_INFO_MODULE_ID_PREFIX = '/@onepress/ts-info/';
 // theme
 export const THEME_MODULE_ID = '/@onepress/theme';
 export const THEME_CONFIG_MODULE_ID = '/@onepress/theme-config';
-export const DEFAULT_THEME_PATH = path.join(
-  DIST_CLIENT_PATH,
-  'theme-default/index.js'
-);
+export const DEFAULT_THEME_PATH = path.join(__dirname, '../theme/index.es.js');
 
 export const SLIDE_MODULE_ID_PREFIX = '/@onepress/slide/';
 

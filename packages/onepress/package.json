@@ -7,7 +7,7 @@
   "exports": {
     ".": "./dist/node/index.js",
     "./client": "./dist/client/index.js",
-    "./theme": "./dist/client/theme-default.js",
+    "./theme": "./dist/theme/index.es.js",
     "./*": "./*"
   },
   "repository": {
@@ -29,10 +29,10 @@
     "dev": "run-p -l dev:*",
     "dev:node": "tsc -w -p src/node",
     "dev:client": "tsc -w -p src/client",
-    "build": "rimraf dist && npm-run-all -l -p build:node build:client -s build:style",
+    "build": "rimraf dist && run-p -l build:*",
     "build:node": "tsc -p src/node",
     "build:client": "tsc -p src/client",
-    "build:style": "node scripts/buildStyle.js"
+    "build:theme": "vite build && node scripts/buildThemeTypes.js"
   },
   "dependencies": {
     "@docsearch/css": "^3.0.0-alpha.41",

@@ -8,6 +8,7 @@ import { resolveConfig } from './config';
 import { createOnePressPlugin } from './plugins';
 import { trapConsole } from './utils';
 import { Page, SiteConfig } from './types';
+import { CSR_ENTRY_PATH, SSR_ENTRY_PATH } from './constants';
 
 async function bundle(siteConfig: SiteConfig, buildOptions: BuildOptions) {
   const resolveViteConfig = (ssr: boolean): InlineConfig => {
@@ -35,11 +36,7 @@ async function bundle(siteConfig: SiteConfig, buildOptions: BuildOptions) {
         ssrManifest: !ssr,
         rollupOptions: {
           ...buildOptions.rollupOptions,
-          input: require.resolve(
-            ssr
-              ? path.resolve(__dirname, '../client/entry.server.js')
-              : path.resolve(__dirname, '../client/entry.client.js')
-          ),
+          input: require.resolve(ssr ? SSR_ENTRY_PATH : CSR_ENTRY_PATH),
         },
       },
     };

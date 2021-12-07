@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "lib": ["ESNext", "DOM"],
+    "jsx": "react",
+    "outDir": "../../dist/theme/dts",
+    "types": ["vite/client", "../client/shim"],
+    "baseUrl": ".",
+    "paths": {
+      "onepress/client": ["../client/index.ts"]
+    }
+  }
+}
