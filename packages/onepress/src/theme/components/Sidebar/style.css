@@ -1,0 +1,5 @@
+@media (min-width: 768px) {
+  .sidebar {
+    max-height: calc(100vh - 8rem);
+  }
+}

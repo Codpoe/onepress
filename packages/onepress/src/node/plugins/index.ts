@@ -43,7 +43,7 @@ export function createOnePressPlugin(
             // make sure it always use the same react dependency that comes with onepress itself
             {
               find: /^react$/,
-              replacement: require.resolve('react'),
+              replacement: require.resolve('react/index.js'),
             },
             {
               find: /^react\/jsx-dev-runtime$/,
@@ -55,7 +55,7 @@ export function createOnePressPlugin(
             },
             {
               find: /^react-dom$/,
-              replacement: require.resolve('react-dom'),
+              replacement: require.resolve('react-dom/index.js'),
             },
             {
               find: /^react-router-dom$/,
@@ -64,6 +64,10 @@ export function createOnePressPlugin(
             {
               find: /^@mdx-js\/react$/,
               replacement: require.resolve('@mdx-js/react/dist/esm.js'),
+            },
+            {
+              find: /^valtio$/,
+              replacement: require.resolve('valtio'),
             },
             {
               find: THEME_MODULE_ID,
@@ -75,7 +79,7 @@ export function createOnePressPlugin(
           __HASH_ROUTER__: Boolean(siteConfig.useHashRouter),
         },
         optimizeDeps: {
-          include: ['react', 'react-dom'],
+          include: ['react', 'react-dom', 'react-router-dom', 'valtio'],
           exclude: ['onepress'],
         },
       };

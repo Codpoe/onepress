@@ -4,11 +4,11 @@
     "module": "ESNext",
     "lib": ["ESNext", "DOM"],
     "jsx": "react",
-    "outDir": "../../dist/client",
-    "types": ["vite/client", "../../shim"],
+    "outDir": "../../dist/theme/dts",
+    "types": ["vite/client", "../client/shim"],
     "baseUrl": ".",
     "paths": {
-      "onepress/client": ["index.ts"]
+      "onepress/client": ["../client/index.ts"]
     }
   }
 }

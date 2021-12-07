@@ -1,0 +1,176 @@
+.markdown-body li > ul,
+.markdown-body li > ol {
+  margin: 0;
+}
+
+.markdown-body blockquote p {
+  color: var(--c-text-light);
+}
+
+pre[class*='language-'],
+[class*='language-'] code {
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+  color: #555;
+}
+
+.token.comment,
+.token.block-comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: #999;
+}
+
+.token.punctuation {
+  color: #666;
+}
+
+.token.tag,
+.token.attr-name,
+.token.namespace,
+.token.deleted {
+  color: #dc9656;
+}
+
+.token.function-name {
+  color: #7cafc2;
+}
+
+.token.boolean,
+.token.number,
+.token.function {
+  color: #e7813d;
+}
+
+.token.property,
+.token.class-name,
+.token.constant,
+.token.symbol {
+  color: #d49c24;
+}
+
+.token.selector,
+.token.important,
+.token.atrule,
+.token.keyword,
+.token.builtin {
+  color: #c073c2;
+}
+
+.token.string,
+.token.char,
+.token.attr-value,
+.token.regex,
+.token.variable {
+  color: #55b379;
+}
+
+.token.operator,
+.token.entity,
+.token.url {
+  color: #32b4b2;
+}
+
+.token.important,
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.inserted {
+  color: green;
+}
+
+html.dark pre[class*='language-'],
+html.dark [class*='language-'] code {
+  color: #eee;
+}
+
+html.dark .token.comment,
+html.dark .token.block-comment,
+html.dark .token.prolog,
+html.dark .token.doctype,
+html.dark .token.cdata {
+  color: #999;
+}
+
+html.dark .token.punctuation {
+  color: #ccc;
+}
+
+html.dark .token.tag,
+html.dark.token.attr-name,
+html.dark .token.namespace,
+html.dark .token.deleted {
+  color: #e2777a;
+}
+
+html.dark .token.boolean,
+html.dark .token.number,
+html.dark .token.function {
+  color: #f08d49;
+}
+
+html.dark .token.property,
+html.dark .token.class-name,
+html.dark .token.constant,
+html.dark .token.symbol {
+  color: #f8c555;
+}
+
+html.dark .token.selector,
+html.dark .token.important,
+html.dark .token.atrule,
+html.dark .token.keyword,
+html.dark .token.builtin {
+  color: #cc99cd;
+}
+
+html.dark .token.string,
+html.dark .token.char,
+html.dark .token.attr-value,
+html.dark .token.regex,
+html.dark .token.variable {
+  color: #7ec699;
+}
+
+html.dark .token.operator,
+html.dark .token.entity,
+html.dark .token.url {
+  color: #67cdcc;
+}
+
+html.dark .token.important,
+html.dark .token.bold {
+  font-weight: bold;
+}
+
+html.dark .token.italic {
+  font-style: italic;
+}
+
+html.dark .token.entity {
+  cursor: help;
+}
+
+html.dark .token.inserted {
+  color: green;
+}
