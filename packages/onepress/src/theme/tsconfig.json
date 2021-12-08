@@ -4,7 +4,7 @@
     "module": "ESNext",
     "lib": ["ESNext", "DOM"],
     "jsx": "react",
-    "outDir": "../../dist/theme/dts",
+    "outDir": "../../dist",
     "types": ["vite/client", "../client/shim"],
     "baseUrl": ".",
     "paths": {

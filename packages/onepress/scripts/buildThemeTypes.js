@@ -3,7 +3,9 @@ const execa = require('execa');
 const fs = require('fs-extra');
 
 // tsc
-execa.commandSync('tsc -p src/theme --declaration --emitDeclarationOnly');
+execa.commandSync(
+  'tsc -p src/theme --outDir dist/theme/dts --declaration --emitDeclarationOnly'
+);
 
 // remove css import
 const dtsPath = path.resolve(__dirname, '../dist/theme/dts');

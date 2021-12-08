@@ -27,7 +27,7 @@ export const HomeLayout: React.FC = () => {
               <img
                 src={heroImage}
                 alt="hero"
-                className="max-w-full max-h-64 mx-auto mb-6 <sm:(max-h-52 mb-5)"
+                className="max-w-full max-h-64 mx-auto mb-6 <sm:max-h-52 <sm:mb-5"
               />
             ) : (
               <div className="mx-auto mb-6 text-[170px] leading-normal <sm:mb-5">
@@ -35,21 +35,21 @@ export const HomeLayout: React.FC = () => {
               </div>
             ))}
           {heroText && (
-            <h1 className="my-7 text-center text-5xl font-semibold <sm:(text-3xl my-5)">
+            <h1 className="my-7 text-center text-5xl font-semibold <sm:text-3xl <sm:my-5">
               {heroText}
             </h1>
           )}
           {tagline && (
-            <p className="my-7 text-center text-2xl text-c-text-lighter <sm:(text-xl my-5)">
+            <p className="my-7 text-center text-2xl text-c-text-lighter <sm:text-xl <sm:my-5">
               {tagline}
             </p>
           )}
           {actions && (
-            <div className="flex justify-center my-7 space-x-5 <sm:(my-5 space-x-4)">
+            <div className="flex justify-center my-7 space-x-5 <sm:my-5 <sm:space-x-4">
               {actions.map((action, index) => (
                 <Link key={index} to={action.link}>
                   <button
-                    className={`h-14 px-6 text-lg font-medium <sm:(h-12 px-6 text-base) ${
+                    className={`h-14 px-6 text-lg font-medium <sm:h-12 <sm:px-6 <sm:text-base ${
                       index === 0 ? 'btn-primary' : 'btn-hollow'
                     }`}
                   >

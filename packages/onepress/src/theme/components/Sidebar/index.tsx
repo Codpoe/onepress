@@ -66,7 +66,7 @@ export const Sidebar: React.FC = () => {
   return (
     <>
       <aside
-        className={`sidebar border-r border-c-divider overflow-y-auto <md:(block w-64 px-4 py-3 fixed top-16 right-full bottom-0 z-20 bg-c-bg transform transition-transform) md:(w-56 mr-9 sticky top-24) ${
+        className={`sidebar border-r border-c-divider overflow-y-auto md:w-56 md:mr-9 md:sticky md:top-24 <md:block <md:w-64 <md:px-4 <md:py-3 <md:fixed <md:top-16 <md:right-full <md:bottom-0 <md:z-20 <md:bg-c-bg <md:transform <md:transition-transform ${
           sidebarOpen ? '<md:translate-x-full' : ''
         } ${hasHit ? 'block' : 'hidden'}`}
       >
