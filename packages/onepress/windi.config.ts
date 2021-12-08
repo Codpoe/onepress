@@ -22,9 +22,12 @@ const colorVars = [
 
 const config = defineConfig({
   extract: {
-    include: ['src/theme/**/*.{js,ts,jsx,tsx}'],
+    include: ['**/*.{js,ts,jsx,tsx}'],
   },
   darkMode: 'class',
+  preflight: {
+    includeAll: true,
+  },
   theme: {
     extend: {
       colors: colorVars.reduce((acc, cur) => {

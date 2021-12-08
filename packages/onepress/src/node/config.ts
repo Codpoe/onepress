@@ -3,7 +3,11 @@ import fs from 'fs-extra';
 import jiti from 'jiti';
 import pick from 'lodash/pick';
 import { UserConfig, SiteConfig } from './types';
-import { DEFAULT_THEME_PATH, POSSIBLE_CONFIG_FILES } from './constants';
+import {
+  DEFAULT_THEME_PATH,
+  DEFAULT_THEME_WINDI_CONFIG_PATH,
+  POSSIBLE_CONFIG_FILES,
+} from './constants';
 import { ResolvedSrcConfig, SrcConfig, SrcObject } from '.';
 import { ensureLeadingSlash, removeTrailingSlash, slash } from './utils';
 
@@ -107,6 +111,8 @@ export function resolveConfig(root: string): SiteConfig {
 
   const base = userConfig.vite?.base || '/';
   const outDir = path.resolve(root, userConfig.vite?.build?.outDir || 'dist');
+  const themePath = resolveThemePath(root);
+  const useDefaultTheme = themePath === DEFAULT_THEME_PATH;
 
   return {
     ...userConfig,
@@ -115,7 +121,7 @@ export function resolveConfig(root: string): SiteConfig {
     base,
     outDir,
     tempDir: path.resolve(outDir, '.temp'),
-    themePath: resolveThemePath(root),
+    themePath,
     themeConfig: {
       title: 'OnePress',
       description: 'An OnePress site',
@@ -131,6 +137,10 @@ export function resolveConfig(root: string): SiteConfig {
     },
     windicss: {
       ...userConfig.windicss,
+      // if use default theme, inject windicss config of default theme
+      config: useDefaultTheme
+        ? DEFAULT_THEME_WINDI_CONFIG_PATH
+        : userConfig.windicss?.config,
       scan: {
         include: ['**/*.{md,mdx,js,jsx,ts,tsx}'],
         ...(typeof userConfig.windicss?.scan === 'boolean'

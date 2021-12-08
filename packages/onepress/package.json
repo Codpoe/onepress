@@ -29,6 +29,8 @@
     "dev": "run-p -l dev:*",
     "dev:node": "tsc -w -p src/node",
     "dev:client": "tsc -w -p src/client",
+    "dev:theme": "tsc -w -p src/theme",
+    "dev:watch": "node scripts/watchAndCopy.js",
     "build": "rimraf dist && run-p -l build:*",
     "build:node": "tsc -p src/node",
     "build:client": "tsc -p src/client",
@@ -69,7 +71,7 @@
     "vite": "^2.6.14",
     "vite-plugin-mdx": "^3.5.6",
     "vite-plugin-react-pages": "^3.0.14",
-    "vite-plugin-windicss": "^1.2.4",
+    "vite-plugin-windicss": "^1.5.4",
     "windicss": "^3.2.1"
   },
   "devDependencies": {
