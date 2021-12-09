@@ -11,8 +11,10 @@ export function useLoadProgress() {
 
   useEffect(() => {
     if (loading) {
-      nProgress.start();
+      // delay displaying progress bar to avoid flashing
+      const timer = setTimeout(() => nProgress.start(), 200);
       return () => {
+        clearTimeout(timer);
         nProgress.done();
       };
     }
