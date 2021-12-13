@@ -14,7 +14,7 @@ const ItemLink: React.FC<{
         {...item}
         to={item.link}
         color={false}
-        className={`block h-8 hover:text-c-brand ${
+        className={`block h-8 truncate hover:text-c-brand ${
           inside ? 'pl-3 -ml-px border-l' : ''
         } ${hit ? 'text-c-brand border-c-brand' : 'border-transparent'}`}
       >

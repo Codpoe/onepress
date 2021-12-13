@@ -163,7 +163,7 @@ export const Toc: React.FC = () => {
         return (
           <Link
             key={index}
-            className={`block leading-7 text-sm border-l -ml-px ${
+            className={`block truncate leading-7 text-sm border-l -ml-px ${
               isHit ? 'border-c-brand' : 'border-transparent'
             } ${
               isActive
