@@ -1,6 +1,5 @@
 import { UserConfig as ViteConfig } from 'vite';
 import { Options as ReactOptions } from '@vitejs/plugin-react';
-import { UserOptions as WindiCssOptions } from 'vite-plugin-windicss';
 import { Options as IconsOptions } from 'unplugin-icons';
 
 export interface Page {
@@ -41,6 +40,20 @@ export interface MdxOptions {
   rehypePlugins?: any[];
 }
 
+export interface TailwindOptions {
+  [key: string]: any;
+  content?: string[];
+  darkMode?: 'media' | 'class';
+  theme?: {
+    extend?: {
+      screens?: any;
+      maxWidth?: any;
+      colors?: any;
+    };
+  };
+  plugins?: any[];
+}
+
 export interface UserConfig<ThemeConfig = any> {
   /**
    * Theme config
@@ -69,9 +82,10 @@ export interface UserConfig<ThemeConfig = any> {
    */
   mdx?: MdxOptions;
   /**
-   * Options to pass on to `vite-plugin-windicss`
+   * tailwindcss options.
+   * @see https://tailwindcss.com/docs/configuration
    */
-  windicss?: WindiCssOptions;
+  tailwind?: TailwindOptions;
   /**
    * Options to pass on to `unplugin-icons`
    */
@@ -87,7 +101,7 @@ export interface SiteConfig<ThemeConfig = any> extends UserConfig<ThemeConfig> {
   themePath: string;
   themeConfig: ThemeConfig;
   src: ResolvedSrcConfig;
-  windicss: WindiCssOptions;
+  tailwind: TailwindOptions;
   icons: IconsOptions;
 }
 

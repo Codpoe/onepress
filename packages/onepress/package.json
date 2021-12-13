@@ -29,12 +29,11 @@
     "dev": "run-p -l dev:*",
     "dev:node": "tsc -w -p src/node",
     "dev:client": "tsc -w -p src/client",
-    "dev:theme": "tsc -w -p src/theme",
-    "dev:watch": "node scripts/watchAndCopy.js",
+    "dev:theme": "node scripts/copyTheme.js -w",
     "build": "rimraf dist && run-p -l build:*",
     "build:node": "tsc -p src/node",
     "build:client": "tsc -p src/client",
-    "build:theme": "vite build && node scripts/buildThemeTypes.js"
+    "build:theme": "node scripts/copyTheme.js"
   },
   "dependencies": {
     "@docsearch/css": "^3.0.0-alpha.41",
@@ -43,6 +42,7 @@
     "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
     "@vitejs/plugin-react": "^1.0.8",
+    "autoprefixer": "^10.4.0",
     "cac": "^6.7.3",
     "chalk": "^4.1.1",
     "chokidar": "^3.5.2",
@@ -59,6 +59,7 @@
     "nprogress": "^0.2.0",
     "ora": "^5.4.1",
     "polka": "^0.5.2",
+    "postcss": "^8.4.4",
     "prism-react-renderer": "^1.2.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -66,6 +67,7 @@
     "react-router-dom": "^6.0.2",
     "remark-slug": "^6.0.0",
     "sirv": "^1.0.12",
+    "tailwindcss": "^3.0.1",
     "unplugin-icons": "^0.12.18",
     "valtio": "^1.2.7",
     "vite": "^2.6.14",

@@ -11,16 +11,24 @@ import './style.css';
 
 export const DocLayout: React.FC = () => {
   return (
-    <div className="max-w-screen-md mx-auto relative">
-      <Mdx className="pb-8">
-        <Page
-          fallback={<Loading className="text-xl" />}
-          timeout={3000}
-          fallbackMinMs={300}
-        />
-      </Mdx>
-      <UpdateInfo />
-      <PrevNext />
+    <div className="block xl:flex">
+      <div className="flex-auto max-w-screen-md mx-auto pt-8 pb-10">
+        <Mdx className="pb-8">
+          <Page
+            fallback={<Loading className="text-xl" />}
+            timeout={3000}
+            fallbackMinMs={300}
+          />
+        </Mdx>
+        <UpdateInfo />
+        <PrevNext />
+      </div>
+      {/* disable toc while using hash router */}
+      {!__HASH_ROUTER__ && (
+        <div className="hidden xl:block shrink-0 w-64 h-[calc(100vh-4rem)] py-8 ml-8 overflow-y-auto sticky top-16">
+          <Toc />
+        </div>
+      )}
       {/* <Page>
         {({ pathname, element, loading }) => {
           if (element && loading) {
@@ -46,12 +54,6 @@ export const DocLayout: React.FC = () => {
           );
         }}
       </Page> */}
-      {/* disable toc while using hash router */}
-      {!__HASH_ROUTER__ && (
-        <div className="absolute top-24 bottom-0 left-full hidden 2xl:block">
-          <Toc />
-        </div>
-      )}
     </div>
   );
 };

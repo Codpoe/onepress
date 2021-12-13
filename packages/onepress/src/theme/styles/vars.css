@@ -1,28 +1,28 @@
-// Based on VuePress theme
+/* Based on VuePress theme */
 :root {
-  // brand colors
+  /* brand colors */
   --c-brand: #3eaf7c;
   --c-brand-light: #4abf8a;
 
-  // background colors
+  /* background colors */
   --c-bg: #ffffff;
   --c-bg-light: #f3f4f5;
   --c-bg-lighter: #eeeeee;
   --c-bg-nav: var(--c-bg);
   --c-bg-sidebar: var(--c-bg);
 
-  // text colors
+  /* text colors */
   --c-text: #2c3e50;
   --c-text-light: #476582;
   --c-text-lighter: #90a4b7;
   --c-text-lightest: #9cafc0;
   --c-text-accent: var(--c-brand);
 
-  // divider colors
+  /* divider colors */
   --c-divider: #eaecef;
   --c-divider-light: #dadde0;
 
-  // code block
+  /* code block */
   --code-bg: #f9fafb;
   --code-highlight-bg: #ebeef1;
   --code-line-number: #a1a1a1;
@@ -45,26 +45,26 @@
 }
 
 html.dark {
-  // brand colors
+  /* brand colors */
   --c-brand: #3aa675;
   --c-brand-light: #349469;
 
-  // background colors
+  /* background colors */
   --c-bg: #22272e;
   --c-bg-light: #2f363f;
   --c-bg-lighter: #262c34;
 
-  // text colors
+  /* text colors */
   --c-text: #adbac7;
   --c-text-light: #96a7b7;
   --c-text-lighter: #8b9eb0;
   --c-text-lightest: #7d8e9e;
 
-  // divider colors
+  /* divider colors */
   --c-divider: #3e4c5a;
   --c-divider-light: #434f5c;
 
-  // code block
+  /* code block */
   --code-bg: #282c34;
   --code-highlight-bg: #3d424d;
   --code-line-number: #9e9e9e;

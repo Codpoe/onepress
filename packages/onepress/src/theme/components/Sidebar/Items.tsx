@@ -3,6 +3,27 @@ import { Link } from '../Link';
 import { ChevronRight } from '../Icons';
 import { SidebarItem } from './types';
 
+const ItemLink: React.FC<{
+  item: SidebarItem;
+  inside: boolean;
+  hit: boolean;
+}> = ({ item, inside, hit }) => {
+  return (
+    <li>
+      <Link
+        {...item}
+        to={item.link}
+        color={false}
+        className={`block h-8 hover:text-c-brand ${
+          inside ? 'pl-3 -ml-px border-l' : ''
+        } ${hit ? 'text-c-brand border-c-brand' : 'border-transparent'}`}
+      >
+        {item.text}
+      </Link>
+    </li>
+  );
+};
+
 export interface ItemsProps {
   items: SidebarItem[];
   hitItems: SidebarItem[];
@@ -77,7 +98,58 @@ export const Items: React.FC<ItemsProps> = props => {
 
   return (
     <div
-      className={`${
+      className={`text-sm leading-8 font-medium text-c-text-light overflow-y-hidden transition-all 
+      ${inside ? 'mt-2 ml-1.5' : ''}
+      ${inside && !expanded ? '!h-0 !mt-0 opacity-0' : ''}`}
+      style={{ height: inside && height ? `${height}px` : 'auto' }}
+    >
+      <ul
+        ref={elRef}
+        className={`space-y-2  ${inside ? 'border-l border-l-c-divider' : ''}`}
+      >
+        {items.map((item, index) => {
+          const hit = hitItems.includes(item);
+
+          if (item.items) {
+            const active = activeItems.includes(item);
+
+            return (
+              <li key={index}>
+                <div
+                  className={`flex justify-between items-center h-8 pr-1 cursor-pointer hover:text-c-brand ${
+                    inside ? 'pl-3 -ml-px border-l' : ''
+                  } ${
+                    hit ? 'text-c-brand border-c-current' : 'border-transparent'
+                  }`}
+                  onClick={() => toggleExpand(item)}
+                >
+                  <span className="w-full truncate">{item.text}</span>
+                  <ChevronRight
+                    className={`ml-2 text-lg transition-transform ${
+                      active ? 'rotate-90' : ''
+                    }`}
+                  />
+                </div>
+                <Items
+                  items={item.items}
+                  hitItems={hitItems}
+                  activeItems={activeItems}
+                  inside
+                  expanded={active}
+                  setActiveItems={setActiveItems}
+                />
+              </li>
+            );
+          }
+          return <ItemLink key={index} item={item} inside={inside} hit={hit} />;
+        })}
+      </ul>
+    </div>
+  );
+
+  return (
+    <div
+      className={`text-sm ${
         inside
           ? 'ml-[7px] border-l border-c-divider transition-all overflow-hidden'
           : ''

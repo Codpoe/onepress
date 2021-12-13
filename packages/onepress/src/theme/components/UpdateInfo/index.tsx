@@ -2,6 +2,7 @@ import React from 'react';
 import { usePageState } from 'onepress/client';
 import { useThemeContext } from '../../context';
 import { Link } from '../Link';
+import { Pencil } from '../Icons';
 
 /**
  * Based on https://github.com/vuejs/vuepress/blob/master/packages/%40vuepress/theme-default/components/PageEdit.vue
@@ -90,10 +91,11 @@ export const UpdateInfo: React.FC = () => {
     <div className="flex <sm:flex-col <sm:space-y-2 sm:justify-between sm:items-center sm:space-x-8 py-4">
       {finalEditLink && (
         <Link
-          className="font-medium text-c-text-light hover:text-c-brand transition-colors"
+          className="flex items-center font-medium text-c-text-light hover:text-c-brand transition-colors"
           to={finalEditLink}
           color={false}
         >
+          <Pencil className="mr-2" />
           {editLinkText}
         </Link>
       )}

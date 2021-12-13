@@ -31,7 +31,7 @@ export const Nav: React.FC = () => {
   }
 
   return (
-    <ul className="mb-4 pb-4 border-b border-c-divider leading-9 hidden <md:block">
+    <ul className="mb-4 pb-4 border-b border-c-divider leading-9 lg:hidden">
       {nav.map((item, index) => {
         if (item.items) {
           const isOpen = open.includes(item);
@@ -57,7 +57,7 @@ export const Nav: React.FC = () => {
                         {...subItem}
                         to={subItem.link}
                         color={false}
-                        className="w-full pl-4"
+                        className="block pl-4"
                       >
                         {subItem.text}
                       </Link>

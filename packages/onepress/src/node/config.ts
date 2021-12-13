@@ -5,10 +5,10 @@ import pick from 'lodash/pick';
 import { UserConfig, SiteConfig } from './types';
 import {
   DEFAULT_THEME_PATH,
-  DEFAULT_THEME_WINDI_CONFIG_PATH,
+  DEFAULT_THEME_TAILWIND_CONFIG,
   POSSIBLE_CONFIG_FILES,
 } from './constants';
-import { ResolvedSrcConfig, SrcConfig, SrcObject } from '.';
+import { ResolvedSrcConfig, SrcConfig, SrcObject, TailwindOptions } from '.';
 import { ensureLeadingSlash, removeTrailingSlash, slash } from './utils';
 
 const _require = jiti(__filename, { requireCache: false, cache: false });
@@ -106,6 +106,50 @@ export function resolveSrcConfig(
   );
 }
 
+function resolveTailwindConfig(
+  src: ResolvedSrcConfig,
+  userTailwind: TailwindOptions | undefined,
+  useDefaultTheme: boolean
+): TailwindOptions {
+  const content = Object.values(src)
+    .map(
+      srcObject => `${slash(srcObject.dir)}/**/*.{html,md,mdx,js,jsx,ts,tsx}`
+    )
+    .concat(
+      userTailwind?.content || [],
+      // inject content of default theme
+      useDefaultTheme ? DEFAULT_THEME_TAILWIND_CONFIG.content || [] : []
+    );
+
+  return {
+    ...userTailwind,
+    content,
+    darkMode: useDefaultTheme ? 'class' : userTailwind?.darkMode || 'class',
+    theme: {
+      ...userTailwind?.theme,
+      extend: {
+        ...userTailwind?.theme?.extend,
+        screens: {
+          ...userTailwind?.theme?.extend?.screens,
+          ...(useDefaultTheme &&
+            DEFAULT_THEME_TAILWIND_CONFIG.theme?.extend?.screens),
+        },
+        maxWidth: {
+          ...userTailwind?.theme?.extend?.maxWidth,
+          ...(useDefaultTheme &&
+            DEFAULT_THEME_TAILWIND_CONFIG.theme?.extend?.maxWidth),
+        },
+        colors: {
+          ...userTailwind?.theme?.extend?.colors,
+          // inject colors of default theme
+          ...(useDefaultTheme &&
+            DEFAULT_THEME_TAILWIND_CONFIG.theme?.extend?.colors),
+        },
+      },
+    },
+  };
+}
+
 export function resolveConfig(root: string): SiteConfig {
   const { configPath, userConfig } = loadUserConfig(root);
 
@@ -113,6 +157,8 @@ export function resolveConfig(root: string): SiteConfig {
   const outDir = path.resolve(root, userConfig.vite?.build?.outDir || 'dist');
   const themePath = resolveThemePath(root);
   const useDefaultTheme = themePath === DEFAULT_THEME_PATH;
+
+  const src = resolveSrcConfig(userConfig.src, userConfig.ignored, root, base);
 
   return {
     ...userConfig,
@@ -127,7 +173,7 @@ export function resolveConfig(root: string): SiteConfig {
       description: 'An OnePress site',
       ...userConfig.themeConfig,
     },
-    src: resolveSrcConfig(userConfig.src, userConfig.ignored, root),
+    src,
     mdx: {
       ...userConfig.mdx,
       remarkPlugins: [
@@ -135,19 +181,7 @@ export function resolveConfig(root: string): SiteConfig {
         require('remark-slug'),
       ],
     },
-    windicss: {
-      ...userConfig.windicss,
-      // if use default theme, inject windicss config of default theme
-      config: useDefaultTheme
-        ? DEFAULT_THEME_WINDI_CONFIG_PATH
-        : userConfig.windicss?.config,
-      scan: {
-        include: ['**/*.{md,mdx,js,jsx,ts,tsx}'],
-        ...(typeof userConfig.windicss?.scan === 'boolean'
-          ? {}
-          : userConfig.windicss?.scan),
-      },
-    },
+    tailwind: resolveTailwindConfig(src, userConfig.tailwind, useDefaultTheme),
     icons: {
       compiler: 'jsx',
       autoInstall: true,
@@ -164,7 +198,7 @@ const compareFields: string[] = [
   'vite',
   'react',
   'mdx',
-  'windicss',
+  'tailwind',
   'icons',
 ];
 const ignoreFields: string[] = [];

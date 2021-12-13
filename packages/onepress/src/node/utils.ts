@@ -2,10 +2,6 @@ import path from 'path';
 import os from 'os';
 import execa from 'execa';
 import fs from 'fs-extra';
-import {
-  extractStaticData as reactPagesExtractStaticData,
-  File,
-} from 'vite-plugin-react-pages';
 import { parse, extract } from 'jest-docblock';
 import grayMatter from 'gray-matter';
 import { parseSlides } from './parseSlides';

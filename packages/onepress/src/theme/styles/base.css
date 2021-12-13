@@ -1,3 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .btn-base {
+    @apply focus:outline-none inline-flex justify-center items-center rounded-md cursor-pointer;
+  }
+
+  .btn {
+    @apply btn-base text-c-text bg-c-bg-light hover:bg-c-bg-lighter;
+  }
+
+  .btn-primary {
+    @apply btn-base bg-c-brand text-white hover:bg-c-brand-light;
+  }
+
+  .btn-hollow {
+    @apply btn-base border-2 border-c-brand text-c-brand hover:bg-c-brand hover:text-white;
+  }
+
+  .btn-text {
+    @apply btn-base text-c-text hover:text-c-brand;
+  }
+}
+
 html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
     Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
@@ -5,6 +31,7 @@ html {
   color: var(--c-text);
   font-size: 16px;
   scroll-behavior: smooth;
+  scroll-padding-top: 96px;
   -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;
 }

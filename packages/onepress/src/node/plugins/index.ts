@@ -8,7 +8,6 @@ import {
 } from 'vite';
 import react from '@vitejs/plugin-react';
 import icons from 'unplugin-icons/vite';
-import windicss from 'vite-plugin-windicss';
 import {
   CSR_ENTRY_PATH,
   DEFAULT_THEME_PATH,
@@ -29,6 +28,8 @@ export function createOnePressPlugin(
     name: 'onepress:main',
 
     config: () => {
+      const userPostcssConfig = siteConfig.vite?.css?.postcss;
+
       const viteConfig: ViteConfig = {
         resolve: {
           alias: [
@@ -82,6 +83,18 @@ export function createOnePressPlugin(
           include: ['react', 'react-dom', 'react-router-dom', 'valtio'],
           exclude: ['onepress'],
         },
+        css: {
+          postcss:
+            typeof userPostcssConfig === 'string'
+              ? userPostcssConfig
+              : {
+                  ...userPostcssConfig,
+                  plugins: [
+                    require('tailwindcss')(siteConfig.tailwind),
+                    require('autoprefixer'),
+                  ].concat(userPostcssConfig?.plugins || []),
+                },
+        },
       };
 
       return siteConfig.vite
@@ -104,6 +117,7 @@ export function createOnePressPlugin(
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- <script src="https://cdn.tailwindcss.com/3.0.0"></script> -->
   </head>
   <body>
     <div id="app"></div>
@@ -151,7 +165,6 @@ export function createOnePressPlugin(
     userVitePlugins,
     react(siteConfig.react),
     icons(siteConfig.icons),
-    windicss(siteConfig.windicss),
     // internal plugins
     mainPlugin,
     createRoutesPlugin({ src: siteConfig.src }),

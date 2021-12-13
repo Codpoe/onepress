@@ -28,9 +28,8 @@ const HeadingAnchor: React.FC<{ id?: string }> = ({ id }) => {
   return (
     <Link
       to={`#${id}`}
-      icon={false}
       color={false}
-      className="<md:hidden absolute top-[52%] right-full transform -translate-y-1/2 p-3 text-base text-c-brand hover:text-c-brand-light transition-colors opacity-0 group-hover:opacity-100"
+      className="hidden md:inline-flex absolute top-[52%] right-full transform -translate-y-1/2 p-3 text-base text-c-brand hover:text-c-brand-light transition-colors opacity-0 group-hover:opacity-100"
     >
       <IconLink />
     </Link>
@@ -50,7 +49,7 @@ export const H1: React.FC<{ id?: string }> = ({
       ref={ref}
       id={id}
       data-title={title}
-      className="pt-24 -mt-24 mb-7 pb-3 border-b border-c-divider tracking-wide text-3xl font-semibold"
+      className="mt-12 mb-4 pb-3 border-b border-c-divider tracking-wide text-3xl font-semibold"
     >
       <div className="group relative">
         <HeadingAnchor id={id} />
@@ -73,7 +72,7 @@ export const H2: React.FC<{ id?: string }> = ({
       ref={ref}
       id={id}
       data-title={title}
-      className="pt-24 -mt-16 mb-4 tracking-wide text-2xl font-semibold"
+      className="mt-12 mb-4 tracking-wide text-2xl font-semibold"
     >
       <div className="group relative">
         <HeadingAnchor id={id} />
@@ -96,7 +95,7 @@ export const H3: React.FC<{ id?: string }> = ({
       ref={ref}
       id={id}
       data-title={title}
-      className="pt-24 -mt-16 mb-4 text-xl font-semibold"
+      className="mt-12 mb-4 text-xl font-semibold"
     >
       <div className="group relative">
         <HeadingAnchor id={id} />
@@ -119,7 +118,7 @@ export const H4: React.FC<{ id?: string }> = ({
       ref={ref}
       id={id}
       data-title={title}
-      className="pt-24 -mt-16 mb-4 text-lg font-semibold"
+      className="mt-10 mb-4 text-lg font-semibold"
     >
       <div className="group relative">
         <HeadingAnchor id={id} />
@@ -142,7 +141,7 @@ export const H5: React.FC<{ id?: string }> = ({
       ref={ref}
       id={id}
       data-title={title}
-      className="pt-24 -mt-16 mb-4 text-base font-semibold"
+      className="mt-8 mb-4 text-base font-semibold"
     >
       <div className="group relative">
         <HeadingAnchor id={id} />
@@ -165,7 +164,7 @@ export const H6: React.FC<{ id?: string }> = ({
       ref={ref}
       id={id}
       data-title={title}
-      className="pt-24 -mt-16 mb-4 text-sm font-semibold"
+      className="mt-8 mb-4 text-sm font-semibold"
     >
       <div className="group relative">
         <HeadingAnchor id={id} />
@@ -193,7 +192,7 @@ export const Ul: React.FC<{ className?: string }> = props => {
 };
 
 export const Ol: React.FC = props => {
-  return <ol {...props} className="list-decimal my-4 leading-7" />;
+  return <ol {...props} className="my-4 leading-7" />;
 };
 
 export const Li: React.FC<{ className?: string }> = props => {
@@ -207,7 +206,7 @@ export const Li: React.FC<{ className?: string }> = props => {
 
 export const Blockquote: React.FC = props => {
   return (
-    <blockquote {...props} className="my-4 px-4 border-l-3 border-c-brand" />
+    <blockquote {...props} className="my-4 px-4 border-l-2 border-c-brand" />
   );
 };
 
@@ -277,7 +276,7 @@ export const InlineCode: React.FC = ({ children, ...restProps }) => {
   return (
     <code
       {...restProps}
-      className="whitespace-pre-wrap px-2 py-0.5 rounded-3px bg-c-bg-light text-c-text-light text-[0.9em]"
+      className="whitespace-pre-wrap px-2 py-0.5 rounded-[3px] bg-c-bg-light text-c-text-light text-[0.9em]"
     >
       {children}
     </code>

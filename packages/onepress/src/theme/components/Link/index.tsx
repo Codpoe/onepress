@@ -3,11 +3,9 @@ import {
   Link as RouterLink,
   LinkProps as RouterLinkProps,
 } from 'onepress/client';
-import { ExternalLink } from '../Icons';
 
 export interface LinkProps extends Omit<RouterLinkProps, 'to' | 'color'> {
   to?: string;
-  icon?: boolean;
   color?: boolean;
 }
 
@@ -16,7 +14,6 @@ export const Link: React.FC<LinkProps> = props => {
     to = '',
     children,
     className = '',
-    icon = true,
     color = true,
     ...restProps
   } = props;
@@ -25,16 +22,9 @@ export const Link: React.FC<LinkProps> = props => {
 
   const finalClassName = `${className} ${
     color ? 'text-c-brand hover:text-c-brand-light transition-colors' : ''
-  } inline-flex items-center`;
+  }`;
 
-  const finalChildren = (
-    <>
-      {children}
-      {icon && !isSameOrigin && !isHash && (
-        <ExternalLink className="text-c-text-lightest" />
-      )}
-    </>
-  );
+  const finalChildren = <>{children}</>;
 
   return isSameOrigin ? (
     <RouterLink {...restProps} className={finalClassName} to={to}>
@@ -50,7 +40,7 @@ export const Link: React.FC<LinkProps> = props => {
         rel: 'noopener noreferrer',
       })}
     >
-      {finalChildren}
+      {children}
     </a>
   );
 };

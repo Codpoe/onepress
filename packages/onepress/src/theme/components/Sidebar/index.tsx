@@ -66,27 +66,28 @@ export const Sidebar: React.FC = () => {
   return (
     <>
       <aside
-        className={`sidebar border-r border-c-divider overflow-y-auto md:w-56 md:mr-9 md:sticky md:top-24 <md:block <md:w-64 <md:px-4 <md:py-3 <md:fixed <md:top-16 <md:right-full <md:bottom-0 <md:z-20 <md:bg-c-bg <md:transform <md:transition-transform ${
-          sidebarOpen ? '<md:translate-x-full' : ''
-        } ${hasHit ? 'block' : 'hidden'}`}
+        className={`shrink-0 border-r border-c-divider overflow-y-auto
+        fixed z-20 top-16 bottom-0 right-full w-64 py-4 px-4 bg-c-bg transition-transform
+        lg:sticky lg:top-16 lg:right-auto lg:h-[calc(100vh-4rem)] lg:py-8 lg:pl-0 lg:mr-8 lg:bg-transparent
+        ${sidebarOpen ? 'translate-x-full' : 'lg:translate-x-0'} ${
+          hasHit ? 'lg:block' : 'lg:hidden'
+        }`}
       >
         <Nav />
         {hasHit && (
-          <div className="text-c-text-light">
-            <Items
-              items={sidebar || []}
-              hitItems={hitItems}
-              activeItems={activeItems}
-              inside={false}
-              expanded={false}
-              setActiveItems={setActiveItems}
-            />
-          </div>
+          <Items
+            items={sidebar || []}
+            hitItems={hitItems}
+            activeItems={activeItems}
+            inside={false}
+            expanded={false}
+            setActiveItems={setActiveItems}
+          />
         )}
       </aside>
       {sidebarOpen && (
         <div
-          className="fixed top-0 bottom-0 left-0 right-0 z-10 hidden <md:block"
+          className="block lg:hidden fixed top-0 bottom-0 left-0 right-0 z-10"
           onClick={() => setSidebarOpen(false)}
         />
       )}

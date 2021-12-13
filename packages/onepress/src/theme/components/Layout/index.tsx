@@ -20,11 +20,11 @@ const InternalLayout: React.FC = () => {
   const { currentPageData } = useThemeContext();
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col items-center">
       <Header />
-      <main className="flex-1 w-full max-w-screen-lg px-4 py-8 mx-auto flex">
+      <main className="flex-auto w-full max-w-[1376px] px-4 mx-auto flex">
         <Sidebar />
-        <div className="flex-1 max-w-full">
+        <div className="flex-auto max-w-full">
           {currentPageData?.meta.home ? <HomeLayout /> : <DocLayout />}
         </div>
       </main>

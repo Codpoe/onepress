@@ -7,7 +7,7 @@ export const ThemeModeSwitch: React.FC = () => {
 
   return (
     <button
-      className="<md:btn-text md:btn transition-none w-9 h-9 text-xl"
+      className="btn-text md:btn duration-[0ms] w-9 h-9 text-xl"
       onClick={() => setMode(prev => (prev === 'light' ? 'dark' : 'light'))}
     >
       {mode === 'light' ? <Sun /> : <Moon />}

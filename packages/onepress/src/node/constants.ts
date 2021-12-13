@@ -1,5 +1,5 @@
 import path from 'path';
-import fs from 'fs-extra';
+import { TailwindOptions } from './types';
 
 export const DIST_CLIENT_PATH = path.join(__dirname, '../client');
 export const CSR_ENTRY_PATH = path.join(
@@ -29,16 +29,8 @@ export const TS_INFO_MODULE_ID_PREFIX = '/@onepress/ts-info/';
 // theme
 export const THEME_MODULE_ID = '/@onepress/theme';
 export const THEME_CONFIG_MODULE_ID = '/@onepress/theme-config';
-
-const themePathInDev = path.join(__dirname, '../theme/index.js');
-const themePathInBuild = path.join(__dirname, '../theme/index.es.js');
-export const DEFAULT_THEME_PATH = fs.pathExistsSync(themePathInDev)
-  ? themePathInDev
-  : themePathInBuild;
-export const DEFAULT_THEME_WINDI_CONFIG_PATH = path.join(
-  __dirname,
-  '../../windi.config.ts'
-);
+export const DEFAULT_THEME_PATH = path.join(__dirname, '../theme/index.ts');
+export const DEFAULT_THEME_TAILWIND_CONFIG: TailwindOptions = require('../../tailwind.config.js');
 
 export const SLIDE_MODULE_ID_PREFIX = '/@onepress/slide/';
 

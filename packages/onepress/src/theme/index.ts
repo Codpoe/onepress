@@ -1,4 +1,3 @@
-import 'virtual:windi.css';
 import './styles/vars.css';
 import './styles/base.css';
 

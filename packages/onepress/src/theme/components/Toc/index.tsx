@@ -61,7 +61,7 @@ export const Toc: React.FC = () => {
     if (IN_BROWSER && elRef.current) {
       const markdownBody = document.querySelector('.markdown-body');
       const newHeadings = Array.prototype.slice.call(
-        markdownBody?.querySelectorAll('h2,h3') || []
+        markdownBody?.querySelectorAll('h1,h2,h3,h4') || []
       ) as HTMLElement[];
 
       setHeadings(newHeadings);
@@ -90,7 +90,7 @@ export const Toc: React.FC = () => {
 
           return (
             (index === 0 && scrollTop === 0) ||
-            (top <= 20 && (!nextItem || nextTop > 20))
+            (top <= 100 && (!nextItem || nextTop > 100))
           );
         });
 
@@ -98,7 +98,7 @@ export const Toc: React.FC = () => {
           setHit(hitHeading);
         }
       },
-      300,
+      50,
       { trailing: true }
     ),
     [headings]
@@ -151,38 +151,30 @@ export const Toc: React.FC = () => {
 
   return (
     <div
-      className="group sticky top-24 w-56 pl-9 pb-9 overflow-y-auto"
+      className="relative border-l border-l-c-divider"
       style={{ maxHeight: 'calc(100vh - 8rem)' }}
       ref={elRef}
     >
       {headings.map((item, index) => {
         const level = Number(item.tagName.substring(1, 2));
+        const isHit = hit === item;
         const isActive = active.includes(item);
 
         return (
           <Link
             key={index}
-            className={`w-full flex items-center py-[6px] text-sm transition-colors hover:text-c-text ${
-              isActive ? 'text-c-text' : 'text-c-text-lightest'
-            } ${level === 2 ? 'font-semibold' : ''}`}
+            className={`block leading-7 text-sm border-l -ml-px ${
+              isHit ? 'border-c-brand' : 'border-transparent'
+            } ${
+              isActive
+                ? 'text-c-brand'
+                : 'text-c-text-lighter hover:text-c-text-light'
+            }`}
             to={`#${item.id}`}
             color={false}
+            style={{ paddingLeft: `${level * 12}px` }}
           >
-            <div className="w-4 mr-2">
-              <div
-                className={`h-1 rounded-[0.25rem] bg-current ${
-                  isActive ? 'opacity-80' : 'opacity-40'
-                }`}
-                style={{ width: `${(2 / level) * 100}%` }}
-              ></div>
-            </div>
-            <div
-              className={`transition-opacity group-hover:opacity-100 ${
-                isActive ? 'opacity-100' : 'opacity-0'
-              }`}
-            >
-              {item.dataset.title}
-            </div>
+            {item.dataset.title}
           </Link>
         );
       })}

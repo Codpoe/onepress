@@ -19,7 +19,7 @@ export const Nav: React.FC<NavProps> = props => {
 
   return (
     <ul
-      className={`${className} items-center text-[0.9rem] font-medium leading-normal space-x-6 flex <md:hidden`}
+      className={`${className} items-center text-[0.9rem] font-medium leading-normal space-x-6 hidden md:flex`}
     >
       {nav.map((item, index) => {
         if (item.items) {
@@ -27,7 +27,7 @@ export const Nav: React.FC<NavProps> = props => {
             <li key={index} className="group relative">
               <div className="flex items-center cursor-pointer group">
                 {item.text}
-                <ChevronDown className="ml-1 text-c-text-lighter group-hover:(transform rotate-180) transition-transform" />
+                <ChevronDown className="ml-1 text-c-text-lighter group-hover:rotate-180 transition-transform" />
               </div>
               <div className="absolute top-full right-0 pt-2 hidden group-hover:block">
                 <ul className="py-[6px] bg-c-bg overflow-y-auto rounded-md border border-c-divider shadow-sm text-sm">
@@ -37,7 +37,7 @@ export const Nav: React.FC<NavProps> = props => {
                         {...subItem}
                         to={subItem.link}
                         color={false}
-                        className="w-full px-4 font-normal leading-9 whitespace-nowrap hover:text-c-brand transition-colors"
+                        className="block px-4 font-normal leading-9 whitespace-nowrap hover:text-c-brand transition-colors"
                       >
                         {subItem.text}
                       </Link>
@@ -55,7 +55,7 @@ export const Nav: React.FC<NavProps> = props => {
               {...item}
               to={item.link}
               color={false}
-              className={`border-b-2 -mb-0.5 transition-colors hover:border-c-brand ${
+              className={`block border-b-2 -mb-0.5 transition-colors hover:border-c-brand ${
                 pathname.startsWith(item.link!)
                   ? 'border-c-brand'
                   : 'border-transparent'
