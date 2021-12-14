@@ -85,7 +85,7 @@ export const Search: React.FC = () => {
 
       <button
         ref={searchButtonRef}
-        className="<md:btn-text md:btn transition-none w-9 h-9 text-xl text-gray-700 dark:text-gray-200"
+        className="btn-text md:btn transition-none w-9 h-9 text-xl text-gray-700 dark:text-gray-200"
         aria-label="Search"
         onMouseOver={ensureDocSearchModal}
         onTouchStart={ensureDocSearchModal}

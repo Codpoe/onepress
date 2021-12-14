@@ -88,7 +88,7 @@ export const UpdateInfo: React.FC = () => {
   }
 
   return (
-    <div className="flex <sm:flex-col <sm:space-y-2 sm:justify-between sm:items-center sm:space-x-8 py-4">
+    <div className="flex flex-col space-y-2 sm:flex-row sm:justify-between sm:items-center sm:space-x-8 py-4">
       {finalEditLink && (
         <Link
           className="flex items-center font-medium text-c-text-light hover:text-c-brand transition-colors"
