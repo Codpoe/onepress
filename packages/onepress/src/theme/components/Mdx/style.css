@@ -51,6 +51,10 @@
   color: var(--c-text-light);
 }
 
+.markdown-body summary {
+  cursor: pointer;
+}
+
 pre[class*='language-'],
 [class*='language-'] code {
   text-align: left;

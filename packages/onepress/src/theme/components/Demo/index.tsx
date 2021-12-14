@@ -40,7 +40,7 @@ export const Demo: React.FC<DemoProps> = props => {
   };
 
   return (
-    <div className="border border-c-divider rounded-md divide-y divide-c-divider overflow-hidden">
+    <div className="my-4 border border-c-divider rounded-md divide-y divide-c-divider overflow-hidden">
       <div className="px-5 py-5">{children}</div>
       <div
         className="flex items-center px-2 cursor-pointer"

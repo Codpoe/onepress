@@ -10,6 +10,9 @@ export default defineConfig<ThemeConfig>({
       },
     },
   },
+  tailwind: {
+    content: ['demoComponents/**/*.tsx'],
+  },
   themeConfig: {
     locale: 'en',
     localeText: 'English',

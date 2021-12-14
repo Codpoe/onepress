@@ -210,11 +210,6 @@ export const Blockquote: React.FC = props => {
   );
 };
 
-export const Summary: React.FC = props => {
-  const { children } = props;
-  return <summary className="cursor-pointer">{children}</summary>;
-};
-
 export const A: React.FC<{ href?: string }> = props => {
   const { href, ...restProps } = props;
   return <Link {...restProps} to={href} />;

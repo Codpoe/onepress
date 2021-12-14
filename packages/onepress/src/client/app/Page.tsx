@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Route, Routes, Outlet, useLocation } from 'react-router-dom';
-import routes from '/@onepress/routes';
+import importedRoutes from '/@onepress/routes';
 import { useAppState } from './context';
 import { PageRoute } from './types';
 
@@ -155,6 +155,23 @@ const PageLoader: React.FC<{
   );
 };
 
+/**
+ * get routes
+ */
+export function useRoutes(): PageRoute[] {
+  const [routes, setRoutes] = useState(importedRoutes);
+
+  useEffect(() => {
+    if (import.meta.hot) {
+      import.meta.hot.accept('/@onepress/routes', mod => {
+        setRoutes(mod.default);
+      });
+    }
+  }, []);
+
+  return routes;
+}
+
 export interface PageProps {
   fallback?: React.ReactNode;
   timeout?: number;
@@ -170,6 +187,7 @@ export const Page: React.FC<PageProps> = ({
   fallbackMinMs,
 }) => {
   const [{ NotFound }] = useAppState();
+  const routes = useRoutes();
 
   const renderRoutes = (routes: PageRoute[]) => {
     return routes.map(item => {

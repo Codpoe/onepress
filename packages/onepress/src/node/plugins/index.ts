@@ -80,7 +80,14 @@ export function createOnePressPlugin(
           __HASH_ROUTER__: Boolean(siteConfig.useHashRouter),
         },
         optimizeDeps: {
-          include: ['react', 'react-dom', 'react-router-dom', 'valtio'],
+          include: [
+            'react',
+            'react/jsx-dev-runtime',
+            'react/jsx-runtime',
+            'react-dom',
+            'react-router-dom',
+            'valtio',
+          ],
           exclude: ['onepress'],
         },
         css: {

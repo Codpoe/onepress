@@ -51,6 +51,8 @@ export function trapConsole() {
   };
 }
 
+export const dynamicImport = new Function('file', 'return import(file)');
+
 export function extractDocBlock(fileContent: string) {
   return parse(extract(fileContent));
 }
