@@ -1,3 +1,5 @@
+## [0.1.23](https://github.com/Codpoe/onepress/compare/v0.1.22...v0.1.23) (2021-12-15)
+
 ## 0.1.22 (2021-12-15)
 
 ### Bug Fixes
