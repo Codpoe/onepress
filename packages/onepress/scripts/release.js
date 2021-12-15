@@ -50,14 +50,18 @@ async function main() {
 
         if (confirm) {
           ctx.targetVersion = targetVersion;
+          task.output = targetVersion;
         } else {
-          ctx.break = true;
+          ctx.skip = true;
         }
+      },
+      options: {
+        persistentOutput: true,
       },
     },
     {
       title: 'Update package version',
-      enabled: ctx => !ctx.break,
+      skip: ctx => ctx.skip,
       task: async ctx => {
         const pkgPath = path.resolve(__dirname, '../package.json');
         const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
@@ -68,14 +72,14 @@ async function main() {
     },
     {
       title: 'Build package',
-      enabled: ctx => !ctx.break,
+      skip: ctx => ctx.skip,
       task: async () => {
         await execa('pnpm', ['build']);
       },
     },
     {
       title: 'Update changelog',
-      enabled: ctx => !ctx.break,
+      skip: ctx => ctx.skip,
       task: async (ctx, task) => {
         await execa('pnpm', ['changelog']);
         await execa('pnpm', ['prettier', '--write', 'CHANGELOG.md']);
@@ -85,13 +89,13 @@ async function main() {
           message: `Changelog updated. Does it look good?`,
         });
         if (!good) {
-          ctx.break = true;
+          ctx.skip = true;
         }
       },
     },
     {
       title: 'Commit changes to the Git and create a tag',
-      enabled: ctx => !ctx.break,
+      skip: ctx => ctx.skip,
       task: async ctx => {
         await execa('git', ['add', 'CHANGELOG.md', 'package.json']);
         await execa('git', ['commit', '-m', `release: v${ctx.targetVersion}`]);
@@ -100,14 +104,14 @@ async function main() {
     },
     {
       title: 'Publish package',
-      enabled: ctx => !ctx.break,
+      skip: ctx => ctx.skip,
       task: async () => {
         await execa('pnpm', ['publish', '--ignore-scripts', '--no-git-checks']);
       },
     },
     {
       title: 'Push to GitHub',
-      enabled: ctx => !ctx.break,
+      skip: ctx => ctx.skip,
       task: async ctx => {
         await execa('git', [
           'push',
@@ -119,94 +123,11 @@ async function main() {
     },
   ]);
 
-  tasks.run().catch(err => console.error(err));
+  tasks.run().catch(err => {
+    if (!err.message.startsWith('Cancelled')) {
+      console.error(err);
+    }
+  });
 }
 
 main();
-
-// async function main2() {
-//   let targetVersion;
-
-//   const { releaseType } = await prompt({
-//     type: 'select',
-//     name: 'releaseType',
-//     message: 'Select release type',
-//     choices: releaseTypeChoices,
-//   });
-
-//   if (releaseType === 'custom') {
-//     targetVersion = (
-//       await prompt({
-//         type: 'input',
-//         name: 'version',
-//         message: 'Input custom version',
-//         initial: currentVersion,
-//       })
-//     ).version;
-//   } else {
-//     targetVersion = releaseType.match(/\((.*)\)/)[1];
-//   }
-
-//   if (!semver.valid(targetVersion)) {
-//     throw new Error(`Invalid target version: ${targetVersion}`);
-//   }
-
-//   const { confirm } = await prompt({
-//     type: 'confirm',
-//     name: 'confirm',
-//     message: `Releasing v${targetVersion}. Confirm?`,
-//   });
-
-//   if (!confirm) {
-//     return;
-//   }
-
-//   // Update the package version.
-//   step('\nUpdating the package version...');
-//   updatePackage(targetVersion);
-
-//   // Build the package.
-//   step('\nBuilding the package...');
-//   await run('pnpm', ['build']);
-
-//   // Generate the changelog.
-//   step('\nGenerating the changelog...');
-//   await run('pnpm', ['changelog']);
-//   await run('pnpm', ['prettier', '--write', 'CHANGELOG.md']);
-
-//   const { yes: changelogOk } = await prompt({
-//     type: 'confirm',
-//     name: 'yes',
-//     message: `Changelog generated. Does it look good?`,
-//   });
-
-//   if (!changelogOk) {
-//     return;
-//   }
-
-//   // Commit changes to the Git and create a tag.
-//   step('\nCommitting changes...');
-//   await run('git', ['add', 'CHANGELOG.md', 'package.json']);
-//   await run('git', ['commit', '-m', `release: v${targetVersion}`]);
-//   await run('git', ['tag', `v${targetVersion}`]);
-
-//   // Publish the package.
-//   step('\nPublishing the package...');
-//   await run('pnpm', ['publish', '--ignore-scripts', '--no-git-checks']);
-
-//   // Push to GitHub.
-//   step('\nPushing to GitHub...');
-//   await run('git', ['push', 'origin', `refs/tags/v${targetVersion}`]);
-//   await run('git', ['push']);
-// }
-
-// function updatePackage(version) {
-//   const pkgPath = path.resolve(path.resolve(__dirname, '..'), 'package.json');
-//   const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
-
-//   pkg.version = version;
-
-//   fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n');
-// }
-
-// main().catch(err => console.error(err));
