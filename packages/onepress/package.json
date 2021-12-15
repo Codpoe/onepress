@@ -33,7 +33,9 @@
     "build": "rimraf dist && run-p -l build:*",
     "build:node": "tsc -p src/node",
     "build:client": "tsc -p src/client",
-    "build:theme": "node scripts/copyTheme.js"
+    "build:theme": "node scripts/copyTheme.js",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
+    "release": "node scripts/release.js"
   },
   "dependencies": {
     "@docsearch/css": "^3.0.0-alpha.41",
@@ -86,7 +88,11 @@
     "@types/react-dom": "^17.0.7",
     "@types/react-helmet": "^6.1.1",
     "@types/react-router-dom": "^5.1.7",
+    "conventional-changelog-cli": "^2.1.1",
+    "enquirer": "^2.3.6",
     "fast-glob": "^3.2.7",
-    "rollup": "^2.38.5"
+    "listr2": "^3.13.5",
+    "rollup": "^2.38.5",
+    "semver": "^7.3.5"
   }
 }
