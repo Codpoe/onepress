@@ -52,7 +52,7 @@ export function generateRoutes(pages: Record<string, Page>): Route[] {
 }
 
 export function generateRoutesCode(routes: Route[], ssr?: boolean) {
-  const imports: string[] = [`import * as React from 'react';`];
+  const imports: string[] = [];
   let index = 0;
 
   const routesStr = JSON.stringify(routes, null, 2).replace(

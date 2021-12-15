@@ -50,7 +50,6 @@ ${contents}`;
   return [
     {
       name: 'onepress:mdx',
-      enforce: 'pre',
       configResolved(config) {
         viteReactPlugin = config.plugins.find(
           item => item.name === 'vite:react-babel'
@@ -60,15 +59,30 @@ ${contents}`;
         if (/\.mdx?/.test(id)) {
           const { data: meta, content } = grayMatter(code);
           // TODO: parse slides
+          code = await compileMdx(content, id);
 
-          code = `
-export const meta = ${JSON.stringify(meta, null, 2)}
-${await compileMdx(content, id)}`;
-
-          return (
-            viteReactPlugin?.transform?.call(this, code, id + '.jsx', ssr) ||
-            code
+          const result = await viteReactPlugin?.transform?.call(
+            this,
+            code,
+            id + '?.jsx',
+            ssr
           );
+          let map: any;
+
+          if (typeof result === 'string') {
+            code = result;
+          } else if (result?.code) {
+            ({ code, map } = result);
+          }
+
+          // We should append meta export after vite-react's transform
+          // so that vite-react can better identify it as a RefreshBoundary
+          code = `${code}\nexport const meta = ${JSON.stringify(meta)};`;
+
+          return {
+            code,
+            map,
+          };
         }
       },
     },

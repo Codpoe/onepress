@@ -1,3 +1,7 @@
+---
+title: aaab
+---
+
 # Markdown: Syntax
 
 - [Overview](#overview)
@@ -28,6 +32,24 @@ can [see the source for it by adding '.text' to the URL](/projects/markdown/synt
 <details>
   <summary>Details</summary>Somethi
 </details>
+
+<div className="text-rose-500">12345</div>
+
+import { useState } from 'react';
+import Button from '../../../demoComponents/Button.tsx';
+
+<Button />
+
+export const T = () => {
+  const [count, setCount] = useState(1);
+  return (
+    <div className="text-pink-500" onClick={() => setCount(count + 1)}>
+      {count}
+    </div>
+  );
+};
+
+<T />
 
 1. saddddd
 
