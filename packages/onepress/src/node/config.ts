@@ -8,7 +8,12 @@ import {
   DEFAULT_THEME_TAILWIND_CONFIG,
   POSSIBLE_CONFIG_FILES,
 } from './constants';
-import { ResolvedSrcConfig, SrcConfig, SrcObject, TailwindOptions } from '.';
+import {
+  ResolvedSrcConfig,
+  SrcConfig,
+  SrcObject,
+  TailwindOptions,
+} from './types';
 import { ensureLeadingSlash, removeTrailingSlash, slash } from './utils';
 
 const _require = jiti(__filename, { requireCache: false, cache: false });

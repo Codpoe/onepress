@@ -67,7 +67,7 @@ export function createRoutesPlugin(options: {
         ? id
         : null;
     },
-    async load(id, ssr) {
+    async load(id, opts) {
       if (id === ROUTES_MODULE_ID) {
         const pages = await pagesService.getPages();
 
@@ -75,7 +75,7 @@ export function createRoutesPlugin(options: {
           generatedRoutes = generateRoutes(pages);
         }
 
-        return generateRoutesCode(generatedRoutes, ssr);
+        return generateRoutesCode(generatedRoutes, opts?.ssr);
       }
 
       if (id === PAGES_DATA_MODULE_ID) {

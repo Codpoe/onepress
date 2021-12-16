@@ -29,7 +29,8 @@ export const TS_INFO_MODULE_ID_PREFIX = '/@onepress/ts-info/';
 // theme
 export const THEME_MODULE_ID = '/@onepress/theme';
 export const THEME_CONFIG_MODULE_ID = '/@onepress/theme-config';
-export const DEFAULT_THEME_PATH = path.join(__dirname, '../theme/index.ts');
+export const DIST_THEME_PATH = path.join(__dirname, '../theme');
+export const DEFAULT_THEME_PATH = path.join(DIST_THEME_PATH, 'index.ts');
 export const DEFAULT_THEME_TAILWIND_CONFIG: TailwindOptions = require('../../tailwind.config.js');
 
 export const SLIDE_MODULE_ID_PREFIX = '/@onepress/slide/';

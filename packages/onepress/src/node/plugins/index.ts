@@ -5,6 +5,7 @@ import {
   Plugin,
   PluginOption,
   UserConfig as ViteConfig,
+  searchForWorkspaceRoot,
 } from 'vite';
 import react from '@vitejs/plugin-react';
 import icons from 'unplugin-icons/vite';
@@ -12,6 +13,7 @@ import {
   CSR_ENTRY_PATH,
   DEFAULT_THEME_PATH,
   DIST_CLIENT_PATH,
+  DIST_THEME_PATH,
   THEME_MODULE_ID,
 } from '../constants';
 import { cleanPath } from '../utils';
@@ -19,6 +21,14 @@ import { SiteConfig } from '../types';
 import { createRoutesPlugin } from './routes';
 import { createMdxPlugin } from './mdx';
 import { createThemePlugin } from './theme';
+
+function resolveFsAllow(siteConfig: SiteConfig) {
+  return [DIST_CLIENT_PATH, DIST_THEME_PATH, siteConfig.root].concat(
+    Object.values(siteConfig.src)
+      .map(x => x.dir)
+      .filter(x => !x.startsWith(siteConfig.root))
+  );
+}
 
 export function createOnePressPlugin(
   siteConfig: SiteConfig,
@@ -90,6 +100,11 @@ export function createOnePressPlugin(
           ],
           exclude: ['onepress'],
         },
+        server: {
+          fs: {
+            allow: resolveFsAllow(siteConfig),
+          },
+        },
         css: {
           postcss:
             typeof userPostcssConfig === 'string'
@@ -143,12 +158,6 @@ export function createOnePressPlugin(
           next();
         });
       };
-    },
-
-    resolveId(source) {
-      if (source === 'react') {
-        return require.resolve('react');
-      }
     },
 
     generateBundle(_, bundle) {

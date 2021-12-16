@@ -55,7 +55,7 @@ ${contents}`;
           item => item.name === 'vite:react-babel'
         );
       },
-      async transform(code, id, ssr) {
+      async transform(code, id, opts) {
         if (/\.mdx?/.test(id)) {
           const { data: meta, content } = grayMatter(code);
           // TODO: parse slides
@@ -65,7 +65,7 @@ ${contents}`;
             this,
             code,
             id + '?.jsx',
-            ssr
+            opts
           );
           let map: any;
 
