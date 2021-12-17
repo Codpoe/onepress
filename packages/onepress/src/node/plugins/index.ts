@@ -23,11 +23,17 @@ import { createMdxPlugin } from './mdx';
 import { createThemePlugin } from './theme';
 
 function resolveFsAllow(siteConfig: SiteConfig) {
-  return [DIST_CLIENT_PATH, DIST_THEME_PATH, siteConfig.root].concat(
-    Object.values(siteConfig.src)
-      .map(x => x.dir)
-      .filter(x => !x.startsWith(siteConfig.root))
-  );
+  const workspaceRoot = searchForWorkspaceRoot(siteConfig.root);
+
+  const allowDirs = [DIST_CLIENT_PATH, DIST_THEME_PATH, workspaceRoot];
+
+  Object.values(siteConfig.src).forEach(x => {
+    if (!x.dir.startsWith(workspaceRoot)) {
+      allowDirs.push(x.dir);
+    }
+  });
+
+  return allowDirs;
 }
 
 export function createOnePressPlugin(
