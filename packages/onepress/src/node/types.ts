@@ -47,7 +47,6 @@ export interface TailwindOptions {
   theme?: {
     extend?: {
       screens?: any;
-      maxWidth?: any;
       colors?: any;
     };
   };
@@ -82,10 +81,11 @@ export interface UserConfig<ThemeConfig = any> {
    */
   mdx?: MdxOptions;
   /**
-   * tailwindcss options.
+   * Tailwindcss options or config file path.
+   * @default '<root>/tailwind.config.js'
    * @see https://tailwindcss.com/docs/configuration
    */
-  tailwind?: TailwindOptions;
+  tailwind?: TailwindOptions | string;
   /**
    * Options to pass on to `unplugin-icons`
    */

@@ -79,6 +79,10 @@ export function createOnePressPlugin(
               replacement: require.resolve('react-router-dom/index.js'),
             },
             {
+              find: /^react-helmet$/,
+              replacement: require.resolve('react-helmet'),
+            },
+            {
               find: /^@mdx-js\/react$/,
               replacement: require.resolve('@mdx-js/react/dist/esm.js'),
             },
@@ -102,6 +106,7 @@ export function createOnePressPlugin(
             'react/jsx-runtime',
             'react-dom',
             'react-router-dom',
+            'react-helmet',
             'valtio',
           ],
           exclude: ['onepress'],

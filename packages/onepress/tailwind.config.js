@@ -28,9 +28,6 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
-      maxWidth: {
-        '8xl': '90rem',
-      },
       colors: colorVars.reduce(
         (acc, cur) => {
           acc[cur] = `var(--${cur})`;

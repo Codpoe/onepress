@@ -113,39 +113,46 @@ export function resolveSrcConfig(
 
 function resolveTailwindConfig(
   src: ResolvedSrcConfig,
-  userTailwind: TailwindOptions | undefined,
-  useDefaultTheme: boolean
+  userTailwind: TailwindOptions | string | undefined,
+  useDefaultTheme: boolean,
+  root: string
 ): TailwindOptions {
+  const userTailwindConfigPath =
+    typeof userTailwind === 'string' && path.resolve(root, userTailwind);
+
+  const userTailwindOptions: TailwindOptions | undefined =
+    userTailwindConfigPath && fs.pathExistsSync(userTailwindConfigPath)
+      ? _require(userTailwindConfigPath)
+      : userTailwind;
+
   const content = Object.values(src)
     .map(
       srcObject => `${slash(srcObject.dir)}/**/*.{html,md,mdx,js,jsx,ts,tsx}`
     )
     .concat(
-      userTailwind?.content || [],
+      slash(resolveInOnePress(root, '**/*.{js,jsx,ts,tsx}')),
+      userTailwindOptions?.content || [],
       // inject content of default theme
       useDefaultTheme ? DEFAULT_THEME_TAILWIND_CONFIG.content || [] : []
     );
 
   return {
-    ...userTailwind,
+    ...userTailwindOptions,
     content,
-    darkMode: useDefaultTheme ? 'class' : userTailwind?.darkMode || 'class',
+    darkMode: useDefaultTheme
+      ? 'class'
+      : userTailwindOptions?.darkMode || 'class',
     theme: {
-      ...userTailwind?.theme,
+      ...userTailwindOptions?.theme,
       extend: {
-        ...userTailwind?.theme?.extend,
+        ...userTailwindOptions?.theme?.extend,
         screens: {
-          ...userTailwind?.theme?.extend?.screens,
+          ...userTailwindOptions?.theme?.extend?.screens,
           ...(useDefaultTheme &&
             DEFAULT_THEME_TAILWIND_CONFIG.theme?.extend?.screens),
         },
-        maxWidth: {
-          ...userTailwind?.theme?.extend?.maxWidth,
-          ...(useDefaultTheme &&
-            DEFAULT_THEME_TAILWIND_CONFIG.theme?.extend?.maxWidth),
-        },
         colors: {
-          ...userTailwind?.theme?.extend?.colors,
+          ...userTailwindOptions?.theme?.extend?.colors,
           // inject colors of default theme
           ...(useDefaultTheme &&
             DEFAULT_THEME_TAILWIND_CONFIG.theme?.extend?.colors),
@@ -186,7 +193,12 @@ export function resolveConfig(root: string): SiteConfig {
         require('remark-slug'),
       ],
     },
-    tailwind: resolveTailwindConfig(src, userConfig.tailwind, useDefaultTheme),
+    tailwind: resolveTailwindConfig(
+      src,
+      userConfig.tailwind,
+      useDefaultTheme,
+      root
+    ),
     icons: {
       compiler: 'jsx',
       autoInstall: true,
