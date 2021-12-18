@@ -1,3 +1,9 @@
+## [0.1.27](https://github.com/Codpoe/onepress/compare/v0.1.26...v0.1.27) (2021-12-18)
+
+### Bug Fixes
+
+- Add @svgr/core to fix the problem of not being able to import icons ([35d2437](https://github.com/Codpoe/onepress/commit/35d243720710866bcc894eb1e39bfaa283b04671))
+
 ## [0.1.26](https://github.com/Codpoe/onepress/compare/v0.1.25...v0.1.26) (2021-12-18)
 
 ### Bug Fixes
