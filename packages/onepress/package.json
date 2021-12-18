@@ -7,7 +7,7 @@
   "exports": {
     ".": "./dist/node/index.js",
     "./client": "./dist/client/index.js",
-    "./theme": "./dist/theme/index.es.js",
+    "./theme": "./dist/theme/index.ts",
     "./*": "./*"
   },
   "repository": {
@@ -22,8 +22,9 @@
   "files": [
     "bin",
     "dist",
-    "theme.js",
-    "theme.d.ts"
+    "client.d.ts",
+    "theme.d.ts",
+    "shim.d.ts"
   ],
   "scripts": {
     "dev": "run-p -l dev:*",

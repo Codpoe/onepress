@@ -1,9 +1,6 @@
-declare const __HASH_ROUTER__: boolean;
+/// <reference types="vite/client" />
 
-declare module 'virtual:windi.css';
-declare module 'virtual:windi-base.css';
-declare module 'virtual:windi-components.css';
-declare module 'virtual:windi-utilities.css';
+declare const __HASH_ROUTER__: boolean;
 
 declare module 'virtual:icons/*' {
   import React, { SVGProps } from 'react';
