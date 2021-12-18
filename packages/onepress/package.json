@@ -45,6 +45,7 @@
     "@iconify/json": "^1.1.443",
     "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
+    "@svgr/core": "^5.5.0",
     "@vitejs/plugin-react": "^1.1.3",
     "autoprefixer": "^10.4.0",
     "cac": "^6.7.12",
