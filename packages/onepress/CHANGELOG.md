@@ -1,3 +1,9 @@
+## [0.1.26](https://github.com/Codpoe/onepress/compare/v0.1.25...v0.1.26) (2021-12-18)
+
+### Bug Fixes
+
+- optimize tailwind content ([b1c024c](https://github.com/Codpoe/onepress/commit/b1c024ccc2a25f2c7b2a7b22b305e918c5dc77b5))
+
 ## [0.1.25](https://github.com/Codpoe/onepress/compare/v0.1.24...v0.1.25) (2021-12-18)
 
 ### Bug Fixes
