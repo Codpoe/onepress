@@ -1,3 +1,9 @@
+## [0.1.25](https://github.com/Codpoe/onepress/compare/v0.1.24...v0.1.25) (2021-12-18)
+
+### Bug Fixes
+
+- add default tailwind config in files ([55c09ee](https://github.com/Codpoe/onepress/commit/55c09ee1a9e2ce235d747d4d09fb0a5c60fa51ae))
+
 ## [0.1.24](https://github.com/Codpoe/onepress/compare/v0.1.23...v0.1.24) (2021-12-18)
 
 ### Bug Fixes
