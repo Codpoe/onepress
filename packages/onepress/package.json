@@ -24,7 +24,8 @@
     "dist",
     "client.d.ts",
     "theme.d.ts",
-    "shim.d.ts"
+    "shim.d.ts",
+    "tailwind.config.js"
   ],
   "scripts": {
     "dev": "run-p -l dev:*",
