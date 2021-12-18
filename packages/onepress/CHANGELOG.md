@@ -1,3 +1,10 @@
+## [0.1.24](https://github.com/Codpoe/onepress/compare/v0.1.23...v0.1.24) (2021-12-18)
+
+### Bug Fixes
+
+- optimize fs allow ([0920dac](https://github.com/Codpoe/onepress/commit/0920dac4e2700784de5cf38377e5a86eea133590))
+- types ([c3e2adf](https://github.com/Codpoe/onepress/commit/c3e2adfd4641f733c00a5aecb5f48cca6af21470))
+
 ## [0.1.23](https://github.com/Codpoe/onepress/compare/v0.1.22...v0.1.23) (2021-12-15)
 
 ## 0.1.22 (2021-12-15)
