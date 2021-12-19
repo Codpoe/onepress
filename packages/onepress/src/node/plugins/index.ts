@@ -75,6 +75,10 @@ export function createOnePressPlugin(
               replacement: require.resolve('react-dom/index.js'),
             },
             {
+              find: /^react-dom\/server$/,
+              replacement: require.resolve('react-dom/server.js'),
+            },
+            {
               find: /^react-router-dom$/,
               replacement: require.resolve('react-router-dom/index.js'),
             },
