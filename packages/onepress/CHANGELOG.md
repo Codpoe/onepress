@@ -1,3 +1,9 @@
+## [0.1.28](https://github.com/Codpoe/onepress/compare/v0.1.27...v0.1.28) (2021-12-19)
+
+### Bug Fixes
+
+- add react-dom/server alias ([d562f17](https://github.com/Codpoe/onepress/commit/d562f174031a904b2768dbed466986c4e6d52d45))
+
 ## [0.1.27](https://github.com/Codpoe/onepress/compare/v0.1.26...v0.1.27) (2021-12-18)
 
 ### Bug Fixes
