@@ -113,7 +113,7 @@ export function resolveSrcConfig(
 
 function resolveTailwindConfig(
   src: ResolvedSrcConfig,
-  userTailwind: TailwindOptions | string | undefined,
+  userTailwind: TailwindOptions | string = 'tailwind.config.js',
   useDefaultTheme: boolean,
   root: string
 ): TailwindOptions {
