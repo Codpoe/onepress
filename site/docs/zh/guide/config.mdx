@@ -18,65 +18,106 @@ export default defineConfig({
 });
 ```
 
-## base
+## src
 
-页面基础路径，默认为 `/`。具体可以看 [Vite 的文档](https://vitejs.dev/config/#root)。
+默认情况下 OnePress 会扫描 `docs` 目录下特定后缀的文件作为文档内容，并以此生成路由规则。后缀列表如下：
 
-## srcDir
+- `.md`
+- `.mdx`
+- `.page.js`
+- `.page.jsx`
+- `.page.ts`
+- `.page.tsx`
 
-如果我们的文档目录不在项目的根目录，可以通过 `srcDir` 来指定文档目录：
+如果想修改目录或修改扫描规则，可以使用 `src` 字段，例如：
 
-```js title=<root>/.onepress/config.js hl=2
+```js
 export default {
-  srcDir: 'docs', // 指定 docs 为文档目录
+  src: 'content', // 指定 content 为文档目录
 };
 ```
 
-> Note: 其实 `srcDir` 最终会设置给 vite-plugin-react-pages 的 `pagesDir`。
+## ignored
 
-## outDir
+可以通过 `ignored` 字段忽略扫描特定的文件：
 
-执行 `build` 命令时默认会在 `<root>/dist` 生成资源代码文件。可以通过 `outDir` 来指定输出的目录：
-
-```js title=<root>/.onepress/config.js hl=3
+```js
 export default {
-  srcDir: 'docs', // 指定 docs 为文档目录
-  outDir: 'out', // 指定 out 为输出的目录
+  ignored: 'test.mdx', // 忽略 test.mdx 文件
 };
 ```
 
-## theme
+## themeConfig
 
-通过 `theme` 修改 vite-pages-theme-press 的主题配置。具体可以看[这里](https://github.com/codpoe/vite-pages-theme-press)。
+通过 `themeConfig` 字段配置主题，例如：
 
-## vite
-
-通过 `vite` 修改 Vite 的配置：
-
-```js title=<root>/.onepress/config.js hl=4-6
+```js
 export default {
-  srcDir: 'docs', // 指定 docs 为文档目录
-  outDir: 'out', // 指定 out 为输出的目录
-  vite: {
-    publicDir: 'assets',
+  themeConfig: {
+    title: 'My App',
   },
 };
 ```
 
-## reactPages
+> Note: `themeConfig` 可配置的内容是由使用的主题来决定的。不同主题往往对应着不同的配置项。
 
-[vite-plugin-react-pages](https://github.com/vitejs/vite-plugin-react-pages)的配置。
+## vite
 
-> 需要注意的是，不要在这里配置 `pagesDir`，即使配置了也不会生效，请改为使用上面提到的 `srcDir`。
+通过 `vite` 修改 [Vite 的配置](https://vitejs.dev/config/)，例如：
 
-## reactRefresh
+```js
+export default {
+  vite: {
+    base: '/app/',
+    outDir: 'output',
+  },
+};
+```
 
-[@vitejs/plugin-react-refresh](https://github.com/vitejs/vite/tree/main/packages/plugin-react-refresh)的配置。
+## react
+
+[@vitejs/plugin-react](https://github.com/vitejs/vite/tree/main/packages/plugin-react)的配置。
 
 ## mdx
 
-[vite-plugin-mdx](https://github.com/brillout/vite-plugin-mdx)的配置。
+通过 `mdx` 字段设置 mdx 的 plugins，例如：
 
-## windicss
+```js
+export default {
+  mdx: {
+    remarkPlugins: [require('remark-toc')],
+  },
+};
+```
 
-[vite-plugin-windicss](https://github.com/windicss/vite-plugin-windicss)的配置。
+## tailwind
+
+默认情况下 OnePress 会读取项目根目录下的 `tailwind.config.js` 内容作为 [tailwind 的配置](https://tailwindcss.com/docs/configuration)。
+
+如果想使用别的文件名作为 tailwind 配置文件，可以通过 `tailwind` 字段来设置：
+
+```js
+export default {
+  tailwind: 'my-tailwind.config.js',
+};
+```
+
+也可以直接在这个字段里写配置内容，例如：
+
+```js
+export default {
+  tailwind: {
+    theme: {
+      extend: {
+        colors: {
+          primary: '#3eaf7c',
+        },
+      },
+    },
+  },
+};
+```
+
+## icons
+
+[unplugin-icons](https://github.com/antfu/unplugin-icons) 的配置项。

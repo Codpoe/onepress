@@ -31,29 +31,24 @@ export default defineConfig<ThemeConfig>({
         ],
         sidebar: [
           {
-            text: '😆 项目介绍',
+            text: '项目介绍',
             link: '/zh/guide',
           },
           {
-            text: '⚡️ 快速上手',
+            text: '快速上手',
             link: '/zh/guide/getting-started',
           },
           {
-            text: '🔥 配置',
-            items: [
-              {
-                text: '🔥 配置',
-                link: '/zh/guide/config',
-              },
-              {
-                text: '页面策略',
-                link: '/zh/guide/page-strategy',
-              },
-              {
-                text: '默认主题',
-                link: '/zh/guide/default-theme',
-              },
-            ],
+            text: '配置',
+            link: '/zh/guide/config',
+          },
+          {
+            text: '路由规则',
+            link: '/zh/guide/routes',
+          },
+          {
+            text: '默认主题',
+            link: '/zh/guide/default-theme',
           },
           {
             text: '使用主题',

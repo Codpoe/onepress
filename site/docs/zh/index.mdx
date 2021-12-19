@@ -12,14 +12,14 @@ actions:
 features:
   - title: ⚡️ Vite 驱动
     details: Vite 是基于 ES Module 的前端开发构建工具，以快著称。
-  - title: 📘 基于 vite-plugin-react-pages
-    details: OnePress 实质是 vite-plugin-react-pages 的一层封装，但更简洁易用。
-  - title: ✨ 主题
-    details: 默认主题是 vite-pages-theme-press，并兼容 react-pages 的其他主题。
-  - title: MDX
+  - title: 📘 MDX
     details: 可以直接在文档中写 JSX，甚至导入组件。
-  - title: Windi CSS
-    details: 可以在文档中使用 Windi CSS 提供的工具类对样式进行调整。
+  - title: ✨ Tailwind CSS
+    details: 可以在文档中使用 tailwind css 提供的工具类对样式进行调整。
+  - title: 内置 unplugin-icons
+    details: 可以非常简单地在文档中按需使用海量的图标。
+  - title: 主题
+    details: OnePress 本身并不渲染内容，需要借助主题来执行渲染
   - title: 还有...
 footer: Copyright © 2021-present Codpoe. Built with Vite & React.
 ---
@@ -32,7 +32,8 @@ footer: Copyright © 2021-present Codpoe. Built with Vite & React.
 # 在你的项目中安装
 yarn add -D onepress
 
-# 新建一个 markdown 文件
+# 在 docs 目录下新建一个 markdown 文件
+mkdir docs && cd docs
 echo '# Hello OnePress' > README.md
 
 # 开始写作
