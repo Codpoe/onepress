@@ -51,8 +51,8 @@ export default defineConfig<ThemeConfig>({
             link: '/zh/guide/default-theme',
           },
           {
-            text: '使用主题',
-            link: '/zh/guide/use-theme',
+            text: '自定义主题',
+            link: '/zh/guide/custom-theme',
           },
         ],
       },

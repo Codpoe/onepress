@@ -10,14 +10,14 @@ actions:
 features:
   - title: ⚡️ Vite-Powered
     details: Vite is a front-end development build tool based on the ES Module and is known for its speed.
-  - title: 📘 Based on vite-plugin-react-pages
-    details: OnePress is essentially a layered wrapper around vite-plugin-react-pages, but is much simpler and easier to use.
-  - title: ✨ Theme
-    details: The default theme is vite-pages-theme-press, and it is compatible with other react-pages themes.
-  - title: MDX
+  - title: 📘 MDX
     details: We can write JSX directly in the markdown file, or even import components.
-  - title: Windi CSS
-    details: We can tweak the style in the document using the utility classes provided by Windi CSS.
+  - title: ✨ Tailwind CSS
+    details: We can tweak the style in the document using the classes provided by Tailwind CSS.
+  - title: unplugin-icons
+    details: It’s very simple to use a huge amount of icons in the document on demand.
+  - title: Theme
+    details: OnePress itself does not render the content and needs to perform the rendering with the help of a theme.
   - title: And, uh..
 footer: Copyright © 2021-present Codpoe. Built with Vite & React.
 ---
@@ -30,7 +30,8 @@ footer: Copyright © 2021-present Codpoe. Built with Vite & React.
 # install in your project
 yarn add -D onepress
 
-# create a markdown file
+# create a markdown file in your docs directory
+mkdir docs && cd docs
 echo '# Hello OnePress' > README.md
 
 # start writing
