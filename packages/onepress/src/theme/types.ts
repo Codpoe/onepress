@@ -1,3 +1,5 @@
+import { DocSearchProps } from '@docsearch/react';
+
 export interface NavItem {
   [key: string]: any;
   text: string;
@@ -39,12 +41,6 @@ export interface ThemeConfig {
   docsBranch?: string;
   editLink?: boolean | string;
   lastUpdated?: boolean | string;
-  algolia?: {
-    [key: string]: any;
-    apiKey: string;
-    indexName: string;
-    appId?: string;
-    algoliaOptions?: Record<string, any>;
-  };
+  algolia?: DocSearchProps;
   themeConfigByPaths?: Record<string, ThemeConfig>;
 }

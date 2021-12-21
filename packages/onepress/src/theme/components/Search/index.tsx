@@ -1,7 +1,7 @@
 /**
  * Based on @docusaurus/theme-search-algolia
  */
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, useNavigate } from 'onepress/client';
 import { Helmet } from 'onepress/client';
@@ -31,7 +31,7 @@ const Hit: React.FC<{ hit: any }> = ({ hit, children }) => {
 
 export const Search: React.FC = () => {
   const routerNavigate = useNavigate();
-  const { algolia } = useThemeContext();
+  const { algolia, locales, currentLocale } = useThemeContext();
   const searchButtonRef = useRef<HTMLButtonElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -60,6 +60,20 @@ export const Search: React.FC = () => {
     },
   }).current;
 
+  // if has multiple locales,
+  // the search results should be filtered based on the language
+  const facetFilters = useMemo(() => {
+    let userFacetFilters = algolia?.searchParameters?.facetFilters || [];
+    userFacetFilters =
+      typeof userFacetFilters === 'string'
+        ? [userFacetFilters]
+        : userFacetFilters;
+
+    return locales.length > 1 && currentLocale
+      ? [`language:${currentLocale.locale}`, ...userFacetFilters]
+      : userFacetFilters;
+  }, [locales, currentLocale, algolia]);
+
   useDocSearchKeyboardEvents({
     isOpen,
     onOpen,
@@ -78,7 +92,7 @@ export const Search: React.FC = () => {
         query faster, especially on mobile. */}
         <link
           rel="preconnect"
-          href={`https://${algolia?.appId || 'BH4D9OD16A'}-dsn.algolia.net`}
+          href={`https://${algolia.appId || 'BH4D9OD16A'}-dsn.algolia.net`}
           crossOrigin=""
         />
       </Helmet>
@@ -99,7 +113,6 @@ export const Search: React.FC = () => {
         isOpen &&
         DocSearchModal &&
         createPortal(
-          // TODO: filter language
           <DocSearchModal
             initialScrollY={window.scrollY}
             transformItems={transformItems}
@@ -107,6 +120,10 @@ export const Search: React.FC = () => {
             navigator={navigator}
             onClose={onClose}
             {...algolia}
+            searchParameters={{
+              ...algolia.searchParameters,
+              facetFilters,
+            }}
           />,
           document.body
         )}
