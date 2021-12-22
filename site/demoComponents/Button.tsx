@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
 export default function Button() {
-  const [count, setCount] = useState(1);
+  const [count, setCount] = useState(0);
   return (
     <button
-      className="h-8 px-4 text-green-500 rounded-md border border-green-500 hover:bg-green-500 hover:text-white transition-colors"
+      className="h-8 px-5 text-rose-500 rounded-sm border border-rose-500 hover:bg-rose-500 hover:text-white transition-colors"
       onClick={() => setCount(s => s + 1)}
     >
-      {count}
+      Hello World {count}
     </button>
   );
 }

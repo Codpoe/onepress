@@ -54,6 +54,10 @@ export default defineConfig<ThemeConfig>({
             text: '自定义主题',
             link: '/zh/guide/custom-theme',
           },
+          {
+            text: '使用 Demo 组件进行演示',
+            link: '/zh/guide/demo',
+          },
         ],
       },
     },
