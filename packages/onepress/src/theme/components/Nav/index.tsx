@@ -37,7 +37,7 @@ export const Nav: React.FC<NavProps> = props => {
                         {...subItem}
                         to={subItem.link}
                         color={false}
-                        className={`relative flex items-center h-9 px-2.5 font-normal whitespace-nowrap
+                        className={`relative flex items-center h-8 px-2.5 font-normal whitespace-nowrap
                         before:absolute before:top-0 before:left-0 before:w-full before:h-full before:rounded before:opacity-10 before:pointer-events-none
                         ${
                           pathname.startsWith(subItem.link!) &&
