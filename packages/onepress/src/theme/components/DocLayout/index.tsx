@@ -12,7 +12,7 @@ import './style.css';
 export const DocLayout: React.FC = () => {
   return (
     <div className="block xl:flex">
-      <div className="flex-auto max-w-screen-md mx-auto pt-8 pb-10">
+      <div className="flex-auto max-w-[800px] mx-auto px-4 pt-8 pb-10">
         <Mdx className="pb-8">
           <Page
             fallback={<Loading className="text-xl" />}
@@ -25,7 +25,7 @@ export const DocLayout: React.FC = () => {
       </div>
       {/* disable toc while using hash router */}
       {!__HASH_ROUTER__ && (
-        <div className="hidden xl:block shrink-0 w-64 h-[calc(100vh-4rem)] py-8 ml-8 overflow-y-auto sticky top-16">
+        <div className="hidden xl:block shrink-0 w-64 h-[calc(100vh-4rem)] py-8 pr-4 overflow-y-auto sticky top-16">
           <Toc />
         </div>
       )}

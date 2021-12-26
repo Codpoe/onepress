@@ -28,15 +28,10 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
-      colors: colorVars.reduce(
-        (acc, cur) => {
-          acc[cur] = `var(--${cur})`;
-          return acc;
-        },
-        {
-          primary: colors.teal,
-        }
-      ),
+      colors: colorVars.reduce((acc, cur) => {
+        acc[cur] = `var(--${cur})`;
+        return acc;
+      }, {}),
     },
   },
 };

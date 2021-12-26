@@ -5,6 +5,7 @@ export interface NavItem {
   text: string;
   link?: string;
   items?: NavItem[];
+  locale?: string;
 }
 
 export interface SidebarItem {

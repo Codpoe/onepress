@@ -11,7 +11,7 @@ export interface NavProps {
 export const Nav: React.FC<NavProps> = props => {
   const { className } = props;
   const { pathname } = useLocation();
-  const { nav } = useThemeContext();
+  const { nav, currentLocale } = useThemeContext();
 
   if (!nav?.length) {
     return null;
@@ -30,16 +30,25 @@ export const Nav: React.FC<NavProps> = props => {
                 <ChevronDown className="ml-1 text-c-text-lighter group-hover:rotate-180 transition-transform" />
               </div>
               <div className="absolute top-full right-0 pt-2 hidden group-hover:block">
-                <ul className="py-[6px] bg-c-bg overflow-y-auto rounded-md border border-c-divider shadow-sm text-sm">
+                <ul className="min-w-[100px] p-1 bg-c-bg overflow-y-auto rounded-md border border-c-divider shadow-sm text-sm space-y-0.5">
                   {item.items.map((subItem, index) => (
                     <li key={index}>
                       <Link
                         {...subItem}
                         to={subItem.link}
                         color={false}
-                        className="block px-4 font-normal leading-9 whitespace-nowrap hover:text-c-brand transition-colors"
+                        className={`relative flex items-center h-9 px-2.5 font-normal whitespace-nowrap
+                        before:absolute before:top-0 before:left-0 before:w-full before:h-full before:rounded before:opacity-10 before:pointer-events-none
+                        ${
+                          pathname.startsWith(subItem.link!) &&
+                          (currentLocale
+                            ? subItem.locale === currentLocale.locale
+                            : true)
+                            ? 'text-c-brand before:bg-c-brand'
+                            : 'hover:before:bg-gray-400'
+                        }`}
                       >
-                        {subItem.text}
+                        <span>{subItem.text}</span>
                       </Link>
                     </li>
                   ))}

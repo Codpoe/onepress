@@ -14,11 +14,12 @@ const ItemLink: React.FC<{
         {...item}
         to={item.link}
         color={false}
-        className={`block h-8 truncate hover:text-c-brand ${
-          inside ? 'pl-3 -ml-px border-l' : ''
-        } ${hit ? 'text-c-brand border-c-brand' : 'border-transparent'}`}
+        className={`relative flex items-center h-9 px-2.5
+        before:absolute before:top-0 before:left-0 before:w-full before:h-full before:rounded-md before:opacity-10 before:pointer-events-none
+        ${inside ? 'ml-2' : ''}
+        ${hit ? 'text-c-brand before:bg-c-brand' : 'hover:before:bg-gray-400'}`}
       >
-        {item.text}
+        <span className="relative w-full truncate">{item.text}</span>
       </Link>
     </li>
   );
@@ -98,14 +99,16 @@ export const Items: React.FC<ItemsProps> = props => {
 
   return (
     <div
-      className={`text-sm leading-8 font-medium text-c-text-light overflow-y-hidden transition-all 
-      ${inside ? 'mt-2 ml-1.5' : ''}
+      className={`text-[0.9rem] leading-6 font-medium overflow-y-hidden
+      ${inside ? 'mt-1.5 ml-3.5 transition-all' : ''}
       ${inside && !expanded ? '!h-0 !mt-0 opacity-0' : ''}`}
       style={{ height: inside && height ? `${height}px` : 'auto' }}
     >
       <ul
         ref={elRef}
-        className={`space-y-2  ${inside ? 'border-l border-l-c-divider' : ''}`}
+        className={`space-y-1.5  ${
+          inside ? 'border-l border-l-c-divider' : ''
+        }`}
       >
         {items.map((item, index) => {
           const hit = hitItems.includes(item);
@@ -116,14 +119,17 @@ export const Items: React.FC<ItemsProps> = props => {
             return (
               <li key={index}>
                 <div
-                  className={`flex justify-between items-center h-8 pr-1 cursor-pointer hover:text-c-brand ${
-                    inside ? 'pl-3 -ml-px border-l' : ''
-                  } ${
-                    hit ? 'text-c-brand border-c-current' : 'border-transparent'
+                  className={`relative flex justify-between items-center h-9 px-2.5 cursor-pointer
+                  before:absolute before:top-0 before:left-0 before:w-full before:h-full before:rounded-md before:opacity-10 before:pointer-events-none
+                  ${inside ? 'ml-2' : ''}
+                  ${
+                    hit
+                      ? 'text-c-brand hover:before:bg-c-brand'
+                      : 'hover:before:bg-gray-400'
                   }`}
                   onClick={() => toggleExpand(item)}
                 >
-                  <span className="w-full truncate">{item.text}</span>
+                  <span className="relative w-full truncate">{item.text}</span>
                   <ChevronRight
                     className={`ml-2 text-lg transition-transform ${
                       active ? 'rotate-90' : ''

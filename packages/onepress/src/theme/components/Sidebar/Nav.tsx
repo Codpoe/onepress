@@ -31,7 +31,7 @@ export const Nav: React.FC = () => {
   }
 
   return (
-    <ul className="mb-4 pb-4 border-b border-c-divider leading-9 lg:hidden">
+    <ul className="mb-4 pb-4 border-b border-c-divider leading-9 md:hidden">
       {nav.map((item, index) => {
         if (item.items) {
           const isOpen = open.includes(item);

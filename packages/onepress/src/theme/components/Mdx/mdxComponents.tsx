@@ -271,7 +271,7 @@ export const InlineCode: React.FC = ({ children, ...restProps }) => {
   return (
     <code
       {...restProps}
-      className="whitespace-pre-wrap px-2 py-0.5 rounded-[3px] bg-c-bg-light text-c-text-light text-[0.9em]"
+      className="whitespace-pre-wrap break-words px-2 py-0.5 rounded-[3px] bg-c-bg-light text-c-text-light text-[0.9em]"
     >
       {children}
     </code>

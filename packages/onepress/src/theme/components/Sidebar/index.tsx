@@ -67,22 +67,26 @@ export const Sidebar: React.FC = () => {
     <>
       <aside
         className={`shrink-0 border-r border-c-divider overflow-y-auto
-        fixed z-20 top-16 bottom-0 right-full w-64 py-4 px-4 bg-c-bg transition-transform
-        lg:sticky lg:top-16 lg:right-auto lg:h-[calc(100vh-4rem)] lg:py-8 lg:pl-0 lg:mr-8 lg:bg-transparent
-        ${sidebarOpen ? 'translate-x-full' : 'lg:translate-x-0'} ${
-          hasHit ? 'lg:block' : 'lg:hidden'
+        fixed z-20 top-16 bottom-0 right-full w-64 py-4 bg-c-bg transition-transform
+        md:sticky md:top-16 md:right-auto md:h-[calc(100vh-4rem)] md:py-8 md:bg-transparent md:transition-none
+        ${sidebarOpen ? 'translate-x-full' : 'md:translate-x-0'} ${
+          hasHit ? 'md:block' : 'md:hidden'
         }`}
       >
-        <Nav />
+        <div className="px-4">
+          <Nav />
+        </div>
         {hasHit && (
-          <Items
-            items={sidebar || []}
-            hitItems={hitItems}
-            activeItems={activeItems}
-            inside={false}
-            expanded={false}
-            setActiveItems={setActiveItems}
-          />
+          <div className="px-1.5">
+            <Items
+              items={sidebar || []}
+              hitItems={hitItems}
+              activeItems={activeItems}
+              inside={false}
+              expanded={false}
+              setActiveItems={setActiveItems}
+            />
+          </div>
         )}
       </aside>
       {sidebarOpen && (

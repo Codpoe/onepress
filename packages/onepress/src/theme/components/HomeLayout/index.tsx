@@ -19,7 +19,7 @@ export const HomeLayout: React.FC = () => {
     (currentPageData?.meta || {}) as HomePageMeta;
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col px-4">
       <div className="flex-1">
         <header className="mb-12 text-center mt-0 sm:mt-8">
           {heroImage &&

@@ -17,7 +17,7 @@ export const Header: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-30 h-16 w-full bg-c-bg border-b border-b-c-divider shadow-sm">
-      <div className="w-full max-w-[1376px] h-full mx-auto px-4 flex items-center">
+      <div className="w-full max-w-[1344px] h-full mx-auto px-4 flex items-center">
         {hasSidebar && (
           <div
             className="flex md:hidden items-center text-2xl py-2 pr-4 cursor-pointer"

@@ -22,7 +22,7 @@ const InternalLayout: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col items-center">
       <Header />
-      <main className="flex-auto w-full max-w-[1376px] px-4 mx-auto flex">
+      <main className="flex-auto w-full max-w-[1344px] mx-auto flex">
         <Sidebar />
         <div className="flex-auto max-w-full">
           {currentPageData?.meta.home ? <HomeLayout /> : <DocLayout />}
@@ -84,6 +84,7 @@ export const Layout: React.FC = () => {
             currentLocale.localePath,
             item.localePath
           ),
+          locale: item.locale,
         })),
       });
     }

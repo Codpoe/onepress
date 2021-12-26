@@ -1,8 +1,8 @@
 /* Based on VuePress theme */
 :root {
   /* brand colors */
-  --c-brand: #3eaf7c;
-  --c-brand-light: #4abf8a;
+  --c-brand: #21b8a3;
+  --c-brand-light: #41c6b0;
 
   /* background colors */
   --c-bg: #ffffff;
@@ -46,8 +46,8 @@
 
 html.dark {
   /* brand colors */
-  --c-brand: #3aa675;
-  --c-brand-light: #349469;
+  --c-brand: #21b8a3;
+  --c-brand-light: #41c6b0;
 
   /* background colors */
   --c-bg: #22272e;
