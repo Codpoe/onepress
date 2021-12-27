@@ -19,37 +19,37 @@ export const HomeLayout: React.FC = () => {
     (currentPageData?.meta || {}) as HomePageMeta;
 
   return (
-    <div className="h-full flex flex-col px-4">
-      <div className="flex-1">
-        <header className="mb-12 text-center mt-0 sm:mt-8">
+    <div className="max-w-screen-lg mx-auto h-full flex flex-col px-4">
+      <div className="flex-1 divide-y divide-c-divider">
+        <header className="py-10 text-center">
           {heroImage &&
             (heroImage.includes('/') ? (
               <img
                 src={heroImage}
                 alt="hero"
-                className="max-w-full max-h-52 mx-auto mb-5 sm:max-h-64 sm:mb-6"
+                className="max-w-full w-auto max-h-48 mx-auto mb-6 md:mb-8"
               />
             ) : (
-              <div className="mx-auto mb-5 text-[170px] leading-normal sm:mb-6">
+              <div className="mx-auto mb-6 text-[150px] leading-tight md:mb-8">
                 {heroImage}
               </div>
             ))}
           {heroText && (
-            <h1 className="my-5 text-center text-3xl font-semibold sm:my-7 sm:text-5xl">
+            <h1 className="my-2 text-center text-3xl font-semibold md:my-4 md:text-5xl">
               {heroText}
             </h1>
           )}
           {tagline && (
-            <p className="my-5 text-center text-xl text-c-text-lighter sm:my-7 sm:text-2xl">
+            <p className="my-2 text-center text-base text-c-text-lighter md:my-4 md:text-xl">
               {tagline}
             </p>
           )}
           {actions && (
-            <div className="flex justify-center my-5 space-x-4 sm:my-7 sm:space-x-5">
+            <div className="mt-6 flex justify-center space-x-4 md:space-x-6 md:mt-8">
               {actions.map((action, index) => (
                 <Link key={index} to={action.link}>
                   <button
-                    className={`h-12 px-6 text-base font-medium sm:h-14 sm:text-lg ${
+                    className={`h-12 px-5 text-lg font-medium ${
                       index === 0 ? 'btn-primary' : 'btn-hollow'
                     }`}
                   >
@@ -61,7 +61,7 @@ export const HomeLayout: React.FC = () => {
           )}
         </header>
         {features && (
-          <div className="grid grid-cols-1 gap-10 my-12 pt-10 border-t border-c-divider sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-10 py-10 sm:grid-cols-3">
             {features.map((feature, index) => (
               <div key={index}>
                 {feature.title && (
@@ -78,7 +78,7 @@ export const HomeLayout: React.FC = () => {
             ))}
           </div>
         )}
-        <Mdx>
+        <Mdx className="pt-10">
           <Page />
         </Mdx>
       </div>
