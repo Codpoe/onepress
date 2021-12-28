@@ -1,3 +1,16 @@
+## [0.1.29](https://github.com/Codpoe/onepress/compare/v0.1.28...v0.1.29) (2021-12-28)
+
+### Bug Fixes
+
+- set tailwind default ([5f60b60](https://github.com/Codpoe/onepress/commit/5f60b60007036ba9a8f2cbdbc9d7e19b75f7fd13))
+- support relative demo src ([9bcab4a](https://github.com/Codpoe/onepress/commit/9bcab4abdff295b5bb10ac116accdfe81782861a))
+- update style ([661d5e8](https://github.com/Codpoe/onepress/commit/661d5e82ad499f6168e3769047c60895ecffe8cc))
+- update style ([2204448](https://github.com/Codpoe/onepress/commit/22044482146cb53c9a040fcba395db88e17890f8))
+
+### Features
+
+- support docsearch filter by language ([4044fdb](https://github.com/Codpoe/onepress/commit/4044fdb831e279c493830d9e80fb684578556e15))
+
 ## [0.1.28](https://github.com/Codpoe/onepress/compare/v0.1.27...v0.1.28) (2021-12-19)
 
 ### Bug Fixes
