@@ -1,10 +1,10 @@
 import path from 'path';
 import EventEmitter from 'events';
 import chokidar, { FSWatcher } from 'chokidar';
-import { readFileSync } from 'fs-extra';
+import fs from 'fs-extra';
 import { normalizePath } from 'vite';
-import { extractDocBlock, extractFrontMatter, slash } from '../../utils';
-import { Page, ResolvedSrcConfig } from '../../types';
+import { extractDocBlock, extractFrontMatter, slash } from '../../utils.js';
+import { Page, ResolvedSrcConfig } from '../../types.js';
 
 /**
  * - parse doc block for normal page
@@ -14,7 +14,7 @@ export function resolvePageMeta(
   filePath: string,
   fileContent?: string
 ): Record<string, any> {
-  fileContent ??= readFileSync(filePath, 'utf-8');
+  fileContent ??= fs.readFileSync(filePath, 'utf-8');
 
   // parse doc block for js file
   if (/\.(js|ts)x?$/.test(filePath)) {

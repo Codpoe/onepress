@@ -1,12 +1,12 @@
 /**
  * modify from vite-plugin-react-pages
  */
-import type { Root } from 'mdast';
 import path from 'path';
-import { readFile } from 'fs-extra';
+import type { Root } from 'mdast';
+import fs from 'fs-extra';
 import { extract, parse, strip } from 'jest-docblock';
-import { DEMO_MODULE_ID_PREFIX, MDX_DEMO_RE } from '../../constants';
-import { slash } from '../../utils';
+import { DEMO_MODULE_ID_PREFIX, MDX_DEMO_RE } from '../../constants.js';
+import { slash } from '../../utils.js';
 
 export function getDemoModuleId(filePath: string) {
   return `${DEMO_MODULE_ID_PREFIX}${filePath}`;
@@ -52,7 +52,7 @@ export function demoMdxPlugin() {
 export async function loadDemo(id: string): Promise<string> {
   const filePath = extractDemoPath(id);
 
-  const code = await readFile(filePath, 'utf-8');
+  const code = await fs.readFile(filePath, 'utf-8');
 
   return `
 export * from '${filePath}';

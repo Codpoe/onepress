@@ -1,5 +1,4 @@
 const path = require('path');
-const colors = require('tailwindcss/colors');
 
 const colorVars = [
   'c-brand',

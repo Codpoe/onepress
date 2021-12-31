@@ -1,6 +1,6 @@
-const fs = require('fs-extra');
-const chokidar = require('chokidar');
-const { normalizePath } = require('vite');
+import fs from 'fs-extra';
+import chokidar from 'chokidar';
+import { normalizePath } from 'vite';
 
 function toDist(file) {
   return normalizePath(file).replace(/^src\//, 'dist/');

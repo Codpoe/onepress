@@ -2,7 +2,7 @@ import polka from 'polka';
 import sirv from 'sirv';
 import compression from 'compression';
 import getPort from 'get-port';
-import { resolveConfig } from './config';
+import { resolveConfig } from './config.js';
 
 export interface ServeOptions {
   port?: number;

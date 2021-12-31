@@ -1,22 +1,28 @@
 import path from 'path';
+import { fileURLToPath } from 'url';
 import fs from 'fs-extra';
 import jiti from 'jiti';
-import pick from 'lodash/pick';
-import { UserConfig, SiteConfig } from './types';
+import _ from 'lodash';
+import remarkSlug from 'remark-slug';
 import {
-  DEFAULT_THEME_PATH,
-  DEFAULT_THEME_TAILWIND_CONFIG,
-  POSSIBLE_CONFIG_FILES,
-} from './constants';
-import {
+  UserConfig,
+  SiteConfig,
   ResolvedSrcConfig,
   SrcConfig,
   SrcObject,
   TailwindOptions,
-} from './types';
-import { ensureLeadingSlash, removeTrailingSlash, slash } from './utils';
+} from './types.js';
+import {
+  DEFAULT_THEME_PATH,
+  DEFAULT_THEME_TAILWIND_CONFIG,
+  POSSIBLE_CONFIG_FILES,
+} from './constants.js';
+import { ensureLeadingSlash, removeTrailingSlash, slash } from './utils.js';
 
-const _require = jiti(__filename, { requireCache: false, cache: false });
+const _require = jiti(path.dirname(fileURLToPath(import.meta.url)), {
+  requireCache: false,
+  cache: false,
+});
 
 /**
  * Type helper to make it easier to create onepress config
@@ -188,10 +194,7 @@ export function resolveConfig(root: string): SiteConfig {
     src,
     mdx: {
       ...userConfig.mdx,
-      remarkPlugins: [
-        ...(userConfig.mdx?.remarkPlugins || []),
-        require('remark-slug'),
-      ],
+      remarkPlugins: [...(userConfig.mdx?.remarkPlugins || []), remarkSlug],
     },
     tailwind: resolveTailwindConfig(
       src,
@@ -229,7 +232,7 @@ export function isConfigChanged(
   function stringify(config: SiteConfig) {
     try {
       return JSON.stringify(
-        pick(config, compareFields),
+        _.pick(config, compareFields),
         (key: string, value: any) => {
           if (ignoreFields.includes(key)) {
             return undefined;

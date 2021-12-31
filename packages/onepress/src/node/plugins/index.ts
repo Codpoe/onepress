@@ -1,4 +1,5 @@
 import path from 'path';
+import { createRequire } from 'module';
 import {
   mergeConfig,
   send,
@@ -15,12 +16,14 @@ import {
   DIST_CLIENT_PATH,
   DIST_THEME_PATH,
   THEME_MODULE_ID,
-} from '../constants';
-import { cleanPath } from '../utils';
-import { SiteConfig } from '../types';
-import { createRoutesPlugin } from './routes';
-import { createMdxPlugin } from './mdx';
-import { createThemePlugin } from './theme';
+} from '../constants.js';
+import { cleanPath } from '../utils.js';
+import { SiteConfig } from '../types.js';
+import { createRoutesPlugin } from './routes/index.js';
+import { createMdxPlugin } from './mdx/index.js';
+import { createThemePlugin } from './theme.js';
+
+const require = createRequire(import.meta.url);
 
 function resolveFsAllow(siteConfig: SiteConfig) {
   const workspaceRoot = searchForWorkspaceRoot(siteConfig.root);

@@ -1,12 +1,15 @@
+import { fileURLToPath, URL } from 'url';
 import { cac } from 'cac';
 import chalk from 'chalk';
-import { createServer } from './dev';
-import { build } from './build';
-import { serve } from './serve';
+import fs from 'fs-extra';
+import { createServer } from './dev.js';
+import { build } from './build.js';
+import { serve } from './serve.js';
 
-const cli = cac('onepress')
-  .version(require('../../package.json').version)
-  .help();
+const pkgPath = fileURLToPath(new URL('../../package.json', import.meta.url));
+const pkgJson = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
+
+const cli = cac('onepress').version(pkgJson.version).help();
 
 cli
   .command('dev [root]')

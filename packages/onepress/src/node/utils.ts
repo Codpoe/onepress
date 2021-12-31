@@ -1,11 +1,16 @@
 import path from 'path';
 import os from 'os';
+import { createRequire } from 'module';
 import execa from 'execa';
 import fs from 'fs-extra';
 import { parse, extract } from 'jest-docblock';
 import grayMatter from 'gray-matter';
-import { parseSlides } from './parseSlides';
+import { parseSlides } from './parseSlides.js';
 import { GitContributor } from '.';
+
+export function requireResolve(request: string, path: string) {
+  return createRequire(path).resolve(request);
+}
 
 export function slash(p: string): string {
   return p.replace(/\\/g, '/');

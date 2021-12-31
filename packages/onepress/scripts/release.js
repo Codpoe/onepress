@@ -1,13 +1,17 @@
 /**
  * https://github.com/vuejs/vitepress/blob/main/scripts/release.js
  */
-const path = require('path');
-const fs = require('fs-extra');
-const semver = require('semver');
-const execa = require('execa');
-const { Listr } = require('listr2');
+import path from 'path';
+import { fileURLToPath, URL } from 'url';
+import fs from 'fs-extra';
+import semver from 'semver';
+import execa from 'execa';
+import { Listr } from 'listr2';
 
-const currentVersion = require('../package.json').version;
+const pkgPath = fileURLToPath(new URL('../package.json', import.meta.url));
+const pkgJson = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
+
+const currentVersion = pkgJson.version;
 
 const releaseTypeChoices = ['patch', 'minor', 'major']
   .map(type => {

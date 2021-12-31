@@ -1,13 +1,13 @@
 import { Plugin, ViteDevServer } from 'vite';
-import { isEqual } from 'lodash';
-import { PagesService, resolvePageMeta } from './PagesService';
+import _ from 'lodash';
+import { ROUTES_MODULE_ID, PAGES_DATA_MODULE_ID } from '../../constants.js';
+import { Route, ResolvedSrcConfig } from '../../types.js';
+import { PagesService, resolvePageMeta } from './PagesService.js';
 import {
   generateRoutes,
   generateRoutesCode,
   generatePagesData,
-} from './generate';
-import { ROUTES_MODULE_ID, PAGES_DATA_MODULE_ID } from '../../constants';
-import { Route, ResolvedSrcConfig } from '../../types';
+} from './generate.js';
 
 export function createRoutesPlugin(options: {
   src: ResolvedSrcConfig;
@@ -95,7 +95,7 @@ export function createRoutesPlugin(options: {
         if (page) {
           const newMeta = resolvePageMeta(ctx.file, await ctx.read());
 
-          if (!isEqual(page.meta, newMeta)) {
+          if (!_.isEqual(page.meta, newMeta)) {
             page.meta = newMeta;
             return ctx.modules.concat(pagesDataModule);
           }

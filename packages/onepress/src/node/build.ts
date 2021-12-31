@@ -1,14 +1,17 @@
 import path from 'path';
+import { createRequire } from 'module';
 import fs from 'fs-extra';
 import ora from 'ora';
 import { build as viteBuild, BuildOptions, InlineConfig } from 'vite';
 import { RollupOutput, OutputChunk, OutputAsset } from 'rollup';
 import type { HelmetData } from 'react-helmet';
-import { resolveConfig } from './config';
-import { createOnePressPlugin } from './plugins';
-import { trapConsole } from './utils';
-import { Page, SiteConfig } from './types';
-import { CSR_ENTRY_PATH, SSR_ENTRY_PATH } from './constants';
+import { resolveConfig } from './config.js';
+import { createOnePressPlugin } from './plugins/index.js';
+import { trapConsole } from './utils.js';
+import { Page, SiteConfig } from './types.js';
+import { CSR_ENTRY_PATH, SSR_ENTRY_PATH } from './constants.js';
+
+const require = createRequire(import.meta.url);
 
 async function bundle(siteConfig: SiteConfig, buildOptions: BuildOptions) {
   const resolveViteConfig = (ssr: boolean): InlineConfig => {

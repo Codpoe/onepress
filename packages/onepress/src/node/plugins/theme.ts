@@ -1,28 +1,14 @@
 import { normalizePath, Plugin } from 'vite';
 import chalk from 'chalk';
-import { SiteConfig } from '../types';
-import { THEME_CONFIG_MODULE_ID, THEME_MODULE_ID } from '../constants';
-import { isConfigChanged, resolveConfig } from '../config';
-import { slash } from '../utils';
+import { SiteConfig } from '../types.js';
+import { THEME_CONFIG_MODULE_ID } from '../constants.js';
+import { isConfigChanged, resolveConfig } from '../config.js';
 
 export function createThemePlugin(siteConfig: SiteConfig): Plugin {
   let { themeConfig } = siteConfig;
 
   return {
     name: 'onepress:theme',
-
-    // config() {
-    //   return {
-    //     resolve: {
-    //       alias: [
-    //         {
-    //           find: THEME_MODULE_ID,
-    //           replacement: siteConfig.themePath,
-    //         },
-    //       ],
-    //     },
-    //   };
-    // },
 
     resolveId(id) {
       if (id === THEME_CONFIG_MODULE_ID) {

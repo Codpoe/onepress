@@ -1,7 +1,14 @@
 import path from 'path';
-import { TailwindOptions } from './types';
+import { fileURLToPath } from 'url';
+import jiti from 'jiti';
+import { TailwindOptions } from './types.js';
 
-export const DIST_CLIENT_PATH = path.join(__dirname, '../client');
+const filename = fileURLToPath(import.meta.url);
+const dirname = path.dirname(filename);
+
+const _require = jiti(filename, { requireCache: false, cache: false });
+
+export const DIST_CLIENT_PATH = path.join(dirname, '../client');
 export const CSR_ENTRY_PATH = path.join(
   DIST_CLIENT_PATH,
   'app/entry.client.js'
@@ -29,9 +36,11 @@ export const TS_INFO_MODULE_ID_PREFIX = '/@onepress/ts-info/';
 // theme
 export const THEME_MODULE_ID = '/@onepress/theme';
 export const THEME_CONFIG_MODULE_ID = '/@onepress/theme-config';
-export const DIST_THEME_PATH = path.join(__dirname, '../theme');
+export const DIST_THEME_PATH = path.join(dirname, '../theme');
 export const DEFAULT_THEME_PATH = path.join(DIST_THEME_PATH, 'index.ts');
-export const DEFAULT_THEME_TAILWIND_CONFIG: TailwindOptions = require('../../tailwind.config.js');
+export const DEFAULT_THEME_TAILWIND_CONFIG: TailwindOptions = _require(
+  '../../tailwind.config.js'
+);
 
 export const SLIDE_MODULE_ID_PREFIX = '/@onepress/slide/';
 

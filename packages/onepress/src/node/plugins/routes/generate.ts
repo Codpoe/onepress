@@ -1,6 +1,6 @@
 import path from 'path';
-import { Page, Route } from '../../types';
-import { getGitRoot, slash } from '../../utils';
+import { Page, Route } from '../../types.js';
+import { getGitRoot, slash } from '../../utils.js';
 
 interface ParentRoute extends Route {
   children: Route[];

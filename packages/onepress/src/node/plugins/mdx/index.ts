@@ -4,20 +4,20 @@ import grayMatter from 'gray-matter';
 import {
   DEMO_MODULE_ID_PREFIX,
   TS_INFO_MODULE_ID_PREFIX,
-} from '../../constants';
+} from '../../constants.js';
+import { MdxOptions } from '../../types.js';
 import {
   demoMdxPlugin,
   extractDemoPath,
   getDemoModuleId,
   loadDemo,
-} from './demo';
+} from './demo.js';
 import {
   tsInfoMdxPlugin,
   loadTsInfo,
   extractTsInfoPathAndName,
   getTsInfoModuleId,
-} from './tsInfo';
-import { MdxOptions } from '../../types';
+} from './tsInfo.js';
 
 export function createMdxPlugin(options?: MdxOptions): Plugin[] {
   const mdxCompiler = createCompiler({
