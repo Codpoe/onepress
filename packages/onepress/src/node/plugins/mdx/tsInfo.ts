@@ -2,7 +2,7 @@
  * modify from vite-plugin-react-pages
  */
 import type { Root } from 'mdast';
-import * as ts from 'typescript';
+import ts from 'typescript';
 import { MDX_TS_INFO_RE, TS_INFO_MODULE_ID_PREFIX } from '../../constants.js';
 
 export interface TsInterfaceInfo {
