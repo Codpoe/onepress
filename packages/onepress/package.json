@@ -17,6 +17,9 @@
   },
   "author": "codpoe <codpoe.me@gmail.com>",
   "license": "MIT",
+  "engines": {
+    "node": "^14.16.0 || >=16.0.0"
+  },
   "bin": {
     "onepress": "bin/onepress.js"
   },
